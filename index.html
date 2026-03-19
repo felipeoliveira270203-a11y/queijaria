@@ -1052,21 +1052,44 @@
         }
 
         function atualizarTudo() {
-            atualizarSelects();
-            calcularValorVenda();
-            atualizarSelectSemanas();
+    atualizarSelects();
+    calcularValorVenda();
+    atualizarSelectSemanas();
 
-            const vendasSemana = vendas.filter(v=>v.semana===semanaAtual);
-            document.getElementById('vendasSemana').innerText = 'R$ '+vendasSemana.reduce((a,v)=>a+v.valorTotal,0).toFixed(2);
-            document.getElementById('recebidoSemana').innerText = 'R$ '+vendasSemana.filter(v=>v.status==='pago').reduce((a,v)=>a+v.valorTotal,0).toFixed(2);
+    // Só atualiza se os elementos existirem
+    const vendasSemana = vendas.filter(v => v.semana === semanaAtual);
+    
+    const elVendasSemana = document.getElementById('vendasSemana');
+    if (elVendasSemana) {
+        elVendasSemana.innerText = 'R$ ' + vendasSemana.reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
+    }
 
-            atualizarEstoque();
+    const elRecebidoSemana = document.getElementById('recebidoSemana');
+    if (elRecebidoSemana) {
+        elRecebidoSemana.innerText = 'R$ ' + vendasSemana.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
+    }
 
-            const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
-            if (tbodyPrecos) {
-                tbodyPrecos.innerHTML = '';
-                produtos.forEach(p => tbodyPrecos.innerHTML += `<tr><td>${p.nome}</td><td>R$ ${p.preco.toFixed(2)}</td><td><span class="${p.estoque<=2?'status-pendente':'status-pago'}">${p.estoque}</span></td><td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button></td></tr>`);
-            }
+    atualizarEstoque();
+
+    const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
+    if (tbodyPrecos) {
+        tbodyPrecos.innerHTML = '';
+        produtos.forEach(p => tbodyPrecos.innerHTML += `<tr><td>${p.nome}</td><td>R$ ${p.preco.toFixed(2)}</td><td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span></td><td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button></td></tr>`);
+    }
+
+    const tbodyCompras = document.querySelector('#tabelaCompras tbody');
+    if (tbodyCompras) {
+        tbodyCompras.innerHTML = '';
+        if (compras.length) compras.slice(-10).reverse().forEach(c => tbodyCompras.innerHTML += `<tr><td>Semana ${c.semana}</td><td>${c.produto}</td><td>${c.qtd}</td><td>R$ ${c.valorUnitario.toFixed(2)}</td><td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td><td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td></tr>`);
+        else tbodyCompras.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
+    }
+
+    atualizarVendas();
+    atualizarRelatorio();
+    atualizarGastos();
+    atualizarClientes();
+    atualizarVendasPorVendedor();
+}
 
             const tbodyCompras = document.querySelector('#tabelaCompras tbody');
             if (tbodyCompras) {
