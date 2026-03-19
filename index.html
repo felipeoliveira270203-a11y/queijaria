@@ -609,19 +609,32 @@
             }
         }
 
-        // ---------- ABRIR ABA ----------
+        // ---------- ABRIR ABA (CORRIGIDA) ----------
         window.abrirAba = function(aba) {
             const container = document.getElementById('conteudoAbas');
             container.innerHTML = obterTemplateAba(aba);
 
-            if (aba === 'vendas') { atualizarVendas(); calcularValorVenda(); }
-            if (aba === 'estoque') atualizarEstoque();
-            if (aba === 'clientes') atualizarClientes();
-            if (aba === 'compras') { calcularTotalCompra(); atualizarSelects(); }
-            if (aba === 'gastos') atualizarGastos();
-            if (aba === 'relatorios') atualizarRelatorio();
-            if (aba === 'vendedores') atualizarVendasPorVendedor();
-            if (aba === 'produtos') atualizarSelects();
+            // Pequeno atraso para garantir que o DOM foi inserido
+            setTimeout(() => {
+                if (aba === 'vendas') { 
+                    atualizarVendas(); 
+                    calcularValorVenda();
+                    atualizarSelects(); // ← GARANTE QUE OS PRODUTOS APARECEM NO SELECT
+                }
+                if (aba === 'estoque') atualizarEstoque();
+                if (aba === 'clientes') atualizarClientes();
+                if (aba === 'compras') { 
+                    calcularTotalCompra(); 
+                    atualizarSelects(); 
+                }
+                if (aba === 'gastos') atualizarGastos();
+                if (aba === 'relatorios') atualizarRelatorio();
+                if (aba === 'vendedores') atualizarVendasPorVendedor();
+                if (aba === 'produtos') {
+                    atualizarSelects();      // ← PREENCHE A TABELA DE PRODUTOS
+                    atualizarTudo();         // ← ATUALIZA TUDO (ESTOQUE, ETC.)
+                }
+            }, 50);
         };
 
         // ---------- TEMPLATES DAS ABAS ----------
@@ -759,6 +772,11 @@
                 
                 atualizarStatusConexao(true);
                 atualizarTudo();
+                
+                // Se a aba de vendas estiver aberta, atualiza os selects
+                if (document.getElementById('produtoVenda')) {
+                    atualizarSelects();
+                }
                 
             } catch (erro) {
                 console.error('❌ Erro ao carregar:', erro);
