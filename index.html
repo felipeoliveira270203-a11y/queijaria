@@ -528,8 +528,8 @@
             }
         }
 
-        // ---------- LOGIN ----------
-        function fazerLogin() {
+        // ---------- FUNÇÕES DE LOGIN ----------
+        window.fazerLogin = function() {
             const usuario = document.getElementById('loginUsuario').value.trim();
             const senha = document.getElementById('loginSenha').value.trim();
             const erroEl = document.getElementById('erroLogin');
@@ -560,16 +560,16 @@
 
             carregarDadosDaNuvem();
             montarMenuInicial();
-        }
+        };
 
-        function fecharPopupBoasVindas() {
+        window.fecharPopupBoasVindas = function() {
             document.getElementById('popupBoasVindas').style.display = 'none';
-        }
+        };
 
-        function logout() {
+        window.logout = function() {
             localStorage.removeItem('sessaoQueijaria');
             window.location.reload();
-        }
+        };
 
         // ---------- MENU INICIAL ----------
         function montarMenuInicial() {
@@ -610,7 +610,7 @@
         }
 
         // ---------- ABRIR ABA ----------
-        function abrirAba(aba) {
+        window.abrirAba = function(aba) {
             const container = document.getElementById('conteudoAbas');
             container.innerHTML = obterTemplateAba(aba);
 
@@ -622,7 +622,7 @@
             if (aba === 'relatorios') atualizarRelatorio();
             if (aba === 'vendedores') atualizarVendasPorVendedor();
             if (aba === 'produtos') atualizarSelects();
-        }
+        };
 
         // ---------- TEMPLATES DAS ABAS ----------
         function obterTemplateAba(aba) {
@@ -784,20 +784,49 @@
 
         function usarDadosIniciais() {
             console.log('📝 Usando dados iniciais locais');
-            produtos = [{"id":1,"nome":"Cachaça litro","preco":28,"estoque":0},{"id":2,"nome":"Doce de leite pedaço","preco":5,"estoque":0},{"id":3,"nome":"Doce de leite pote","preco":18,"estoque":0},{"id":4,"nome":"Doce de pote fruta","preco":18,"estoque":0},{"id":5,"nome":"Geleia","preco":20,"estoque":0},{"id":6,"nome":"Goiabada","preco":20,"estoque":0},{"id":7,"nome":"Linguiça","preco":25,"estoque":0},{"id":8,"nome":"Manteiga pequena","preco":12,"estoque":0},{"id":9,"nome":"Parmesão capa preta","preco":45,"estoque":0},{"id":10,"nome":"Queijo 4 cores","preco":45,"estoque":0},{"id":11,"nome":"Queijo do reino","preco":45,"estoque":0},{"id":12,"nome":"Queijo minas frescal","preco":28,"estoque":0},{"id":13,"nome":"Queijo minas padrão","preco":40,"estoque":0},{"id":14,"nome":"Queijo mussarela temperado","preco":35,"estoque":0},{"id":15,"nome":"Queijo mussarelinha","preco":32,"estoque":0},{"id":16,"nome":"Queijo nozinho","preco":36,"estoque":0},{"id":17,"nome":"Queijo parmesão","preco":45,"estoque":0},{"id":18,"nome":"Queijo provolone temperado","preco":37,"estoque":0},{"id":19,"nome":"Requeijão","preco":18,"estoque":0},{"id":20,"nome":"Queijo Prato","preco":45,"estoque":0}];
-            compras = []; vendas = []; historicoEstoque = []; contadorId = 21;
+            produtos = [
+                {id:1, nome:"Cachaça litro", preco:28, estoque:0},
+                {id:2, nome:"Doce de leite pedaço", preco:5, estoque:0},
+                {id:3, nome:"Doce de leite pote", preco:18, estoque:0},
+                {id:4, nome:"Doce de pote fruta", preco:18, estoque:0},
+                {id:5, nome:"Geleia", preco:20, estoque:0},
+                {id:6, nome:"Goiabada", preco:20, estoque:0},
+                {id:7, nome:"Linguiça", preco:25, estoque:0},
+                {id:8, nome:"Manteiga pequena", preco:12, estoque:0},
+                {id:9, nome:"Parmesão capa preta", preco:45, estoque:0},
+                {id:10, nome:"Queijo 4 cores", preco:45, estoque:0},
+                {id:11, nome:"Queijo do reino", preco:45, estoque:0},
+                {id:12, nome:"Queijo minas frescal", preco:28, estoque:0},
+                {id:13, nome:"Queijo minas padrão", preco:40, estoque:0},
+                {id:14, nome:"Queijo mussarela temperado", preco:35, estoque:0},
+                {id:15, nome:"Queijo mussarelinha", preco:32, estoque:0},
+                {id:16, nome:"Queijo nozinho", preco:36, estoque:0},
+                {id:17, nome:"Queijo parmesão", preco:45, estoque:0},
+                {id:18, nome:"Queijo provolone temperado", preco:37, estoque:0},
+                {id:19, nome:"Requeijão", preco:18, estoque:0},
+                {id:20, nome:"Queijo Prato", preco:45, estoque:0}
+            ];
+            compras = [];
+            vendas = [];
+            historicoEstoque = [];
+            contadorId = 21;
             atualizarTudo();
         }
 
         // ---------- FUNÇÕES AUXILIARES ----------
         function getSemanaAtual() {
-            const hoje = new Date(), inicio = new Date(hoje.getFullYear(),0,1);
+            const hoje = new Date();
+            const inicio = new Date(hoje.getFullYear(), 0, 1);
             const dias = Math.floor((hoje - inicio) / 86400000);
             return Math.ceil((dias + inicio.getDay() + 1) / 7);
         }
 
         function salvarSnapshotEstoque(semana) {
-            const snap = { semana, data: new Date().toLocaleDateString(), itens: produtos.map(p => ({ id: p.id, nome: p.nome, quantidade: p.estoque })) };
+            const snap = { 
+                semana, 
+                data: new Date().toLocaleDateString(), 
+                itens: produtos.map(p => ({ id: p.id, nome: p.nome, quantidade: p.estoque })) 
+            };
             historicoEstoque = historicoEstoque.filter(h => h.semana !== semana);
             historicoEstoque.push(snap);
             salvarDadosNaNuvem();
@@ -839,7 +868,7 @@
             if (el) el.innerText = 'R$ ' + total.toFixed(2).replace('.',',');
         }
 
-        function registrarCompra() {
+        window.registrarCompra = function() {
             const prodId = parseInt(document.getElementById('compraProduto')?.value);
             const qtd = parseInt(document.getElementById('compraQtd')?.value);
             const unit = parseFloat(document.getElementById('compraValorUnitario')?.value);
@@ -848,16 +877,26 @@
             const prod = produtos.find(p => p.id === prodId);
             const total = qtd * unit;
             prod.estoque += qtd;
-            compras.push({ id: Date.now(), semana: semanaAtual, produtoId: prodId, produto: prod.nome, qtd, valorUnitario: unit, valorTotal: total, fornecedor: forn, data: new Date().toLocaleDateString() });
+            compras.push({ 
+                id: Date.now(), 
+                semana: semanaAtual, 
+                produtoId: prodId, 
+                produto: prod.nome, 
+                qtd, 
+                valorUnitario: unit, 
+                valorTotal: total, 
+                fornecedor: forn, 
+                data: new Date().toLocaleDateString() 
+            });
             salvarSnapshotEstoque(semanaAtual);
             document.getElementById('compraQtd').value = '1';
             document.getElementById('compraValorUnitario').value = '';
             document.getElementById('compraFornecedor').value = '';
             document.getElementById('compraTotalDestaque').innerText = 'R$ 0,00';
             atualizarTudo();
-        }
+        };
 
-        function registrarVenda() {
+        window.registrarVenda = function() {
             const vend = document.getElementById('vendedorVenda')?.value;
             const cliente = document.getElementById('clienteVenda')?.value;
             const prodId = parseInt(document.getElementById('produtoVenda')?.value);
@@ -868,14 +907,26 @@
             if (prod.estoque < qtd) return alert(`Só tem ${prod.estoque} no estoque!`);
             prod.estoque -= qtd;
             const total = prod.preco * qtd;
-            vendas.push({ id: Date.now(), semana: semanaAtual, vendedor: vend, cliente, produtoId: prodId, produto: prod.nome, qtd, valorUnitario: prod.preco, valorTotal: total, status, data: new Date().toLocaleDateString() });
+            vendas.push({ 
+                id: Date.now(), 
+                semana: semanaAtual, 
+                vendedor: vend, 
+                cliente, 
+                produtoId: prodId, 
+                produto: prod.nome, 
+                qtd, 
+                valorUnitario: prod.preco, 
+                valorTotal: total, 
+                status, 
+                data: new Date().toLocaleDateString() 
+            });
             salvarSnapshotEstoque(semanaAtual);
             document.getElementById('clienteVenda').value = '';
             document.getElementById('qtdVenda').value = '1';
             atualizarTudo();
-        }
+        };
 
-        function excluirVenda(id) {
+        window.excluirVenda = function(id) {
             if (!confirm('Apagar venda?')) return;
             const venda = vendas.find(v => v.id === id);
             const prod = produtos.find(p => p.id === venda.produtoId);
@@ -883,9 +934,9 @@
             vendas = vendas.filter(v => v.id !== id);
             salvarSnapshotEstoque(semanaAtual);
             atualizarTudo();
-        }
+        };
 
-        function excluirCompra(id) {
+        window.excluirCompra = function(id) {
             if (!confirm('Apagar compra?')) return;
             const comp = compras.find(c => c.id === id);
             const prod = produtos.find(p => p.id === comp.produtoId);
@@ -894,37 +945,37 @@
             compras = compras.filter(c => c.id !== id);
             salvarSnapshotEstoque(semanaAtual);
             atualizarTudo();
-        }
+        };
 
-        function excluirProduto(id) {
+        window.excluirProduto = function(id) {
             if (!confirm('Apagar produto?')) return;
             produtos = produtos.filter(p => p.id !== id);
             salvarDadosNaNuvem();
             atualizarTudo();
-        }
+        };
 
-        function alterarStatusVenda(id) {
+        window.alterarStatusVenda = function(id) {
             const venda = vendas.find(v => v.id === id);
             venda.status = venda.status === 'pago' ? 'pendente' : 'pago';
             salvarDadosNaNuvem();
-            atualizarVendas(); 
-            atualizarClientes(); 
-            atualizarVendasPorVendedor();
-        }
+            if (document.getElementById('tabelaVendas')) atualizarVendas(); 
+            if (document.getElementById('tabelaClientes')) atualizarClientes(); 
+            if (document.getElementById('tabelaVendasPorVendedor')) atualizarVendasPorVendedor();
+        };
 
-        function filtrarVendas(filtro, el) {
+        window.filtrarVendas = function(filtro, el) {
             document.querySelectorAll('#conteudoAbas .filtro-btn').forEach(b => b.classList.remove('ativo'));
             el.classList.add('ativo');
             filtroVendasAtual = filtro;
             atualizarVendas();
-        }
+        };
 
-        function filtrarCobrancas(filtro, el) {
+        window.filtrarCobrancas = function(filtro, el) {
             document.querySelectorAll('#conteudoAbas .filtro-btn').forEach(b => b.classList.remove('ativo'));
             el.classList.add('ativo');
             filtroCobrancaAtual = filtro;
             atualizarClientes();
-        }
+        };
 
         function atualizarEstoque() {
             const tbody = document.querySelector('#tabelaEstoque tbody');
@@ -944,9 +995,19 @@
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             if (filtroVendasAtual === 'pago') filtradas = filtradas.filter(v => v.status === 'pago');
             else if (filtroVendasAtual === 'pendente') filtradas = filtradas.filter(v => v.status === 'pendente');
-            if (!filtradas.length) { tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; return; }
+            if (!filtradas.length) { 
+                tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
+                return; 
+            }
             filtradas.slice().reverse().forEach(v => {
-                tbody.innerHTML += `<tr><td><span class="vendedor-badge">${v.vendedor}</span></td><td>${v.cliente}</td><td>${v.produto} (${v.qtd}x)</td><td>R$ ${v.valorTotal.toFixed(2)}</td><td><span class="${v.status==='pago'?'status-pago':'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status==='pago'?'✅ Pagou':'⏳ Deve'}</span></td><td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td></tr>`;
+                tbody.innerHTML += `<tr>
+                    <td><span class="vendedor-badge">${v.vendedor}</span></td>
+                    <td>${v.cliente}</td>
+                    <td>${v.produto} (${v.qtd}x)</td>
+                    <td>R$ ${v.valorTotal.toFixed(2)}</td>
+                    <td><span class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? '✅ Pagou' : '⏳ Deve'}</span></td>
+                    <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td>
+                </tr>`;
             });
         }
 
@@ -958,7 +1019,9 @@
             if (filtroCobrancaAtual !== 'todos') pendentes = pendentes.filter(v => v.vendedor === filtroCobrancaAtual);
             const agrupado = {};
             pendentes.forEach(v => {
-                if (!agrupado[v.cliente]) agrupado[v.cliente] = { total:0, vendedor:v.vendedor, itens:[], datas:[] };
+                if (!agrupado[v.cliente]) {
+                    agrupado[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [], datas: [] };
+                }
                 agrupado[v.cliente].total += v.valorTotal;
                 agrupado[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
                 agrupado[v.cliente].datas.push(v.data);
@@ -966,34 +1029,55 @@
             let totalGeral = 0;
             Object.entries(agrupado).forEach(([c, d]) => {
                 totalGeral += d.total;
-                tbody.innerHTML += `<tr><td><strong>${c}</strong></td><td><span class="status-pendente">R$ ${d.total.toFixed(2)}</span></td><td><span class="vendedor-badge">${d.vendedor}</span></td><td>${d.itens.join('<br>')}</td><td>${d.datas.join('<br>')}</td><td><button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}',${d.total},'${d.vendedor}')">📱</button></td></tr>`;
+                tbody.innerHTML += `<tr>
+                    <td><strong>${c}</strong></td>
+                    <td><span class="status-pendente">R$ ${d.total.toFixed(2)}</span></td>
+                    <td><span class="vendedor-badge">${d.vendedor}</span></td>
+                    <td>${d.itens.join('<br>')}</td>
+                    <td>${d.datas.join('<br>')}</td>
+                    <td><button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}')">📱</button></td>
+                </tr>`;
             });
             if (!pendentes.length) tbody.innerHTML = '<tr><td colspan="6">Ninguém deve</td></tr>';
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
-        function enviarWhatsAppCobranca(cliente, debito, vendedor) {
+        window.enviarWhatsAppCobranca = function(cliente, debito, vendedor) {
             const msg = `Olá ${cliente}, tudo bem?\n\nVocê tem débito de R$ ${debito.toFixed(2)} (compra com ${vendedor}).\n\nPIX: 24992267859 (José Cláudio do Vale)\n\nApós pagar, avise.`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+        };
 
         function atualizarGastos() {
-            const totalGeral = compras.reduce((a,c)=>a+c.valorTotal,0);
-            document.getElementById('totalGastoGeral').innerText = 'R$ '+totalGeral.toFixed(2);
-            const gastosSemana = compras.filter(c=>c.semana===semanaAtual);
-            document.getElementById('totalGastoSemana').innerText = 'R$ '+gastosSemana.reduce((a,c)=>a+c.valorTotal,0).toFixed(2);
+            const totalGeral = compras.reduce((a, c) => a + c.valorTotal, 0);
+            const elGeral = document.getElementById('totalGastoGeral');
+            if (elGeral) elGeral.innerText = 'R$ ' + totalGeral.toFixed(2);
+            
+            const gastosSemana = compras.filter(c => c.semana === semanaAtual);
+            const elSemana = document.getElementById('totalGastoSemana');
+            if (elSemana) elSemana.innerText = 'R$ ' + gastosSemana.reduce((a, c) => a + c.valorTotal, 0).toFixed(2);
+            
             const porSemana = {};
-            compras.forEach(c=>{ if(!porSemana[c.semana]) porSemana[c.semana]={total:0,qtd:0}; porSemana[c.semana].total+=c.valorTotal; porSemana[c.semana].qtd++; });
+            compras.forEach(c => {
+                if (!porSemana[c.semana]) porSemana[c.semana] = { total: 0, qtd: 0 };
+                porSemana[c.semana].total += c.valorTotal;
+                porSemana[c.semana].qtd++;
+            });
+            
             const tbodySem = document.getElementById('corpoGastosSemana');
             if (tbodySem) {
                 tbodySem.innerHTML = '';
-                Object.keys(porSemana).sort((a,b)=>b-a).forEach(s => tbodySem.innerHTML += `<tr><td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td></tr>`);
+                Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
+                    tbodySem.innerHTML += `<tr><td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td></tr>`;
+                });
                 if (!compras.length) tbodySem.innerHTML = '<tr><td colspan="3">Nenhum gasto</td></tr>';
             }
+            
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
                 tbodyDet.innerHTML = '';
-                compras.slice().reverse().forEach(c => tbodyDet.innerHTML += `<tr><td>${c.data}</td><td>${c.produto}</td><td>${c.qtd}</td><td>R$ ${c.valorUnitario.toFixed(2)}</td><td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td><td>${c.fornecedor}</td></tr>`);
+                compras.slice().reverse().forEach(c => {
+                    tbodyDet.innerHTML += `<tr><td>${c.data}</td><td>${c.produto}</td><td>${c.qtd}</td><td>R$ ${c.valorUnitario.toFixed(2)}</td><td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td><td>${c.fornecedor}</td></tr>`;
+                });
                 if (!compras.length) tbodyDet.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
             }
         }
@@ -1002,45 +1086,73 @@
             const periodo = document.getElementById('periodoRelatorio')?.value || 'semana';
             const hoje = new Date();
             let vendasFilt = [], comprasFilt = [];
-            if (periodo === 'semana') { vendasFilt = vendas.filter(v=>v.semana===semanaAtual); comprasFilt = compras.filter(c=>c.semana===semanaAtual); }
-            else if (periodo === 'mes') {
-                vendasFilt = vendas.filter(v=> new Date(v.data.split('/').reverse().join('-')).getMonth()===hoje.getMonth());
-                comprasFilt = compras.filter(c=> new Date(c.data.split('/').reverse().join('-')).getMonth()===hoje.getMonth());
+            
+            if (periodo === 'semana') { 
+                vendasFilt = vendas.filter(v => v.semana === semanaAtual); 
+                comprasFilt = compras.filter(c => c.semana === semanaAtual); 
+            } else if (periodo === 'mes') {
+                vendasFilt = vendas.filter(v => new Date(v.data.split('/').reverse().join('-')).getMonth() === hoje.getMonth());
+                comprasFilt = compras.filter(c => new Date(c.data.split('/').reverse().join('-')).getMonth() === hoje.getMonth());
             } else if (periodo === 'ano') {
-                vendasFilt = vendas.filter(v=> new Date(v.data.split('/').reverse().join('-')).getFullYear()===hoje.getFullYear());
-                comprasFilt = compras.filter(c=> new Date(c.data.split('/').reverse().join('-')).getFullYear()===hoje.getFullYear());
-            } else { vendasFilt = vendas; comprasFilt = compras; }
-            const fat = vendasFilt.reduce((a,v)=>a+v.valorTotal,0);
-            const rec = vendasFilt.filter(v=>v.status==='pago').reduce((a,v)=>a+v.valorTotal,0);
-            const gas = comprasFilt.reduce((a,c)=>a+c.valorTotal,0);
-            document.getElementById('relFaturamento').innerText = 'R$ '+fat.toFixed(2);
-            document.getElementById('relGastos').innerText = 'R$ '+gas.toFixed(2);
-            document.getElementById('relLucro').innerText = 'R$ '+(rec-gas).toFixed(2);
-            document.getElementById('relMargem').innerText = (rec>0?((rec-gas)/rec*100).toFixed(1):0)+'%';
+                vendasFilt = vendas.filter(v => new Date(v.data.split('/').reverse().join('-')).getFullYear() === hoje.getFullYear());
+                comprasFilt = compras.filter(c => new Date(c.data.split('/').reverse().join('-')).getFullYear() === hoje.getFullYear());
+            } else { 
+                vendasFilt = vendas; 
+                comprasFilt = compras; 
+            }
+            
+            const fat = vendasFilt.reduce((a, v) => a + v.valorTotal, 0);
+            const rec = vendasFilt.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0);
+            const gas = comprasFilt.reduce((a, c) => a + c.valorTotal, 0);
+            
+            const elFat = document.getElementById('relFaturamento');
+            const elGas = document.getElementById('relGastos');
+            const elLucro = document.getElementById('relLucro');
+            const elMargem = document.getElementById('relMargem');
+            
+            if (elFat) elFat.innerText = 'R$ ' + fat.toFixed(2);
+            if (elGas) elGas.innerText = 'R$ ' + gas.toFixed(2);
+            if (elLucro) elLucro.innerText = 'R$ ' + (rec - gas).toFixed(2);
+            if (elMargem) elMargem.innerText = (rec > 0 ? ((rec - gas) / rec * 100).toFixed(1) : 0) + '%';
         }
 
         function atualizarVendasPorVendedor() {
-            const vends = { Cláudio:0, Antônio:0, Igor:0 };
-            const receb = { Cláudio:0, Antônio:0, Igor:0 };
-            const dev = { Cláudio:0, Antônio:0, Igor:0 };
-            const qtd = { Cláudio:0, Antônio:0, Igor:0 };
-            vendas.forEach(v=>{
+            const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
+            const receb = { Cláudio: 0, Antônio: 0, Igor: 0 };
+            const dev = { Cláudio: 0, Antônio: 0, Igor: 0 };
+            const qtd = { Cláudio: 0, Antônio: 0, Igor: 0 };
+            
+            vendas.forEach(v => {
                 vends[v.vendedor] += v.valorTotal;
                 qtd[v.vendedor] += 1;
-                if(v.status==='pago') receb[v.vendedor] += v.valorTotal;
+                if (v.status === 'pago') receb[v.vendedor] += v.valorTotal;
                 else dev[v.vendedor] += v.valorTotal;
             });
-            document.getElementById('vendasClaudio').innerText = 'R$ '+vends.Cláudio.toFixed(2);
-            document.getElementById('vendasAntonio').innerText = 'R$ '+vends.Antônio.toFixed(2);
-            document.getElementById('vendasIgor').innerText = 'R$ '+vends.Igor.toFixed(2);
+            
+            const elClaudio = document.getElementById('vendasClaudio');
+            const elAntonio = document.getElementById('vendasAntonio');
+            const elIgor = document.getElementById('vendasIgor');
+            
+            if (elClaudio) elClaudio.innerText = 'R$ ' + vends.Cláudio.toFixed(2);
+            if (elAntonio) elAntonio.innerText = 'R$ ' + vends.Antônio.toFixed(2);
+            if (elIgor) elIgor.innerText = 'R$ ' + vends.Igor.toFixed(2);
+            
             const tbody = document.getElementById('corpoVendasPorVendedor');
             if (tbody) {
                 tbody.innerHTML = '';
-                ['Cláudio','Antônio','Igor'].forEach(v => tbody.innerHTML += `<tr><td>${v}</td><td class="valor-verde">R$ ${vends[v].toFixed(2)}</td><td class="valor-verde">R$ ${receb[v].toFixed(2)}</td><td class="valor-vermelho">R$ ${dev[v].toFixed(2)}</td><td>${qtd[v]}</td></tr>`);
+                ['Cláudio', 'Antônio', 'Igor'].forEach(v => {
+                    tbody.innerHTML += `<tr>
+                        <td>${v}</td>
+                        <td class="valor-verde">R$ ${vends[v].toFixed(2)}</td>
+                        <td class="valor-verde">R$ ${receb[v].toFixed(2)}</td>
+                        <td class="valor-vermelho">R$ ${dev[v].toFixed(2)}</td>
+                        <td>${qtd[v]}</td>
+                    </tr>`;
+                });
             }
         }
 
-        function cadastrarProduto() {
+        window.cadastrarProduto = function() {
             const nome = document.getElementById('novoProdutoNome')?.value;
             const preco = parseFloat(document.getElementById('novoProdutoPreco')?.value);
             if (!nome || !preco) return alert('Preencha nome e preço!');
@@ -1049,59 +1161,63 @@
             document.getElementById('novoProdutoNome').value = '';
             document.getElementById('novoProdutoPreco').value = '';
             atualizarTudo();
-        }
+        };
 
         function atualizarTudo() {
-    atualizarSelects();
-    calcularValorVenda();
-    atualizarSelectSemanas();
+            atualizarSelects();
+            calcularValorVenda();
+            atualizarSelectSemanas();
 
-    // Só atualiza se os elementos existirem
-    const vendasSemana = vendas.filter(v => v.semana === semanaAtual);
-    
-    const elVendasSemana = document.getElementById('vendasSemana');
-    if (elVendasSemana) {
-        elVendasSemana.innerText = 'R$ ' + vendasSemana.reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
-    }
+            const vendasSemana = vendas.filter(v => v.semana === semanaAtual);
+            
+            const elVendasSemana = document.getElementById('vendasSemana');
+            if (elVendasSemana) {
+                elVendasSemana.innerText = 'R$ ' + vendasSemana.reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
+            }
 
-    const elRecebidoSemana = document.getElementById('recebidoSemana');
-    if (elRecebidoSemana) {
-        elRecebidoSemana.innerText = 'R$ ' + vendasSemana.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
-    }
+            const elRecebidoSemana = document.getElementById('recebidoSemana');
+            if (elRecebidoSemana) {
+                elRecebidoSemana.innerText = 'R$ ' + vendasSemana.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
+            }
 
-    atualizarEstoque();
+            atualizarEstoque();
 
-    const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
-    if (tbodyPrecos) {
-        tbodyPrecos.innerHTML = '';
-        produtos.forEach(p => tbodyPrecos.innerHTML += `<tr><td>${p.nome}</td><td>R$ ${p.preco.toFixed(2)}</td><td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span></td><td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button></td></tr>`);
-    }
-
-    const tbodyCompras = document.querySelector('#tabelaCompras tbody');
-    if (tbodyCompras) {
-        tbodyCompras.innerHTML = '';
-        if (compras.length) compras.slice(-10).reverse().forEach(c => tbodyCompras.innerHTML += `<tr><td>Semana ${c.semana}</td><td>${c.produto}</td><td>${c.qtd}</td><td>R$ ${c.valorUnitario.toFixed(2)}</td><td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td><td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td></tr>`);
-        else tbodyCompras.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
-    }
-
-    atualizarVendas();
-    atualizarRelatorio();
-    atualizarGastos();
-    atualizarClientes();
-    atualizarVendasPorVendedor();
-}
+            const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
+            if (tbodyPrecos) {
+                tbodyPrecos.innerHTML = '';
+                produtos.forEach(p => {
+                    tbodyPrecos.innerHTML += `<tr>
+                        <td>${p.nome}</td>
+                        <td>R$ ${p.preco.toFixed(2)}</td>
+                        <td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span></td>
+                        <td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button></td>
+                    </tr>`;
+                });
+            }
 
             const tbodyCompras = document.querySelector('#tabelaCompras tbody');
             if (tbodyCompras) {
                 tbodyCompras.innerHTML = '';
-                if (compras.length) compras.slice(-10).reverse().forEach(c => tbodyCompras.innerHTML += `<tr><td>Semana ${c.semana}</td><td>${c.produto}</td><td>${c.qtd}</td><td>R$ ${c.valorUnitario.toFixed(2)}</td><td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td><td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td></tr>`);
-                else tbodyCompras.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
+                if (compras.length) {
+                    compras.slice(-10).reverse().forEach(c => {
+                        tbodyCompras.innerHTML += `<tr>
+                            <td>Semana ${c.semana}</td>
+                            <td>${c.produto}</td>
+                            <td>${c.qtd}</td>
+                            <td>R$ ${c.valorUnitario.toFixed(2)}</td>
+                            <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
+                            <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
+                        </tr>`;
+                    });
+                } else {
+                    tbodyCompras.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
+                }
             }
 
-            atualizarVendas(); 
-            atualizarRelatorio(); 
-            atualizarGastos(); 
-            atualizarClientes(); 
+            atualizarVendas();
+            atualizarRelatorio();
+            atualizarGastos();
+            atualizarClientes();
             atualizarVendasPorVendedor();
         }
 
@@ -1109,51 +1225,126 @@
             const select = document.getElementById('selectSemana');
             if (!select) return;
             select.innerHTML = '';
-            const semanas = [...new Set([...compras.map(c=>c.semana), ...vendas.map(v=>v.semana), ...historicoEstoque.map(h=>h.semana), semanaAtual])].sort((a,b)=>a-b);
+            const semanas = [...new Set([
+                ...compras.map(c => c.semana), 
+                ...vendas.map(v => v.semana), 
+                ...historicoEstoque.map(h => h.semana), 
+                semanaAtual
+            ])].sort((a, b) => a - b);
             if (!semanas.length) semanas.push(semanaAtual);
-            semanas.forEach(s => select.innerHTML += `<option value="${s}" ${s===semanaAtual?'selected':''}>Semana ${s}</option>`);
+            semanas.forEach(s => {
+                select.innerHTML += `<option value="${s}" ${s === semanaAtual ? 'selected' : ''}>Semana ${s}</option>`;
+            });
         }
 
-        function mudarSemana() {
+        window.mudarSemana = function() {
             semanaAtual = parseInt(document.getElementById('selectSemana').value);
             atualizarTudo();
-        }
+        };
 
-        function semanaAnterior() { semanaAtual--; atualizarSelectSemanas(); document.getElementById('selectSemana').value = semanaAtual; mudarSemana(); }
-        function proximaSemana() { semanaAtual++; atualizarSelectSemanas(); document.getElementById('selectSemana').value = semanaAtual; mudarSemana(); }
+        window.semanaAnterior = function() { 
+            semanaAtual--; 
+            atualizarSelectSemanas(); 
+            document.getElementById('selectSemana').value = semanaAtual; 
+            mudarSemana(); 
+        };
 
-        function imprimirCobranca() {
-            let cobrancas = vendas.filter(v=>v.status==='pendente');
-            if (filtroCobrancaAtual!=='todos') cobrancas = cobrancas.filter(v=>v.vendedor===filtroCobrancaAtual);
+        window.proximaSemana = function() { 
+            semanaAtual++; 
+            atualizarSelectSemanas(); 
+            document.getElementById('selectSemana').value = semanaAtual; 
+            mudarSemana(); 
+        };
+
+        window.imprimirCobranca = function() {
+            let cobrancas = vendas.filter(v => v.status === 'pendente');
+            if (filtroCobrancaAtual !== 'todos') cobrancas = cobrancas.filter(v => v.vendedor === filtroCobrancaAtual);
             const clientes = {};
-            cobrancas.forEach(v=>{
-                if (!clientes[v.cliente]) clientes[v.cliente] = { total:0, vendedor:v.vendedor, itens:[] };
+            cobrancas.forEach(v => {
+                if (!clientes[v.cliente]) {
+                    clientes[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [] };
+                }
                 clientes[v.cliente].total += v.valorTotal;
                 clientes[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
             });
-            const win = window.open('','_blank');
-            win.document.write(`<html><head><title>Cobrança</title><style>body{font-family:Courier New;padding:20px;} table{border-collapse:collapse;width:100%;} th{background:#8b4513;color:white;}</style></head><body><h1>🧀 QUEIJARIA DO MINEIRO</h1><h2>Cobrança - ${new Date().toLocaleDateString()}</h2><table><tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th></tr>`);
-            Object.entries(clientes).forEach(([c,d])=> win.document.write(`<tr><td>${c}</td><td>${d.vendedor}</td><td>R$ ${d.total.toFixed(2)}</td><td>${d.itens.join(', ')}</td></tr>`));
-            win.document.write(`</table><p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a,c)=>a+c.total,0).toFixed(2)}</p></body></html>`);
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <html>
+                <head>
+                    <title>Cobrança</title>
+                    <style>
+                        body { font-family: Courier New; padding: 20px; } 
+                        table { border-collapse: collapse; width: 100%; } 
+                        th { background: #8b4513; color: white; }
+                    </style>
+                </head>
+                <body>
+                    <h1>🧀 QUEIJARIA DO MINEIRO</h1>
+                    <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
+                    <table>
+                        <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th></tr>
+            `);
+            Object.entries(clientes).forEach(([c, d]) => {
+                win.document.write(`<tr><td>${c}</td><td>${d.vendedor}</td><td>R$ ${d.total.toFixed(2)}</td><td>${d.itens.join(', ')}</td></tr>`);
+            });
+            win.document.write(`
+                    </table>
+                    <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
+                </body>
+                </html>
+            `);
             win.document.close();
-        }
+        };
 
-        async function exportarParaExcel() {
+        window.exportarParaExcel = async function() {
             mostrarSincronizando(true);
             try {
                 const resp = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
                 const dados = (await resp.json()).record;
                 const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.produtos.map(p=>({Código:p.id,Produto:p.nome,'Preço':p.preco,Estoque:p.estoque}))), 'Produtos');
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.vendas.map(v=>({Data:v.data,Vendedor:v.vendedor,Cliente:v.cliente,Produto:v.produto,Qtd:v.qtd,'Total (R$)':v.valorTotal,Status:v.status==='pago'?'Pago':'Pendente'}))), 'Vendas');
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.compras.map(c=>({Data:c.data,Produto:c.produto,Qtd:c.qtd,'Unitário':c.valorUnitario,'Total':c.valorTotal,Fornecedor:c.fornecedor}))), 'Compras');
-                const vends = { Cláudio:0, Antônio:0, Igor:0 };
-                dados.vendas.forEach(v=> vends[v.vendedor] += v.valorTotal);
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(Object.entries(vends).map(([v,t])=>({Vendedor:v,'Total Vendido (R$)':t}))), 'Vend por Vendedor');
-                XLSX.writeFile(wb, `queijaria_${new Date().toLocaleDateString().replace(/\//g,'-')}.xlsx`);
+                
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
+                    dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque }))
+                ), 'Produtos');
+                
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
+                    dados.vendas.map(v => ({ 
+                        Data: v.data, 
+                        Vendedor: v.vendedor, 
+                        Cliente: v.cliente, 
+                        Produto: v.produto, 
+                        Qtd: v.qtd, 
+                        'Total (R$)': v.valorTotal, 
+                        Status: v.status === 'pago' ? 'Pago' : 'Pendente' 
+                    }))
+                ), 'Vendas');
+                
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
+                    dados.compras.map(c => ({ 
+                        Data: c.data, 
+                        Produto: c.produto, 
+                        Qtd: c.qtd, 
+                        'Unitário': c.valorUnitario, 
+                        'Total': c.valorTotal, 
+                        Fornecedor: c.fornecedor 
+                    }))
+                ), 'Compras');
+                
+                const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
+                dados.vendas.forEach(v => vends[v.vendedor] += v.valorTotal);
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
+                    Object.entries(vends).map(([v, t]) => ({ Vendedor: v, 'Total Vendido (R$)': t }))
+                ), 'Vend por Vendedor');
+                
+                XLSX.writeFile(wb, `queijaria_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
                 alert('✅ Excel gerado!');
-            } catch { alert('❌ Erro'); } finally { mostrarSincronizando(false); }
-        }
+            } catch (erro) { 
+                console.error(erro);
+                alert('❌ Erro ao gerar Excel'); 
+            } finally { 
+                mostrarSincronizando(false); 
+            }
+        };
 
         // ---------- INICIALIZAÇÃO ----------
         window.onload = function() {
