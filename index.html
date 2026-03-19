@@ -284,6 +284,18 @@
             color: #f5e6d3;
         }
 
+        .btn-warning {
+            background-color: #daa520;
+            color: #3f2b1c;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            width: auto;
+            display: inline-block;
+        }
+
         .tabela-container {
             overflow-x: auto;
             margin-top: 10px;
@@ -416,6 +428,12 @@
             box-shadow: 2px 2px 0px #3f2b1c;
         }
 
+        .estoque-editavel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .sincronizando {
             position: fixed;
             bottom: 100px;
@@ -428,6 +446,18 @@
             font-size: 0.9rem;
             display: none;
             z-index: 1001;
+        }
+
+        .valor-pendente-card {
+            background: #b22222;
+            color: #f5e6d3;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #654321;
+            box-shadow: 3px 3px 0px #3f2b1c;
         }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -504,7 +534,8 @@
         let semanaAtual = getSemanaAtual();
         let historicoEstoque = [];
         let filtroCobrancaAtual = 'todos';
-        let filtroVendasAtual = 'todas';
+        let filtroVendedorVendas = 'todos';
+        let modoEdicaoAtivo = false;
         let produtos = [];
         let compras = [];
         let vendas = [];
@@ -609,7 +640,7 @@
             }
         }
 
-        // ---------- ABRIR ABA (CORRIGIDA) ----------
+        // ---------- ABRIR ABA ----------
         window.abrirAba = function(aba) {
             const container = document.getElementById('conteudoAbas');
             container.innerHTML = obterTemplateAba(aba);
@@ -619,9 +650,18 @@
                 if (aba === 'vendas') { 
                     atualizarVendas(); 
                     calcularValorVenda();
-                    atualizarSelects(); // ← GARANTE QUE OS PRODUTOS APARECEM NO SELECT
+                    atualizarSelects();
                 }
-                if (aba === 'estoque') atualizarEstoque();
+                if (aba === 'estoque') {
+                    atualizarEstoque(); // ← sempre mostra o estoque atual, independente da semana
+                    modoEdicaoAtivo = false;
+                    const btnEdicao = document.getElementById('btnModoEdicaoEstoque');
+                    if (btnEdicao) {
+                        btnEdicao.style.display = 'inline-block';
+                        document.getElementById('btnSalvarEstoque').style.display = 'none';
+                        document.getElementById('btnCancelarEdicao').style.display = 'none';
+                    }
+                }
                 if (aba === 'clientes') atualizarClientes();
                 if (aba === 'compras') { 
                     calcularTotalCompra(); 
@@ -631,8 +671,8 @@
                 if (aba === 'relatorios') atualizarRelatorio();
                 if (aba === 'vendedores') atualizarVendasPorVendedor();
                 if (aba === 'produtos') {
-                    atualizarSelects();      // ← PREENCHE A TABELA DE PRODUTOS
-                    atualizarTudo();         // ← ATUALIZA TUDO (ESTOQUE, ETC.)
+                    atualizarSelects();
+                    atualizarTudo();
                 }
             }, 50);
         };
@@ -642,7 +682,7 @@
             switch (aba) {
                 case 'vendas': return `
                     <div class="card">
-                        <div class="card-title">➕ ANOTAR VENDA - SEMANA <span id="vendaSemanaAtual">${semanaAtual}</span></div>
+                        <div class="card-title">➕ ANOTAR VENDA - SEMANA ${semanaAtual}</div>
                         <div class="form-group"><label>Vendedor</label><select id="vendedorVenda"><option>Cláudio</option><option>Antônio</option><option>Igor</option></select></div>
                         <div class="form-group"><label>Freguês</label><input type="text" id="clienteVenda" placeholder="Nome" list="clientesList"><datalist id="clientesList"></datalist></div>
                         <div class="form-group"><label>Produto</label><select id="produtoVenda" onchange="calcularValorVenda()"></select></div>
@@ -653,15 +693,46 @@
                         <button class="btn btn-success" onclick="registrarVenda()">ANOTAR VENDA</button>
                     </div>
                     <div class="card">
-                        <div class="card-title">📋 VENDAS DA SEMANA <span id="vendaSemanaLista">${semanaAtual}</span></div>
-                        <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarVendas('todas',this)">Todas</button><button class="filtro-btn" onclick="filtrarVendas('pago',this)">Pagas</button><button class="filtro-btn" onclick="filtrarVendas('pendente',this)">Devendo</button></div>
+                        <div class="card-title">📊 PENDENTE POR VENDEDOR</div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card" style="background: #b22222;"><div class="label">Cláudio</div><div class="valor" id="pendenteClaudio">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #b22222;"><div class="label">Antônio</div><div class="valor" id="pendenteAntonio">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #b22222;"><div class="label">Igor</div><div class="valor" id="pendenteIgor">R$ 0</div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📋 VENDAS DA SEMANA ${semanaAtual}</div>
+                        <div class="filtros">
+                            <button class="filtro-btn ativo" onclick="filtrarVendasVendedor('todos',this)">Todos</button>
+                            <button class="filtro-btn" onclick="filtrarVendasVendedor('Cláudio',this)">Cláudio</button>
+                            <button class="filtro-btn" onclick="filtrarVendasVendedor('Antônio',this)">Antônio</button>
+                            <button class="filtro-btn" onclick="filtrarVendasVendedor('Igor',this)">Igor</button>
+                        </div>
                         <div class="tabela-container"><table id="tabelaVendas"><thead><tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'estoque': return `
                     <div class="card">
-                        <div class="card-title">📦 ESTOQUE - SEMANA <span id="semanaEstoqueAtual">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaEstoque"><thead><tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+                        <div class="card-title">
+                            <span>📦 ESTOQUE ATUAL</span>
+                            <div>
+                                <button class="btn-small btn-warning" onclick="entrarModoEdicaoEstoque()" id="btnModoEdicaoEstoque">✏️ Arrumar</button>
+                                <button class="btn-small btn-success" onclick="salvarAjustesEstoque()" id="btnSalvarEstoque" style="display: none;">💾 Guardar</button>
+                                <button class="btn-small btn-danger" onclick="cancelarEdicaoEstoque()" id="btnCancelarEdicao" style="display: none;">❌ Desistir</button>
+                            </div>
+                        </div>
+                        <div class="tabela-container">
+                            <table id="tabelaEstoque">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 `;
                 case 'clientes': return `
@@ -773,7 +844,6 @@
                 atualizarStatusConexao(true);
                 atualizarTudo();
                 
-                // Se a aba de vendas estiver aberta, atualiza os selects
                 if (document.getElementById('produtoVenda')) {
                     atualizarSelects();
                 }
@@ -979,12 +1049,13 @@
             if (document.getElementById('tabelaVendas')) atualizarVendas(); 
             if (document.getElementById('tabelaClientes')) atualizarClientes(); 
             if (document.getElementById('tabelaVendasPorVendedor')) atualizarVendasPorVendedor();
+            atualizarPendenteVendedores();
         };
 
-        window.filtrarVendas = function(filtro, el) {
+        window.filtrarVendasVendedor = function(filtro, el) {
             document.querySelectorAll('#conteudoAbas .filtro-btn').forEach(b => b.classList.remove('ativo'));
             el.classList.add('ativo');
-            filtroVendasAtual = filtro;
+            filtroVendedorVendas = filtro;
             atualizarVendas();
         };
 
@@ -996,6 +1067,7 @@
         };
 
         function atualizarEstoque() {
+            if (modoEdicaoAtivo) return;
             const tbody = document.querySelector('#tabelaEstoque tbody');
             if (!tbody) return;
             tbody.innerHTML = '';
@@ -1006,15 +1078,33 @@
             });
         }
 
+        function atualizarPendenteVendedores() {
+            const pendenteClaudio = vendas.filter(v => v.status === 'pendente' && v.vendedor === 'Cláudio').reduce((a, v) => a + v.valorTotal, 0);
+            const pendenteAntonio = vendas.filter(v => v.status === 'pendente' && v.vendedor === 'Antônio').reduce((a, v) => a + v.valorTotal, 0);
+            const pendenteIgor = vendas.filter(v => v.status === 'pendente' && v.vendedor === 'Igor').reduce((a, v) => a + v.valorTotal, 0);
+            
+            const elClaudio = document.getElementById('pendenteClaudio');
+            const elAntonio = document.getElementById('pendenteAntonio');
+            const elIgor = document.getElementById('pendenteIgor');
+            
+            if (elClaudio) elClaudio.innerText = 'R$ ' + pendenteClaudio.toFixed(2);
+            if (elAntonio) elAntonio.innerText = 'R$ ' + pendenteAntonio.toFixed(2);
+            if (elIgor) elIgor.innerText = 'R$ ' + pendenteIgor.toFixed(2);
+        }
+
         function atualizarVendas() {
             const tbody = document.querySelector('#tabelaVendas tbody');
             if (!tbody) return;
             tbody.innerHTML = '';
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
-            if (filtroVendasAtual === 'pago') filtradas = filtradas.filter(v => v.status === 'pago');
-            else if (filtroVendasAtual === 'pendente') filtradas = filtradas.filter(v => v.status === 'pendente');
+            
+            if (filtroVendedorVendas !== 'todos') {
+                filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
+            }
+            
             if (!filtradas.length) { 
                 tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
+                atualizarPendenteVendedores();
                 return; 
             }
             filtradas.slice().reverse().forEach(v => {
@@ -1027,6 +1117,7 @@
                     <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td>
                 </tr>`;
             });
+            atualizarPendenteVendedores();
         }
 
         function atualizarClientes() {
@@ -1181,6 +1272,59 @@
             atualizarTudo();
         };
 
+        // ---------- EDIÇÃO DE ESTOQUE ----------
+        window.entrarModoEdicaoEstoque = function() {
+            modoEdicaoAtivo = true;
+            
+            document.getElementById('btnModoEdicaoEstoque').style.display = 'none';
+            document.getElementById('btnSalvarEstoque').style.display = 'inline-block';
+            document.getElementById('btnCancelarEdicao').style.display = 'inline-block';
+            
+            const tbody = document.querySelector('#tabelaEstoque tbody');
+            const linhas = tbody.querySelectorAll('tr');
+            
+            linhas.forEach((linha, index) => {
+                const produto = produtos[index];
+                if (produto) {
+                    const qtdCell = linha.cells[1];
+                    qtdCell.innerHTML = `<div class="estoque-editavel">
+                        <input type="number" id="edit_${produto.id}" value="${produto.estoque}" min="0" style="width: 80px; padding: 5px; border: 2px solid #8b4513; border-radius: 5px; text-align: center;">
+                    </div>`;
+                }
+            });
+        };
+
+        window.cancelarEdicaoEstoque = function() {
+            modoEdicaoAtivo = false;
+            document.getElementById('btnModoEdicaoEstoque').style.display = 'inline-block';
+            document.getElementById('btnSalvarEstoque').style.display = 'none';
+            document.getElementById('btnCancelarEdicao').style.display = 'none';
+            atualizarEstoque();
+        };
+
+        window.salvarAjustesEstoque = function() {
+            produtos.forEach(p => {
+                const input = document.getElementById(`edit_${p.id}`);
+                if (input) {
+                    const novoEstoque = parseInt(input.value);
+                    if (!isNaN(novoEstoque) && novoEstoque >= 0) {
+                        p.estoque = novoEstoque;
+                    }
+                }
+            });
+            
+            salvarSnapshotEstoque(semanaAtual);
+            
+            modoEdicaoAtivo = false;
+            document.getElementById('btnModoEdicaoEstoque').style.display = 'inline-block';
+            document.getElementById('btnSalvarEstoque').style.display = 'none';
+            document.getElementById('btnCancelarEdicao').style.display = 'none';
+            
+            atualizarEstoque();
+            salvarDadosNaNuvem();
+            alert('✅ Estoque ajustado!');
+        };
+
         function atualizarTudo() {
             atualizarSelects();
             calcularValorVenda();
@@ -1198,7 +1342,10 @@
                 elRecebidoSemana.innerText = 'R$ ' + vendasSemana.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
             }
 
-            atualizarEstoque();
+            // Estoque é atualizado separadamente (chamado apenas quando necessário)
+            if (document.getElementById('tabelaEstoque') && !modoEdicaoAtivo) {
+                atualizarEstoque();
+            }
 
             const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
             if (tbodyPrecos) {
