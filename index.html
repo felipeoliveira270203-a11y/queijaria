@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Queijaria do Mineiro</title>
     <style>
-        /* ========== ESTILOS GLOBAIS (MANTIDO O DESIGN ANTERIOR) ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Courier New', Courier, monospace;
         }
-        
+
         body {
             background-color: #d2b48c;
             background-image: linear-gradient(45deg, #8b4513 1px, transparent 1px);
@@ -20,12 +19,12 @@
             padding: 10px;
             padding-bottom: 80px;
         }
-        
+
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
-        
+
         .header {
             background: #8b4513;
             background-image: repeating-linear-gradient(90deg, #a0522d 0px, #a0522d 2px, #8b4513 2px, #8b4513 4px);
@@ -40,13 +39,13 @@
             box-shadow: 5px 5px 0px #3f2b1c;
             text-shadow: 2px 2px 0px #3f2b1c;
         }
-        
+
         .header h1 {
             font-size: 1.8rem;
             font-weight: bold;
             letter-spacing: 2px;
         }
-        
+
         .badge-nuvem {
             background-color: #2e8b57;
             color: #f5e6d3;
@@ -55,8 +54,7 @@
             font-size: 0.8rem;
             border: 2px solid #654321;
         }
-        
-        /* --- LOGIN --- */
+
         .login-box {
             background: #f5e6d3;
             border: 4px solid #654321;
@@ -66,7 +64,7 @@
             max-width: 400px;
             margin: 50px auto;
         }
-        
+
         .login-box h2 {
             text-align: center;
             margin-bottom: 20px;
@@ -74,7 +72,7 @@
             border-bottom: 3px dashed #8b4513;
             padding-bottom: 10px;
         }
-        
+
         .login-box input {
             width: 100%;
             padding: 12px;
@@ -84,7 +82,7 @@
             background: #fff8dc;
             font-size: 1rem;
         }
-        
+
         .login-box button {
             width: 100%;
             padding: 15px;
@@ -98,7 +96,7 @@
             box-shadow: 4px 4px 0px #3f2b1c;
             margin-top: 10px;
         }
-        
+
         .erro-login {
             color: #b22222;
             font-weight: bold;
@@ -106,8 +104,7 @@
             margin-top: 10px;
             display: none;
         }
-        
-        /* --- POP-UP DE BOAS-VINDAS --- */
+
         .popup-bemvindo {
             position: fixed;
             top: 50%;
@@ -123,14 +120,14 @@
             min-width: 280px;
             display: none;
         }
-        
+
         .popup-bemvindo p {
             font-size: 1.5rem;
             font-weight: bold;
             color: #3f2b1c;
             margin-bottom: 20px;
         }
-        
+
         .popup-bemvindo button {
             background: #2e8b57;
             color: #f5e6d3;
@@ -142,15 +139,14 @@
             cursor: pointer;
             box-shadow: 4px 4px 0px #3f2b1c;
         }
-        
-        /* --- TELA DE MENU INICIAL (BOTÕES GRANDES) --- */
+
         .menu-inicial {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
-        
+
         .menu-card {
             background: #cd853f;
             border: 3px solid #654321;
@@ -164,12 +160,12 @@
             color: #3f2b1c;
             transition: 0.1s;
         }
-        
+
         .menu-card:active {
             transform: translate(3px, 3px);
             box-shadow: 2px 2px 0px #3f2b1c;
         }
-        
+
         .btn-sair {
             background: #b22222;
             color: #f5e6d3;
@@ -181,7 +177,7 @@
             margin-left: 10px;
             box-shadow: 2px 2px 0px #3f2b1c;
         }
-        
+
         .semana-selector {
             display: flex;
             align-items: center;
@@ -193,7 +189,7 @@
             margin-bottom: 15px;
             width: fit-content;
         }
-        
+
         .semana-selector select {
             background: #f5e6d3;
             border: none;
@@ -202,7 +198,7 @@
             font-size: 1rem;
             padding: 3px;
         }
-        
+
         .semana-selector button {
             background: none;
             border: none;
@@ -212,7 +208,7 @@
             padding: 0 3px;
             font-weight: bold;
         }
-        
+
         .card {
             background: #f5e6d3;
             border: 4px solid #654321;
@@ -221,7 +217,7 @@
             margin-bottom: 15px;
             box-shadow: 6px 6px 0px #3f2b1c;
         }
-        
+
         .card-title {
             font-size: 1.3rem;
             font-weight: bold;
@@ -235,11 +231,11 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .form-group {
             margin-bottom: 12px;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 4px;
@@ -248,7 +244,7 @@
             font-weight: bold;
             text-transform: uppercase;
         }
-        
+
         .form-group input,
         .form-group select {
             width: 100%;
@@ -260,7 +256,7 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
         }
-        
+
         .btn {
             width: 100%;
             padding: 15px;
@@ -277,29 +273,29 @@
             letter-spacing: 1px;
             box-shadow: 4px 4px 0px #3f2b1c;
         }
-        
+
         .btn-success {
             background-color: #2e8b57;
             color: #f5e6d3;
         }
-        
+
         .btn-excel {
             background-color: #1f7b4d;
             color: #f5e6d3;
         }
-        
+
         .tabela-container {
             overflow-x: auto;
             margin-top: 10px;
             border: 2px solid #8b4513;
             background: #fff8dc;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         th {
             text-align: left;
             padding: 10px 8px;
@@ -309,14 +305,14 @@
             font-size: 0.9rem;
             border-bottom: 3px solid #654321;
         }
-        
+
         td {
             padding: 10px 8px;
             border-bottom: 1px solid #cd853f;
             color: #3f2b1c;
             font-weight: bold;
         }
-        
+
         .status-pago {
             background-color: #2e8b57;
             color: #f5e6d3;
@@ -328,7 +324,7 @@
             display: inline-block;
             border: 2px solid #3f2b1c;
         }
-        
+
         .status-pendente {
             background-color: #b22222;
             color: #f5e6d3;
@@ -340,18 +336,18 @@
             display: inline-block;
             border: 2px solid #3f2b1c;
         }
-        
+
         .hidden {
-            display: none;
+            display: none !important;
         }
-        
+
         .resumo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .resumo-card {
             background: #cd853f;
             color: #3f2b1c;
@@ -360,13 +356,13 @@
             border: 3px solid #654321;
             box-shadow: 4px 4px 0px #3f2b1c;
         }
-        
+
         .resumo-card .label {
             font-size: 0.9rem;
             font-weight: bold;
             text-transform: uppercase;
         }
-        
+
         .resumo-card .valor {
             font-size: 1.5rem;
             font-weight: bold;
@@ -374,14 +370,14 @@
             text-shadow: 2px 2px 0px #3f2b1c;
             color: #f5e6d3;
         }
-        
+
         .filtros {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
             flex-wrap: wrap;
         }
-        
+
         .filtro-btn {
             padding: 6px 12px;
             border-radius: 20px;
@@ -391,13 +387,13 @@
             font-weight: bold;
             box-shadow: 2px 2px 0px #3f2b1c;
         }
-        
+
         .filtro-btn.ativo {
             background: #cd853f;
             color: #3f2b1c;
             border: 2px solid #f5e6d3;
         }
-        
+
         .vendedor-badge {
             background-color: #daa520;
             color: #3f2b1c;
@@ -408,7 +404,7 @@
             border: 1px solid #3f2b1c;
             margin-left: 5px;
         }
-        
+
         .acao-btn {
             background: #f5e6d3;
             border: 2px solid #654321;
@@ -419,7 +415,7 @@
             margin: 2px;
             box-shadow: 2px 2px 0px #3f2b1c;
         }
-        
+
         .sincronizando {
             position: fixed;
             bottom: 100px;
@@ -456,7 +452,7 @@
         </div>
 
         <!-- SISTEMA (APÓS LOGIN) -->
-        <div id="appScreen" style="display: none;">
+        <div id="appScreen" class="hidden">
             <div class="header">
                 <h1>🧀 QUEIJARIA DO MINEIRO</h1>
                 <div class="badge-nuvem" id="statusConexao">☁️ CONECTANDO...</div>
@@ -471,10 +467,10 @@
                 <button class="btn-sair" onclick="logout()">SAIR</button>
             </div>
 
-            <!-- MENU INICIAL (BOTÕES GRANDES) -->
+            <!-- MENU INICIAL -->
             <div id="menuInicial" class="menu-inicial"></div>
 
-            <!-- CONTEÚDO DAS ABAS (SERÁ PREENCHIDO AO CLICAR NO MENU) -->
+            <!-- CONTEÚDO DAS ABAS -->
             <div id="conteudoAbas" class="abas-container"></div>
         </div>
     </div>
@@ -489,11 +485,12 @@
             { usuario: 'IgorNogueira', senha: 'Minas#Cura47', nivel: 'VENDEDOR' }
         ];
 
-        // ---------- CONFIG JSONBIN ----------
+        // ---------- CONFIG JSONBIN (CORRIGIDA) ----------
         const JSONBIN_CONFIG = {
             BIN_ID: "69b50d08c3097a1dd523c95e",
             MASTER_KEY: "$2a$10$Zri5qBf3Hgz0cMNFcba8mOlJY0SwHHFtWh10Pj2NvuFQP/ZRdO1Q2"
         };
+
         const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.BIN_ID}`;
         const JSONBIN_HEADERS = {
             'Content-Type': 'application/json',
@@ -517,24 +514,34 @@
         function verificarSessao() {
             const sessao = localStorage.getItem('sessaoQueijaria');
             if (!sessao) return false;
-            const { usuario, nivel, timestamp } = JSON.parse(sessao);
-            if (Date.now() - timestamp > 24 * 60 * 60 * 1000) {
-                localStorage.removeItem('sessaoQueijaria');
+            try {
+                const { usuario, nivel, timestamp } = JSON.parse(sessao);
+                if (Date.now() - timestamp > 24 * 60 * 60 * 1000) {
+                    localStorage.removeItem('sessaoQueijaria');
+                    return false;
+                }
+                nivelAcesso = nivel;
+                primeiroNome = usuario.replace(/[A-ZÀ-Ÿ].*$/, '');
+                return true;
+            } catch {
                 return false;
             }
-            nivelAcesso = nivel;
-            primeiroNome = usuario.replace(/[A-ZÀ-Ÿ].*$/, '');
-            return true;
         }
 
+        // ---------- LOGIN ----------
         function fazerLogin() {
             const usuario = document.getElementById('loginUsuario').value.trim();
             const senha = document.getElementById('loginSenha').value.trim();
+            const erroEl = document.getElementById('erroLogin');
+            
             const encontrado = USUARIOS.find(u => u.usuario === usuario && u.senha === senha);
+            
             if (!encontrado) {
-                document.getElementById('erroLogin').style.display = 'block';
+                erroEl.style.display = 'block';
                 return;
             }
+
+            erroEl.style.display = 'none';
             nivelAcesso = encontrado.nivel;
             primeiroNome = usuario.replace(/[A-ZÀ-Ÿ].*$/, '');
 
@@ -544,10 +551,10 @@
                 timestamp: Date.now()
             }));
 
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appScreen').style.display = 'block';
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appScreen').classList.remove('hidden');
 
-            // POP-UP DE BOAS-VINDAS
+            // POP-UP
             document.getElementById('popupMensagem').innerText = `👋 Bem‑vindo, ${primeiroNome}!`;
             document.getElementById('popupBoasVindas').style.display = 'block';
 
@@ -564,7 +571,7 @@
             window.location.reload();
         }
 
-        // ---------- MONTAR MENU INICIAL ----------
+        // ---------- MENU INICIAL ----------
         function montarMenuInicial() {
             const menu = document.getElementById('menuInicial');
             menu.innerHTML = '';
@@ -602,7 +609,7 @@
             }
         }
 
-        // ---------- ABRIR ABA E CARREGAR TEMPLATE ----------
+        // ---------- ABRIR ABA ----------
         function abrirAba(aba) {
             const container = document.getElementById('conteudoAbas');
             container.innerHTML = obterTemplateAba(aba);
@@ -617,6 +624,7 @@
             if (aba === 'produtos') atualizarSelects();
         }
 
+        // ---------- TEMPLATES (resumido para economia de espaço, mas funcional) ----------
         function obterTemplateAba(aba) {
             switch (aba) {
                 case 'vendas': return `
@@ -707,17 +715,21 @@
             }
         }
 
-        // ---------- FUNÇÕES AUXILIARES (IGUAIS ÀS ANTERIORES, APENAS MANTIDAS) ----------
+        // ---------- FUNÇÕES DE SINCRONIZAÇÃO ----------
         function mostrarSincronizando(mostrar) {
             const el = document.getElementById('sincronizando');
             el.style.display = mostrar ? 'block' : 'none';
-            if (!mostrar) setTimeout(() => el.style.display = 'none', 1000);
         }
 
         function atualizarStatusConexao(ok) {
             const el = document.getElementById('statusConexao');
-            if (ok) { el.innerHTML = '☁️ NUVEM'; el.style.backgroundColor = '#2e8b57'; }
-            else { el.innerHTML = '⚠️ LOCAL'; el.style.backgroundColor = '#b22222'; }
+            if (ok) { 
+                el.innerHTML = '☁️ NUVEM'; 
+                el.style.backgroundColor = '#2e8b57'; 
+            } else { 
+                el.innerHTML = '⚠️ LOCAL'; 
+                el.style.backgroundColor = '#b22222'; 
+            }
         }
 
         async function carregarDadosDaNuvem() {
@@ -725,7 +737,7 @@
             atualizarStatusConexao(false);
             try {
                 const r = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
-                if (!r.ok) throw new Error();
+                if (!r.ok) throw new Error('Erro na resposta');
                 const dados = (await r.json()).record;
                 produtos = dados.produtos || [];
                 compras = dados.compras || [];
@@ -734,7 +746,12 @@
                 contadorId = dados.contadorId || 21;
                 atualizarStatusConexao(true);
                 atualizarTudo();
-            } catch { usarDadosIniciais(); } finally { mostrarSincronizando(false); }
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
+                usarDadosIniciais();
+            } finally {
+                mostrarSincronizando(false);
+            }
         }
 
         async function salvarDadosNaNuvem() {
@@ -743,7 +760,12 @@
             try {
                 await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
                 atualizarStatusConexao(true);
-            } catch { atualizarStatusConexao(false); } finally { mostrarSincronizando(false); }
+            } catch (e) {
+                console.error('Erro ao salvar:', e);
+                atualizarStatusConexao(false);
+            } finally {
+                mostrarSincronizando(false);
+            }
         }
 
         function usarDadosIniciais() {
@@ -752,14 +774,15 @@
             atualizarTudo();
         }
 
+        // ---------- FUNÇÕES AUXILIARES ----------
         function getSemanaAtual() {
             const hoje = new Date(), inicio = new Date(hoje.getFullYear(),0,1);
-            const dias = Math.floor((hoje - inicio)/86400000);
-            return Math.ceil((dias + inicio.getDay()+1)/7);
+            const dias = Math.floor((hoje - inicio) / 86400000);
+            return Math.ceil((dias + inicio.getDay() + 1) / 7);
         }
 
         function salvarSnapshotEstoque(semana) {
-            const snap = { semana, data: new Date().toLocaleDateString(), itens: produtos.map(p => ({ id:p.id, nome:p.nome, quantidade:p.estoque })) };
+            const snap = { semana, data: new Date().toLocaleDateString(), itens: produtos.map(p => ({ id: p.id, nome: p.nome, quantidade: p.estoque })) };
             historicoEstoque = historicoEstoque.filter(h => h.semana !== semana);
             historicoEstoque.push(snap);
             salvarDadosNaNuvem();
@@ -869,18 +892,21 @@
             const venda = vendas.find(v => v.id === id);
             venda.status = venda.status === 'pago' ? 'pendente' : 'pago';
             salvarDadosNaNuvem();
-            atualizarVendas(); atualizarClientes(); atualizarVendasPorVendedor();
+            if (!document.getElementById('tabelaVendas')) return;
+            atualizarVendas(); 
+            atualizarClientes(); 
+            atualizarVendasPorVendedor();
         }
 
         function filtrarVendas(filtro, el) {
-            document.querySelectorAll('#abaVendas .filtro-btn').forEach(b => b.classList.remove('ativo'));
+            document.querySelectorAll('#conteudoAbas .filtro-btn').forEach(b => b.classList.remove('ativo'));
             el.classList.add('ativo');
             filtroVendasAtual = filtro;
             atualizarVendas();
         }
 
         function filtrarCobrancas(filtro, el) {
-            document.querySelectorAll('#abaClientes .filtro-btn').forEach(b => b.classList.remove('ativo'));
+            document.querySelectorAll('#conteudoAbas .filtro-btn').forEach(b => b.classList.remove('ativo'));
             el.classList.add('ativo');
             filtroCobrancaAtual = filtro;
             atualizarClientes();
@@ -1035,7 +1061,11 @@
                 else tbodyCompras.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
             }
 
-            atualizarVendas(); atualizarRelatorio(); atualizarGastos(); atualizarClientes(); atualizarVendasPorVendedor();
+            atualizarVendas(); 
+            atualizarRelatorio(); 
+            atualizarGastos(); 
+            atualizarClientes(); 
+            atualizarVendasPorVendedor();
         }
 
         function atualizarSelectSemanas() {
@@ -1088,10 +1118,11 @@
             } catch { alert('❌ Erro'); } finally { mostrarSincronizando(false); }
         }
 
+        // ---------- INICIALIZAÇÃO ----------
         window.onload = function() {
             if (verificarSessao()) {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('appScreen').style.display = 'block';
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appScreen').classList.remove('hidden');
                 document.getElementById('popupMensagem').innerText = `👋 Bem‑vindo, ${primeiroNome}!`;
                 document.getElementById('popupBoasVindas').style.display = 'block';
                 carregarDadosDaNuvem();
