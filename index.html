@@ -325,7 +325,7 @@
             font-weight: bold;
         }
 
-        .status-pago {
+        .status-pago, .status-compra-pago {
             background-color: #2e8b57;
             color: #f5e6d3;
             padding: 4px 8px;
@@ -337,31 +337,7 @@
             border: 2px solid #3f2b1c;
         }
 
-        .status-pendente {
-            background-color: #b22222;
-            color: #f5e6d3;
-            padding: 4px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-block;
-            border: 2px solid #3f2b1c;
-        }
-
-        .status-compra-pago {
-            background-color: #2e8b57;
-            color: #f5e6d3;
-            padding: 4px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-block;
-            border: 2px solid #3f2b1c;
-        }
-
-        .status-compra-pendente {
+        .status-pendente, .status-compra-pendente {
             background-color: #b22222;
             color: #f5e6d3;
             padding: 4px 8px;
@@ -741,7 +717,6 @@
             const container = document.getElementById('conteudoAbas');
             container.innerHTML = obterTemplateAba(aba);
 
-            // Pequeno atraso para garantir que o DOM foi inserido
             setTimeout(() => {
                 if (aba === 'vendas') { 
                     atualizarVendas(); 
@@ -808,7 +783,7 @@
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Antônio',this)">Antônio</button>
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Igor',this)">Igor</button>
                         </div>
-                        <div class="tabela-container"><table id="tabelaVendas"><thead><tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
+                        <div class="tabela-container"><table id="tabelaVendas"><thead>——<th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th>--</thead><tbody></tbody>  </div>
                     </div>
                 `;
                 case 'estoque': return `
@@ -824,11 +799,7 @@
                         <div class="tabela-container">
                             <table id="tabelaEstoque">
                                 <thead>
-                                    <tr>
-                                        <th>Produto</th>
-                                        <th>Quantidade</th>
-                                        <th>Status</th>
-                                    </tr>
+                                    <tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -839,8 +810,7 @@
                     <div class="card">
                         <div class="card-title">👥 LISTA DE COBRANÇA <button class="btn-excel" style="padding:5px 10px;width:auto;" onclick="imprimirCobranca()">🖨️ IMPRIMIR</button></div>
                         <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
-                        <div class="tabela-container"><table id="tabelaClientes"><thead><td><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th> </thead><tbody></tbody> </table>
-                        </div>
+                        <div class="tabela-container"><table id="tabelaClientes"><thead><tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
                         <div style="margin-top:15px;background:#daa520;padding:10px;border:2px solid #654321;border-radius:8px;text-align:center;"><span>💰 TOTAL A RECEBER: </span><span id="totalCobranca" style="font-size:1.3rem;font-weight:bold;">R$ 0,00</span></div>
                     </div>
                 `;
@@ -856,9 +826,7 @@
                     </div>
                     <div class="card">
                         <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaCompras"><thead>——《
-                            <th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th>--</thead><tbody></tbody> </table>
-                        </div>
+                        <div class="tabela-container"><table id="tabelaCompras"><thead><tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'gastos': return `
@@ -869,11 +837,9 @@
                             <div class="resumo-card"><div class="label">Essa semana</div><div class="valor" id="totalGastoSemana">R$ 0</div></div>
                         </div>
                         <div class="card-title">📅 GASTOS POR SEMANA</div>
-                        <div class="tabela-container"><table id="tabelaGastosSemana"><thead>——《<th>Semana</th><th>Total</th><th>Qtd</th>--</thead><tbody id="corpoGastosSemana"></tbody> </table>
-                        </div>
+                        <div class="tabela-container"><table id="tabelaGastosSemana"><thead><tr><th>Semana</th><th>Total</th><th>Qtd</th> </thead><tbody id="corpoGastosSemana"></tbody> </div>
                         <div class="card-title">📋 DETALHE DOS GASTOS - SEMANA <span id="gastosSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaTodosGastos"><thead>——《<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th>--</thead><tbody id="corpoTodosGastos"></tbody> </table>
-                        </div>
+                        <div class="tabela-container"><table id="tabelaTodosGastos"><thead>——<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th>--</thead><tbody id="corpoTodosGastos"></tbody> </div>
                     </div>
                 `;
                 case 'relatorios': return `
@@ -900,8 +866,7 @@
                             <div class="resumo-card"><div class="label">Antônio</div><div class="valor" id="vendasAntonio">R$ 0</div></div>
                             <div class="resumo-card"><div class="label">Igor</div><div class="valor" id="vendasIgor">R$ 0</div></div>
                         </div>
-                        <div class="tabela-container"><table id="tabelaVendasPorVendedor"><thead>——《<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th>--</thead><tbody id="corpoVendasPorVendedor"></tbody> </table>
-                        </div>
+                        <div class="tabela-container"><table id="tabelaVendasPorVendedor"><thead>——<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th>--</thead><tbody id="corpoVendasPorVendedor"></tbody> </div>
                     </div>
                 `;
                 case 'historico': return `
@@ -915,15 +880,9 @@
                         <div class="tabela-container">
                             <table id="tabelaHistorico">
                                 <thead>
-                                    ——《
-                                        <th>Produto</th>
-                                        <th>Compras (Qtd)</th>
-                                        <th>Vendas (Qtd)</th>
-                                        <th>Saldo</th>
-                                    </thead>
+                                    <tr><th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead>
                                 <tbody id="corpoHistorico"></tbody>
-                             </table>
-                        </div>
+                             </div>
                     </div>
                 `;
                 case 'produtos': return `
@@ -935,8 +894,7 @@
                     </div>
                     <div class="card">
                         <div class="card-title">📋 TABELA DE PREÇO</div>
-                        <div class="tabela-container"><table id="tabelaPrecos"><thead>——《<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th>--</thead><tbody></tbody> </table>
-                        </div>
+                        <div class="tabela-container"><table id="tabelaPrecos"><thead>——<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th>--</thead><tbody></tbody> </div>
                     </div>
                 `;
                 default: return '';
@@ -947,6 +905,7 @@
         function mostrarSincronizando(mostrar) {
             const el = document.getElementById('sincronizando');
             el.style.display = mostrar ? 'block' : 'none';
+            if (!mostrar) setTimeout(() => el.style.display = 'none', 1000);
         }
 
         function atualizarStatusConexao(ok) {
@@ -964,36 +923,20 @@
             mostrarSincronizando(true);
             atualizarStatusConexao(false);
             try {
-                console.log('🔄 Carregando dados do JSONBin...');
                 const resposta = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
-                
-                if (!resposta.ok) {
-                    throw new Error(`Erro HTTP: ${resposta.status}`);
-                }
-                
+                if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
                 const dadosJson = await resposta.json();
                 const dados = dadosJson.record;
-                
-                console.log('✅ Dados carregados:', dados);
-                
                 produtos = dados.produtos || [];
                 compras = dados.compras || [];
                 vendas = dados.vendas || [];
                 historicoEstoque = dados.historicoEstoque || [];
                 contadorId = dados.contadorId || 21;
-                
-                console.log(`📦 ${produtos.length} produtos carregados`);
-                console.log(`💰 ${vendas.length} vendas carregadas`);
-                
                 atualizarStatusConexao(true);
                 atualizarTudo();
-                
-                if (document.getElementById('produtoVenda')) {
-                    atualizarSelects();
-                }
-                
+                if (document.getElementById('produtoVenda')) atualizarSelects();
             } catch (erro) {
-                console.error('❌ Erro ao carregar:', erro);
+                console.error('Erro ao carregar:', erro);
                 usarDadosIniciais();
             } finally {
                 mostrarSincronizando(false);
@@ -1015,7 +958,6 @@
         }
 
         function usarDadosIniciais() {
-            console.log('📝 Usando dados iniciais locais');
             produtos = [
                 {id:1, nome:"Cachaça litro", preco:28, estoque:0},
                 {id:2, nome:"Doce de leite pedaço", preco:5, estoque:0},
@@ -1054,11 +996,7 @@
         }
 
         function salvarSnapshotEstoque(semana) {
-            const snap = { 
-                semana, 
-                data: new Date().toLocaleDateString(), 
-                itens: produtos.map(p => ({ id: p.id, nome: p.nome, quantidade: p.estoque })) 
-            };
+            const snap = { semana, data: new Date().toLocaleDateString(), itens: produtos.map(p => ({ id: p.id, nome: p.nome, quantidade: p.estoque })) };
             historicoEstoque = historicoEstoque.filter(h => h.semana !== semana);
             historicoEstoque.push(snap);
             salvarDadosNaNuvem();
@@ -1067,7 +1005,6 @@
         function atualizarSelects() {
             const selVenda = document.getElementById('produtoVenda');
             const selCompra = document.getElementById('compraProduto');
-            
             if (selVenda) {
                 selVenda.innerHTML = '';
                 produtos.forEach(p => selVenda.innerHTML += `<option value="${p.id}">${p.nome} - R$ ${p.preco.toFixed(2)} (tem ${p.estoque})</option>`);
@@ -1076,7 +1013,6 @@
                 selCompra.innerHTML = '';
                 produtos.forEach(p => selCompra.innerHTML += `<option value="${p.id}">${p.nome}</option>`);
             }
-            
             const lista = document.getElementById('clientesList');
             if (lista) {
                 lista.innerHTML = '';
@@ -1102,6 +1038,7 @@
             if (el) el.innerText = 'R$ ' + total.toFixed(2).replace('.',',');
         }
 
+        // ========== FUNÇÕES DE REGISTRO ==========
         window.registrarCompra = function() {
             const prodId = parseInt(document.getElementById('compraProduto')?.value);
             const qtd = parseInt(document.getElementById('compraQtd')?.value);
@@ -1160,45 +1097,66 @@
             atualizarTudo();
         };
 
+        // ========== FUNÇÕES DE EXCLUSÃO (CORRIGIDAS) ==========
         window.excluirVenda = function(id) {
-            if (!confirm('Apagar venda?')) return;
-            const venda = vendas.find(v => v.id === id);
-            const prod = produtos.find(p => p.id === venda.produtoId);
-            prod.estoque += venda.qtd;
-            vendas = vendas.filter(v => v.id !== id);
-            salvarSnapshotEstoque(semanaAtual);
-            atualizarTudo();
+            if (confirm('Tem certeza que quer apagar esta venda?')) {
+                const venda = vendas.find(v => v.id === id);
+                if (venda) {
+                    const prod = produtos.find(p => p.id === venda.produtoId);
+                    if (prod) prod.estoque += venda.qtd;
+                    vendas = vendas.filter(v => v.id !== id);
+                    salvarSnapshotEstoque(semanaAtual);
+                    atualizarTudo();
+                }
+            }
         };
 
         window.excluirCompra = function(id) {
-            if (!confirm('Apagar compra?')) return;
-            const compra = compras.find(c => c.id === id);
-            const prod = produtos.find(p => p.id === compra.produtoId);
-            prod.estoque -= compra.qtd;
-            if (prod.estoque < 0) prod.estoque = 0;
-            compras = compras.filter(c => c.id !== id);
-            salvarSnapshotEstoque(semanaAtual);
-            atualizarTudo();
+            if (confirm('Tem certeza que quer apagar esta compra?')) {
+                const compra = compras.find(c => c.id === id);
+                if (compra) {
+                    const prod = produtos.find(p => p.id === compra.produtoId);
+                    if (prod) prod.estoque -= compra.qtd;
+                    if (prod.estoque < 0) prod.estoque = 0;
+                    compras = compras.filter(c => c.id !== id);
+                    salvarSnapshotEstoque(semanaAtual);
+                    atualizarTudo();
+                }
+            }
         };
 
+        window.excluirProduto = function(id) {
+            if (confirm('Tem certeza que quer apagar este produto?')) {
+                produtos = produtos.filter(p => p.id !== id);
+                salvarDadosNaNuvem();
+                atualizarTudo();
+            }
+        };
+
+        // ========== FUNÇÕES DE STATUS ==========
         window.alterarStatusVenda = function(id) {
             const venda = vendas.find(v => v.id === id);
-            venda.status = venda.status === 'pago' ? 'pendente' : 'pago';
-            salvarDadosNaNuvem();
-            atualizarVendas();
-            atualizarClientes();
-            atualizarVendasPorVendedor();
-            atualizarPendenteVendedores();
+            if (venda) {
+                venda.status = venda.status === 'pago' ? 'pendente' : 'pago';
+                salvarDadosNaNuvem();
+                atualizarVendas();
+                atualizarClientes();
+                atualizarVendasPorVendedor();
+                atualizarPendenteVendedores();
+            }
         };
 
         window.alterarStatusCompra = function(id) {
             const compra = compras.find(c => c.id === id);
-            compra.status = compra.status === 'pago' ? 'pendente' : 'pago';
-            salvarDadosNaNuvem();
-            atualizarCompras();
-            atualizarGastos();
+            if (compra) {
+                compra.status = compra.status === 'pago' ? 'pendente' : 'pago';
+                salvarDadosNaNuvem();
+                atualizarCompras();
+                atualizarGastos();
+            }
         };
 
+        // ========== FILTROS ==========
         window.filtrarVendasVendedor = function(filtro, el) {
             document.querySelectorAll('#conteudoAbas .filtro-btn').forEach(b => b.classList.remove('ativo'));
             el.classList.add('ativo');
@@ -1213,6 +1171,7 @@
             atualizarClientes();
         };
 
+        // ========== QUITAÇÃO ==========
         window.abrirModalQuitacao = function(cliente) {
             const pendentes = vendas.filter(v => v.cliente === cliente && v.status === 'pendente');
             if (pendentes.length === 0) {
@@ -1247,6 +1206,7 @@
             clienteQuitacaoPendente = null;
         };
 
+        // ========== ATUALIZAÇÃO DAS TABELAS ==========
         function atualizarEstoque() {
             if (modoEdicaoAtivo) return;
             const tbody = document.querySelector('#tabelaEstoque tbody');
@@ -1255,7 +1215,7 @@
             produtos.forEach(p => {
                 const classe = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
                 const status = p.estoque <= 2 ? '⚡ Acabando' : '✔️ Tem';
-                tbody.innerHTML += `|<td>${p.nome}</td><td><span class="${classe}">${p.estoque}</span></td><td>${status}</td>|`;
+                tbody.innerHTML += `|<tr><td>${p.nome}</td><td><span class="${classe}">${p.estoque}</span></td><td>${status}</td></tr>`;
             });
         }
 
@@ -1276,31 +1236,25 @@
         function atualizarVendas() {
             const tituloVenda = document.getElementById('vendaSemanaTitulo');
             if (tituloVenda) tituloVenda.innerText = semanaAtual;
-            
             const tbody = document.querySelector('#tabelaVendas tbody');
             if (!tbody) return;
-            
             tbody.innerHTML = '';
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
-            
-            if (filtroVendedorVendas !== 'todos') {
-                filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
-            }
-            
+            if (filtroVendedorVendas !== 'todos') filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
             if (!filtradas.length) { 
-                tbody.innerHTML = '|<td colspan="6">Nenhuma venda</td>|'; 
+                tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
                 atualizarPendenteVendedores();
                 return; 
             }
             filtradas.slice().reverse().forEach(v => {
-                tbody.innerHTML += `|<tr>
+                tbody.innerHTML += `<tr>
                     <td><span class="vendedor-badge">${v.vendedor}</span></td>
                     <td>${v.cliente}</td>
                     <td>${v.produto} (${v.qtd}x)</td>
                     <td>R$ ${v.valorTotal.toFixed(2)}</td>
                     <td><span class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
                     <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td>
-                </tr>|`;
+                </tr>`;
             });
             atualizarPendenteVendedores();
         }
@@ -1308,20 +1262,16 @@
         function atualizarCompras() {
             const tituloCompra = document.getElementById('compraSemanaTitulo');
             if (tituloCompra) tituloCompra.innerText = semanaAtual;
-            
             const tbody = document.querySelector('#tabelaCompras tbody');
             if (!tbody) return;
-            
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
-            
             if (!comprasSemana.length) { 
-                tbody.innerHTML = '|<td colspan="7">Nenhuma compra nesta semana</td>|'; 
+                tbody.innerHTML = '<tr><td colspan="7">Nenhuma compra nesta semana</td></tr>'; 
                 return; 
             }
-            
             comprasSemana.slice().reverse().forEach(c => {
-                tbody.innerHTML += `|<tr>
+                tbody.innerHTML += `<tr>
                     <td>${c.produto}</td>
                     <td>${c.qtd}</td>
                     <td>R$ ${c.valorUnitario.toFixed(2)}</td>
@@ -1329,7 +1279,7 @@
                     <td>${c.fornecedor}</td>
                     <td><span class="${c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente'}" onclick="alterarStatusCompra(${c.id})">${c.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
                     <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
-                </tr>|`;
+                </tr>`;
             });
         }
 
@@ -1341,9 +1291,7 @@
             if (filtroCobrancaAtual !== 'todos') pendentes = pendentes.filter(v => v.vendedor === filtroCobrancaAtual);
             const agrupado = {};
             pendentes.forEach(v => {
-                if (!agrupado[v.cliente]) {
-                    agrupado[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [], datas: [] };
-                }
+                if (!agrupado[v.cliente]) agrupado[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [], datas: [] };
                 agrupado[v.cliente].total += v.valorTotal;
                 agrupado[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
                 agrupado[v.cliente].datas.push(v.data);
@@ -1351,7 +1299,7 @@
             let totalGeral = 0;
             Object.entries(agrupado).forEach(([c, d]) => {
                 totalGeral += d.total;
-                tbody.innerHTML += `|<tr>
+                tbody.innerHTML += `<tr>
                     <td><strong>${c}</strong></td>
                     <td><span class="status-pendente">R$ ${d.total.toFixed(2)}</span></td>
                     <td><span class="vendedor-badge">${d.vendedor}</span></td>
@@ -1361,9 +1309,9 @@
                         <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
                         <button class="acao-btn editar" onclick="abrirModalQuitacao('${c}')" style="background:#2e8b57;color:white;">✅ Quitar</button>
                     </td>
-                </tr>|`;
+                </tr>`;
             });
-            if (!pendentes.length) tbody.innerHTML = '|<td colspan="6">Ninguém deve</td>|';
+            if (!pendentes.length) tbody.innerHTML = '<tr><td colspan="6">Ninguém deve</td></tr>';
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
@@ -1381,56 +1329,49 @@ FAÇA SEU PEDIDO, ENTREGAS ON 🔛🔛🔛🔺🔺🧀🧀
 PIX
 24992267859
 José Cláudio do Vale`;
-            
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
         function atualizarGastos() {
             const tituloGastos = document.getElementById('gastosSemanaTitulo');
             if (tituloGastos) tituloGastos.innerText = semanaAtual;
-            
             const totalGeral = compras.reduce((a, c) => a + c.valorTotal, 0);
             const elGeral = document.getElementById('totalGastoGeral');
             if (elGeral) elGeral.innerText = 'R$ ' + totalGeral.toFixed(2);
-            
             const gastosSemana = compras.filter(c => c.semana === semanaAtual);
             const elSemana = document.getElementById('totalGastoSemana');
             if (elSemana) elSemana.innerText = 'R$ ' + gastosSemana.reduce((a, c) => a + c.valorTotal, 0).toFixed(2);
-            
             const porSemana = {};
             compras.forEach(c => {
                 if (!porSemana[c.semana]) porSemana[c.semana] = { total: 0, qtd: 0 };
                 porSemana[c.semana].total += c.valorTotal;
                 porSemana[c.semana].qtd++;
             });
-            
             const tbodySem = document.getElementById('corpoGastosSemana');
             if (tbodySem) {
                 tbodySem.innerHTML = '';
                 Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
-                    tbodySem.innerHTML += `|<td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td>|`;
+                    tbodySem.innerHTML += `<tr><td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td></tr>`;
                 });
-                if (!compras.length) tbodySem.innerHTML = '|<td colspan="3">Nenhum gasto</td>|';
+                if (!compras.length) tbodySem.innerHTML = '<tr><td colspan="3">Nenhum gasto</td></tr>';
             }
-            
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
                 tbodyDet.innerHTML = '';
                 const gastosFiltrados = compras.filter(c => c.semana === semanaAtual);
-                
                 if (gastosFiltrados.length) {
                     gastosFiltrados.slice().reverse().forEach(c => {
-                        tbodyDet.innerHTML += `|<tr>
+                        tbodyDet.innerHTML += `<tr>
                             <td>${c.data}</td>
                             <td>${c.produto}</td>
                             <td>${c.qtd}</td>
                             <td>R$ ${c.valorUnitario.toFixed(2)}</td>
                             <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
                             <td>${c.fornecedor}</td>
-                        </tr>|`;
+                        </tr>`;
                     });
                 } else {
-                    tbodyDet.innerHTML = '|<td colspan="6">Nenhuma compra nesta semana</td>|';
+                    tbodyDet.innerHTML = '<tr><td colspan="6">Nenhuma compra nesta semana</td></tr>';
                 }
             }
         }
@@ -1439,7 +1380,6 @@ José Cláudio do Vale`;
             const periodo = document.getElementById('periodoRelatorio')?.value || 'semana';
             const hoje = new Date();
             let vendasFilt = [], comprasFilt = [];
-            
             if (periodo === 'semana') { 
                 vendasFilt = vendas.filter(v => v.semana === semanaAtual); 
                 comprasFilt = compras.filter(c => c.semana === semanaAtual); 
@@ -1453,16 +1393,13 @@ José Cláudio do Vale`;
                 vendasFilt = vendas; 
                 comprasFilt = compras; 
             }
-            
             const fat = vendasFilt.reduce((a, v) => a + v.valorTotal, 0);
             const rec = vendasFilt.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0);
             const gas = comprasFilt.reduce((a, c) => a + c.valorTotal, 0);
-            
             const elFat = document.getElementById('relFaturamento');
             const elGas = document.getElementById('relGastos');
             const elLucro = document.getElementById('relLucro');
             const elMargem = document.getElementById('relMargem');
-            
             if (elFat) elFat.innerText = 'R$ ' + fat.toFixed(2);
             if (elGas) elGas.innerText = 'R$ ' + gas.toFixed(2);
             if (elLucro) elLucro.innerText = 'R$ ' + (rec - gas).toFixed(2);
@@ -1474,32 +1411,28 @@ José Cláudio do Vale`;
             const receb = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const dev = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const qtd = { Cláudio: 0, Antônio: 0, Igor: 0 };
-            
             vendas.forEach(v => {
                 vends[v.vendedor] += v.valorTotal;
                 qtd[v.vendedor] += 1;
                 if (v.status === 'pago') receb[v.vendedor] += v.valorTotal;
                 else dev[v.vendedor] += v.valorTotal;
             });
-            
             const elClaudio = document.getElementById('vendasClaudio');
             const elAntonio = document.getElementById('vendasAntonio');
             const elIgor = document.getElementById('vendasIgor');
-            
             if (elClaudio) elClaudio.innerText = 'R$ ' + vends.Cláudio.toFixed(2);
             if (elAntonio) elAntonio.innerText = 'R$ ' + vends.Antônio.toFixed(2);
             if (elIgor) elIgor.innerText = 'R$ ' + vends.Igor.toFixed(2);
-            
             const tbody = document.getElementById('corpoVendasPorVendedor');
             if (tbody) {
                 tbody.innerHTML = '';
                 ['Cláudio', 'Antônio', 'Igor'].forEach(v => {
                     tbody.innerHTML += `|ee
-                        <td>${v}ee
+                        了一般<strong>${v}</strong>ee
                         <td class="valor-verde">R$ ${vends[v].toFixed(2)}ee
                         <td class="valor-verde">R$ ${receb[v].toFixed(2)}ee
                         <td class="valor-vermelho">R$ ${dev[v].toFixed(2)}ee
-                        <td>${qtd[v]}ee
+                        了一般${qtd[v]}ee
                      ee|`;
                 });
             }
@@ -1508,44 +1441,26 @@ José Cláudio do Vale`;
         window.atualizarHistorico = function() {
             const tituloHistorico = document.getElementById('historicoSemanaTitulo');
             if (tituloHistorico) tituloHistorico.innerText = semanaAtual;
-            
             const tbody = document.getElementById('corpoHistorico');
             if (!tbody) return;
-
             tbody.innerHTML = '';
             let totalComprasValor = 0;
             let totalVendasValor = 0;
-
             produtos.forEach(produto => {
-                const comprasSemana = compras
-                    .filter(c => c.semana === semanaAtual && c.produtoId === produto.id)
-                    .reduce((acc, c) => acc + c.qtd, 0);
-                
-                const vendasSemana = vendas
-                    .filter(v => v.semana === semanaAtual && v.produtoId === produto.id)
-                    .reduce((acc, v) => acc + v.qtd, 0);
-
+                const comprasSemana = compras.filter(c => c.semana === semanaAtual && c.produtoId === produto.id).reduce((acc, c) => acc + c.qtd, 0);
+                const vendasSemana = vendas.filter(v => v.semana === semanaAtual && v.produtoId === produto.id).reduce((acc, v) => acc + v.qtd, 0);
                 const saldo = comprasSemana - vendasSemana;
-
-                compras
-                    .filter(c => c.semana === semanaAtual && c.produtoId === produto.id)
-                    .forEach(c => totalComprasValor += c.valorTotal);
-                
-                vendas
-                    .filter(v => v.semana === semanaAtual && v.produtoId === produto.id)
-                    .forEach(v => totalVendasValor += v.valorTotal);
-
+                compras.filter(c => c.semana === semanaAtual && c.produtoId === produto.id).forEach(c => totalComprasValor += c.valorTotal);
+                vendas.filter(v => v.semana === semanaAtual && v.produtoId === produto.id).forEach(v => totalVendasValor += v.valorTotal);
                 tbody.innerHTML += `|ee
-                    <td><strong>${produto.nome}</strong>ee
+                    了一般<strong>${produto.nome}</strong>ee
                     <td class="valor-verde">${comprasSemana}ee
                     <td class="valor-vermelho">${vendasSemana}ee
-                    <td>${saldo}ee
+                    了一般${saldo}ee
                  ee|`;
             });
-
             const elTotalCompras = document.getElementById('totalComprasSemana');
             const elTotalVendas = document.getElementById('totalVendasSemana');
-            
             if (elTotalCompras) elTotalCompras.innerText = 'R$ ' + totalComprasValor.toFixed(2);
             if (elTotalVendas) elTotalVendas.innerText = 'R$ ' + totalVendasValor.toFixed(2);
         };
@@ -1564,14 +1479,11 @@ José Cláudio do Vale`;
         // ---------- EDIÇÃO DE ESTOQUE ----------
         window.entrarModoEdicaoEstoque = function() {
             modoEdicaoAtivo = true;
-            
             document.getElementById('btnModoEdicaoEstoque').style.display = 'none';
             document.getElementById('btnSalvarEstoque').style.display = 'inline-block';
             document.getElementById('btnCancelarEdicao').style.display = 'inline-block';
-            
             const tbody = document.querySelector('#tabelaEstoque tbody');
             const linhas = tbody.querySelectorAll('tr');
-            
             linhas.forEach((linha, index) => {
                 const produto = produtos[index];
                 if (produto) {
@@ -1601,14 +1513,11 @@ José Cláudio do Vale`;
                     }
                 }
             });
-            
             salvarSnapshotEstoque(semanaAtual);
-            
             modoEdicaoAtivo = false;
             document.getElementById('btnModoEdicaoEstoque').style.display = 'inline-block';
             document.getElementById('btnSalvarEstoque').style.display = 'none';
             document.getElementById('btnCancelarEdicao').style.display = 'none';
-            
             atualizarEstoque();
             salvarDadosNaNuvem();
             alert('✅ Estoque ajustado!');
@@ -1620,27 +1529,19 @@ José Cláudio do Vale`;
             atualizarSelectSemanas();
 
             const vendasSemana = vendas.filter(v => v.semana === semanaAtual);
-            
             const elVendasSemana = document.getElementById('vendasSemana');
-            if (elVendasSemana) {
-                elVendasSemana.innerText = 'R$ ' + vendasSemana.reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
-            }
-
+            if (elVendasSemana) elVendasSemana.innerText = 'R$ ' + vendasSemana.reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
             const elRecebidoSemana = document.getElementById('recebidoSemana');
-            if (elRecebidoSemana) {
-                elRecebidoSemana.innerText = 'R$ ' + vendasSemana.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
-            }
+            if (elRecebidoSemana) elRecebidoSemana.innerText = 'R$ ' + vendasSemana.filter(v => v.status === 'pago').reduce((a, v) => a + v.valorTotal, 0).toFixed(2);
 
-            if (document.getElementById('tabelaEstoque') && !modoEdicaoAtivo) {
-                atualizarEstoque();
-            }
+            if (document.getElementById('tabelaEstoque') && !modoEdicaoAtivo) atualizarEstoque();
 
             const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
             if (tbodyPrecos) {
                 tbodyPrecos.innerHTML = '';
                 produtos.forEach(p => {
                     tbodyPrecos.innerHTML += `|ee
-                        <td>${p.nome}ee
+                        了一般${p.nome}ee
                         了一般R$ ${p.preco.toFixed(2)}ee
                         了一般<span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>ee
                         了一般<button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button>ee
@@ -1648,17 +1549,9 @@ José Cláudio do Vale`;
                 });
             }
 
-            if (document.getElementById('tabelaCompras')) {
-                atualizarCompras();
-            }
-
-            if (document.getElementById('tabelaHistorico')) {
-                atualizarHistorico();
-            }
-
-            if (document.getElementById('corpoTodosGastos')) {
-                atualizarGastos();
-            }
+            if (document.getElementById('tabelaCompras')) atualizarCompras();
+            if (document.getElementById('tabelaHistorico')) atualizarHistorico();
+            if (document.getElementById('corpoTodosGastos')) atualizarGastos();
 
             atualizarVendas();
             atualizarRelatorio();
@@ -1671,12 +1564,7 @@ José Cláudio do Vale`;
             const select = document.getElementById('selectSemana');
             if (!select) return;
             select.innerHTML = '';
-            const semanas = [...new Set([
-                ...compras.map(c => c.semana), 
-                ...vendas.map(v => v.semana), 
-                ...historicoEstoque.map(h => h.semana), 
-                semanaAtual
-            ])].sort((a, b) => a - b);
+            const semanas = [...new Set([...compras.map(c => c.semana), ...vendas.map(v => v.semana), ...historicoEstoque.map(h => h.semana), semanaAtual])].sort((a, b) => a - b);
             if (!semanas.length) semanas.push(semanaAtual);
             semanas.forEach(s => {
                 select.innerHTML += `<option value="${s}" ${s === semanaAtual ? 'selected' : ''}>Semana ${s}</option>`;
@@ -1707,9 +1595,7 @@ José Cláudio do Vale`;
             if (filtroCobrancaAtual !== 'todos') cobrancas = cobrancas.filter(v => v.vendedor === filtroCobrancaAtual);
             const clientes = {};
             cobrancas.forEach(v => {
-                if (!clientes[v.cliente]) {
-                    clientes[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [] };
-                }
+                if (!clientes[v.cliente]) clientes[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [] };
                 clientes[v.cliente].total += v.valorTotal;
                 clientes[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
             });
@@ -1727,10 +1613,9 @@ José Cláudio do Vale`;
                 <body>
                     <h1>🧀 QUEIJARIA DO MINEIRO</h1>
                     <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
-                    <table>
+                    表格
                         <thead>
-                            <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th></tr>
-                        </thead>
+                            <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
@@ -1738,7 +1623,7 @@ José Cláudio do Vale`;
             });
             win.document.write(`
                         </tbody>
-                    </table>
+                     </table>
                     <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
                 </body>
                 </html>
@@ -1752,41 +1637,12 @@ José Cláudio do Vale`;
                 const resp = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
                 const dados = (await resp.json()).record;
                 const wb = XLSX.utils.book_new();
-                
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
-                    dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque }))
-                ), 'Produtos');
-                
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
-                    dados.vendas.map(v => ({ 
-                        Data: v.data, 
-                        Vendedor: v.vendedor, 
-                        Cliente: v.cliente, 
-                        Produto: v.produto, 
-                        Qtd: v.qtd, 
-                        'Total (R$)': v.valorTotal, 
-                        Status: v.status === 'pago' ? 'Pago' : 'Pendente' 
-                    }))
-                ), 'Vendas');
-                
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
-                    dados.compras.map(c => ({ 
-                        Data: c.data, 
-                        Produto: c.produto, 
-                        Qtd: c.qtd, 
-                        'Unitário': c.valorUnitario, 
-                        'Total': c.valorTotal, 
-                        Fornecedor: c.fornecedor,
-                        Status: c.status === 'pago' ? 'Pago' : 'Pendente'
-                    }))
-                ), 'Compras');
-                
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque }))), 'Produtos');
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.vendas.map(v => ({ Data: v.data, Vendedor: v.vendedor, Cliente: v.cliente, Produto: v.produto, Qtd: v.qtd, 'Total (R$)': v.valorTotal, Status: v.status === 'pago' ? 'Pago' : 'Pendente' }))), 'Vendas');
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.compras.map(c => ({ Data: c.data, Produto: c.produto, Qtd: c.qtd, 'Unitário': c.valorUnitario, 'Total': c.valorTotal, Fornecedor: c.fornecedor, Status: c.status === 'pago' ? 'Pago' : 'Pendente' }))), 'Compras');
                 const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
                 dados.vendas.forEach(v => vends[v.vendedor] += v.valorTotal);
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(
-                    Object.entries(vends).map(([v, t]) => ({ Vendedor: v, 'Total Vendido (R$)': t }))
-                ), 'Vend por Vendedor');
-                
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(Object.entries(vends).map(([v, t]) => ({ Vendedor: v, 'Total Vendido (R$)': t }))), 'Vend por Vendedor');
                 XLSX.writeFile(wb, `queijaria_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
                 alert('✅ Excel gerado!');
             } catch (erro) { 
