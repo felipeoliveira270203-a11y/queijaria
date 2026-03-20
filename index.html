@@ -458,7 +458,6 @@
             box-shadow: 3px 3px 0px #3f2b1c;
         }
 
-        /* Modal de confirmação */
         .modal {
             position: fixed;
             top: 0;
@@ -517,6 +516,16 @@
         .btn-cancelar {
             background: #b22222;
             color: #f5e6d3;
+        }
+
+        .resumo-semana {
+            background: #daa520;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #654321;
         }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -738,12 +747,16 @@
                 if (aba === 'clientes') atualizarClientes();
                 if (aba === 'compras') { 
                     calcularTotalCompra(); 
-                    atualizarSelects(); 
+                    atualizarSelects();
+                    atualizarCompras(); // <- CARREGA AS COMPRAS DA SEMANA
                 }
                 if (aba === 'gastos') atualizarGastos();
                 if (aba === 'relatorios') atualizarRelatorio();
                 if (aba === 'vendedores') atualizarVendasPorVendedor();
-                if (aba === 'historico') atualizarHistorico();
+                if (aba === 'historico') {
+                    atualizarSelects();
+                    atualizarHistorico(); // <- CARREGA O HISTÓRICO DE TODOS OS PRODUTOS
+                }
                 if (aba === 'produtos') {
                     atualizarSelects();
                     atualizarTudo();
@@ -756,7 +769,7 @@
             switch (aba) {
                 case 'vendas': return `
                     <div class="card">
-                        <div class="card-title">➕ ANOTAR VENDA - SEMANA ${semanaAtual}</div>
+                        <div class="card-title">➕ ANOTAR VENDA - SEMANA <span id="vendaSemanaAtual">${semanaAtual}</span></div>
                         <div class="form-group"><label>Vendedor</label><select id="vendedorVenda"><option>Cláudio</option><option>Antônio</option><option>Igor</option></select></div>
                         <div class="form-group"><label>Freguês</label><input type="text" id="clienteVenda" placeholder="Nome" list="clientesList"><datalist id="clientesList"></datalist></div>
                         <div class="form-group"><label>Produto</label><select id="produtoVenda" onchange="calcularValorVenda()"></select></div>
@@ -827,8 +840,8 @@
                         <button class="btn btn-success" onclick="registrarCompra()">REGISTRAR</button>
                     </div>
                     <div class="card">
-                        <div class="card-title">📋 COMPRAS FEITAS</div>
-                        <div class="tabela-container"><table id="tabelaCompras"><thead><tr><th>Semana</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
+                        <div class="card-title">📋 COMPRAS DA SEMANA ${semanaAtual}</div>
+                        <div class="tabela-container"><table id="tabelaCompras"><thead><tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'gastos': return `
@@ -858,16 +871,17 @@
                 `;
                 case 'historico': return `
                     <div class="card">
-                        <div class="card-title">📈 HISTÓRICO POR PRODUTO/SEMANA</div>
-                        <div class="form-group">
-                            <label>Selecionar Produto</label>
-                            <select id="selectProdutoHistorico" onchange="atualizarHistorico()"></select>
+                        <div class="card-title">📈 HISTÓRICO - SEMANA ${semanaAtual}</div>
+                        <div class="resumo-semana">
+                            <strong>Resumo da Semana:</strong><br>
+                            Total Compras: <span id="totalComprasSemana">R$ 0</span> | 
+                            Total Vendas: <span id="totalVendasSemana">R$ 0</span>
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaHistorico">
                                 <thead>
                                     <tr>
-                                        <th>Semana</th>
+                                        <th>Produto</th>
                                         <th>Compras (Qtd)</th>
                                         <th>Vendas (Qtd)</th>
                                         <th>Saldo</th>
@@ -1018,7 +1032,6 @@
         function atualizarSelects() {
             const selVenda = document.getElementById('produtoVenda');
             const selCompra = document.getElementById('compraProduto');
-            const selHistorico = document.getElementById('selectProdutoHistorico');
             
             if (selVenda) {
                 selVenda.innerHTML = '';
@@ -1027,10 +1040,6 @@
             if (selCompra) {
                 selCompra.innerHTML = '';
                 produtos.forEach(p => selCompra.innerHTML += `<option value="${p.id}">${p.nome}</option>`);
-            }
-            if (selHistorico) {
-                selHistorico.innerHTML = '<option value="">Selecione um produto</option>';
-                produtos.forEach(p => selHistorico.innerHTML += `<option value="${p.id}">${p.nome}</option>`);
             }
             
             const lista = document.getElementById('clientesList');
@@ -1143,7 +1152,7 @@
             atualizarTudo();
         };
 
-        // ---------- FUNÇÃO PARA QUITAR DÉBITO (PAGAMENTO ÚNICO) ----------
+        // ---------- FUNÇÃO PARA QUITAR DÉBITO ----------
         window.abrirModalQuitacao = function(cliente) {
             const pendentes = vendas.filter(v => v.cliente === cliente && v.status === 'pendente');
             
@@ -1245,6 +1254,29 @@
                 </tr>`;
             });
             atualizarPendenteVendedores();
+        }
+
+        function atualizarCompras() {
+            const tbody = document.querySelector('#tabelaCompras tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            const comprasSemana = compras.filter(c => c.semana === semanaAtual);
+            
+            if (!comprasSemana.length) { 
+                tbody.innerHTML = '<tr><td colspan="6">Nenhuma compra nesta semana</td></tr>'; 
+                return; 
+            }
+            
+            comprasSemana.slice().reverse().forEach(c => {
+                tbody.innerHTML += `<tr>
+                    <td>${c.produto}</td>
+                    <td>${c.qtd}</td>
+                    <td>R$ ${c.valorUnitario.toFixed(2)}</td>
+                    <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
+                    <td>${c.fornecedor}</td>
+                    <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
+                </tr>`;
+            });
         }
 
         function atualizarClientes() {
@@ -1391,43 +1423,49 @@
             }
         }
 
+        // ---------- FUNÇÃO PARA ATUALIZAR HISTÓRICO (TODOS OS PRODUTOS) ----------
         window.atualizarHistorico = function() {
-            const produtoId = parseInt(document.getElementById('selectProdutoHistorico')?.value);
-            if (!produtoId) return;
-
-            const produto = produtos.find(p => p.id === produtoId);
-            const semanas = [...new Set([
-                ...compras.map(c => c.semana),
-                ...vendas.map(v => v.semana)
-            ])].sort((a, b) => a - b);
-
             const tbody = document.getElementById('corpoHistorico');
             if (!tbody) return;
 
             tbody.innerHTML = '';
+            let totalComprasValor = 0;
+            let totalVendasValor = 0;
 
-            semanas.forEach(semana => {
+            produtos.forEach(produto => {
                 const comprasSemana = compras
-                    .filter(c => c.semana === semana && c.produtoId === produtoId)
+                    .filter(c => c.semana === semanaAtual && c.produtoId === produto.id)
                     .reduce((acc, c) => acc + c.qtd, 0);
                 
                 const vendasSemana = vendas
-                    .filter(v => v.semana === semana && v.produtoId === produtoId)
+                    .filter(v => v.semana === semanaAtual && v.produtoId === produto.id)
                     .reduce((acc, v) => acc + v.qtd, 0);
 
                 const saldo = comprasSemana - vendasSemana;
 
+                // Calcular valores totais
+                compras
+                    .filter(c => c.semana === semanaAtual && c.produtoId === produto.id)
+                    .forEach(c => totalComprasValor += c.valorTotal);
+                
+                vendas
+                    .filter(v => v.semana === semanaAtual && v.produtoId === produto.id)
+                    .forEach(v => totalVendasValor += v.valorTotal);
+
                 tbody.innerHTML += `<tr>
-                    <td><strong>Semana ${semana}</strong></td>
+                    <td><strong>${produto.nome}</strong></td>
                     <td class="valor-verde">${comprasSemana}</td>
                     <td class="valor-vermelho">${vendasSemana}</td>
                     <td>${saldo}</td>
                 </tr>`;
             });
 
-            if (semanas.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4">Nenhum movimento para este produto</td></tr>';
-            }
+            // Atualizar resumo da semana
+            const elTotalCompras = document.getElementById('totalComprasSemana');
+            const elTotalVendas = document.getElementById('totalVendasSemana');
+            
+            if (elTotalCompras) elTotalCompras.innerText = 'R$ ' + totalComprasValor.toFixed(2);
+            if (elTotalVendas) elTotalVendas.innerText = 'R$ ' + totalVendasValor.toFixed(2);
         };
 
         window.cadastrarProduto = function() {
@@ -1528,23 +1566,14 @@
                 });
             }
 
-            const tbodyCompras = document.querySelector('#tabelaCompras tbody');
-            if (tbodyCompras) {
-                tbodyCompras.innerHTML = '';
-                if (compras.length) {
-                    compras.slice(-10).reverse().forEach(c => {
-                        tbodyCompras.innerHTML += `<tr>
-                            <td>Semana ${c.semana}</td>
-                            <td>${c.produto}</td>
-                            <td>${c.qtd}</td>
-                            <td>R$ ${c.valorUnitario.toFixed(2)}</td>
-                            <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
-                            <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
-                        </tr>`;
-                    });
-                } else {
-                    tbodyCompras.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
-                }
+            // Atualizar compras se a aba estiver aberta
+            if (document.getElementById('tabelaCompras')) {
+                atualizarCompras();
+            }
+
+            // Atualizar histórico se a aba estiver aberta
+            if (document.getElementById('tabelaHistorico')) {
+                atualizarHistorico();
             }
 
             atualizarVendas();
