@@ -748,14 +748,14 @@
                 if (aba === 'compras') { 
                     calcularTotalCompra(); 
                     atualizarSelects();
-                    atualizarCompras(); // <- CARREGA AS COMPRAS DA SEMANA
+                    atualizarCompras();
                 }
                 if (aba === 'gastos') atualizarGastos();
                 if (aba === 'relatorios') atualizarRelatorio();
                 if (aba === 'vendedores') atualizarVendasPorVendedor();
                 if (aba === 'historico') {
                     atualizarSelects();
-                    atualizarHistorico(); // <- CARREGA O HISTÓRICO DE TODOS OS PRODUTOS
+                    atualizarHistorico();
                 }
                 if (aba === 'produtos') {
                     atualizarSelects();
@@ -787,7 +787,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-title">📋 VENDAS DA SEMANA ${semanaAtual}</div>
+                        <div class="card-title">📋 VENDAS DA SEMANA <span id="vendaSemanaTitulo">${semanaAtual}</span></div>
                         <div class="filtros">
                             <button class="filtro-btn ativo" onclick="filtrarVendasVendedor('todos',this)">Todos</button>
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Cláudio',this)">Cláudio</button>
@@ -840,24 +840,35 @@
                         <button class="btn btn-success" onclick="registrarCompra()">REGISTRAR</button>
                     </div>
                     <div class="card">
-                        <div class="card-title">📋 COMPRAS DA SEMANA ${semanaAtual}</div>
+                        <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
                         <div class="tabela-container"><table id="tabelaCompras"><thead><tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Ações</th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'gastos': return `
                     <div class="card">
                         <div class="card-title">💸 QUANTO GASTEI</div>
-                        <div class="resumo-grid"><div class="resumo-card"><div class="label">Total Gasto</div><div class="valor" id="totalGastoGeral">R$ 0</div></div><div class="resumo-card"><div class="label">Essa semana</div><div class="valor" id="totalGastoSemana">R$ 0</div></div></div>
-                        <div class="card-title">📅 GASTOS POR SEMANA</div><div class="tabela-container"><table id="tabelaGastosSemana"><thead><tr><th>Semana</th><th>Total</th><th>Qtd</th></tr></thead><tbody id="corpoGastosSemana"></tbody></table></div>
-                        <div class="card-title">📋 DETALHE</div><div class="tabela-container"><table id="tabelaTodosGastos"><thead><tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th></tr></thead><tbody id="corpoTodosGastos"></tbody></table></div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card"><div class="label">Total Gasto</div><div class="valor" id="totalGastoGeral">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Essa semana</div><div class="valor" id="totalGastoSemana">R$ 0</div></div>
+                        </div>
+                        <div class="card-title">📅 GASTOS POR SEMANA</div>
+                        <div class="tabela-container"><table id="tabelaGastosSemana"><thead><tr><th>Semana</th><th>Total</th><th>Qtd</th></tr></thead><tbody id="corpoGastosSemana"></tbody></table></div>
+                        <div class="card-title">📋 DETALHE DOS GASTOS - SEMANA <span id="gastosSemanaTitulo">${semanaAtual}</span></div>
+                        <div class="tabela-container"><table id="tabelaTodosGastos"><thead><tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th></tr></thead><tbody id="corpoTodosGastos"></tbody></table></div>
                     </div>
                 `;
                 case 'relatorios': return `
                     <div style="margin-bottom:15px;"><button class="btn btn-excel" onclick="exportarParaExcel()">📥 EXCEL</button></div>
                     <div class="card">
                         <div class="card-title">📊 RESULTADO</div>
-                        <div class="resumo-grid"><div class="resumo-card"><div class="label">Vendeu</div><div class="valor" id="relFaturamento">R$ 0</div></div><div class="resumo-card"><div class="label">Gastou</div><div class="valor" id="relGastos">R$ 0</div></div></div>
-                        <div class="resumo-grid"><div class="resumo-card"><div class="label">Lucro Real</div><div class="valor" id="relLucro">R$ 0</div></div><div class="resumo-card"><div class="label">Margem</div><div class="valor" id="relMargem">0%</div></div></div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card"><div class="label">Vendeu</div><div class="valor" id="relFaturamento">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Gastou</div><div class="valor" id="relGastos">R$ 0</div></div>
+                        </div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card"><div class="label">Lucro Real</div><div class="valor" id="relLucro">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Margem</div><div class="valor" id="relMargem">0%</div></div>
+                        </div>
                         <div class="form-group"><label>Período</label><select id="periodoRelatorio" onchange="atualizarRelatorio()"><option value="semana">Essa semana</option><option value="mes">Este mês</option><option value="ano">Este ano</option><option value="total">Total</option></select></div>
                     </div>
                     <div class="card"><div class="card-title">📈 VENDAS VS GASTOS</div><div id="graficoComparativo" style="height:180px;display:flex;gap:5px;background:#fff8dc;border:3px solid #8b4513;padding:10px;"></div></div>
@@ -865,13 +876,17 @@
                 case 'vendedores': return `
                     <div class="card">
                         <div class="card-title">👤 VENDAS POR VENDEDOR</div>
-                        <div class="resumo-grid"><div class="resumo-card"><div class="label">Cláudio</div><div class="valor" id="vendasClaudio">R$ 0</div></div><div class="resumo-card"><div class="label">Antônio</div><div class="valor" id="vendasAntonio">R$ 0</div></div><div class="resumo-card"><div class="label">Igor</div><div class="valor" id="vendasIgor">R$ 0</div></div></div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card"><div class="label">Cláudio</div><div class="valor" id="vendasClaudio">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Antônio</div><div class="valor" id="vendasAntonio">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Igor</div><div class="valor" id="vendasIgor">R$ 0</div></div>
+                        </div>
                         <div class="tabela-container"><table id="tabelaVendasPorVendedor"><thead><tr><th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th></tr></thead><tbody id="corpoVendasPorVendedor"></tbody></table></div>
                     </div>
                 `;
                 case 'historico': return `
                     <div class="card">
-                        <div class="card-title">📈 HISTÓRICO - SEMANA ${semanaAtual}</div>
+                        <div class="card-title">📈 HISTÓRICO - SEMANA <span id="historicoSemanaTitulo">${semanaAtual}</span></div>
                         <div class="resumo-semana">
                             <strong>Resumo da Semana:</strong><br>
                             Total Compras: <span id="totalComprasSemana">R$ 0</span> | 
@@ -1230,8 +1245,12 @@
         }
 
         function atualizarVendas() {
+            const tituloVenda = document.getElementById('vendaSemanaTitulo');
+            if (tituloVenda) tituloVenda.innerText = semanaAtual;
+            
             const tbody = document.querySelector('#tabelaVendas tbody');
             if (!tbody) return;
+            
             tbody.innerHTML = '';
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             
@@ -1257,8 +1276,12 @@
         }
 
         function atualizarCompras() {
+            const tituloCompra = document.getElementById('compraSemanaTitulo');
+            if (tituloCompra) tituloCompra.innerText = semanaAtual;
+            
             const tbody = document.querySelector('#tabelaCompras tbody');
             if (!tbody) return;
+            
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
             
@@ -1304,7 +1327,7 @@
                     <td>${d.itens.join('<br>')}</td>
                     <td>${d.datas.join('<br>')}</td>
                     <td>
-                        <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}')">📱</button>
+                        <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
                         <button class="acao-btn editar" onclick="abrirModalQuitacao('${c}')" style="background:#2e8b57;color:white;">✅ Quitar</button>
                     </td>
                 </tr>`;
@@ -1313,12 +1336,28 @@
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
-        window.enviarWhatsAppCobranca = function(cliente, debito, vendedor) {
-            const msg = `Olá ${cliente}, tudo bem?\n\nVocê tem débito de R$ ${debito.toFixed(2)} (compra com ${vendedor}).\n\nPIX: 24992267859 (José Cláudio do Vale)\n\nApós pagar, avise.`;
+        window.enviarWhatsAppCobranca = function(cliente, debito, vendedor, produtos) {
+            const msg = `Bom dia ${cliente}! Tudo bem? 😊
+
+🔺Passando para lembrar do acerto no valor de R$ ${debito.toFixed(2)} referente aos produtos comprados: ${produtos}.
+
+Por favor, realizar o pagamento e enviar o comprovante para dar baixa!
+
+Agradeço muito pela confiança e já me coloco à disposição para o próximo pedido! 🧀🔺
+
+FAÇA SEU PEDIDO, ENTREGAS ON 🔛🔛🔛🔺🔺🧀🧀
+
+PIX
+24992267859
+José Cláudio do Vale`;
+            
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
         function atualizarGastos() {
+            const tituloGastos = document.getElementById('gastosSemanaTitulo');
+            if (tituloGastos) tituloGastos.innerText = semanaAtual;
+            
             const totalGeral = compras.reduce((a, c) => a + c.valorTotal, 0);
             const elGeral = document.getElementById('totalGastoGeral');
             if (elGeral) elGeral.innerText = 'R$ ' + totalGeral.toFixed(2);
@@ -1346,10 +1385,22 @@
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
                 tbodyDet.innerHTML = '';
-                compras.slice().reverse().forEach(c => {
-                    tbodyDet.innerHTML += `<tr><td>${c.data}</td><td>${c.produto}</td><td>${c.qtd}</td><td>R$ ${c.valorUnitario.toFixed(2)}</td><td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td><td>${c.fornecedor}</td></tr>`;
-                });
-                if (!compras.length) tbodyDet.innerHTML = '<tr><td colspan="6">Nenhuma compra</td></tr>';
+                const gastosFiltrados = compras.filter(c => c.semana === semanaAtual);
+                
+                if (gastosFiltrados.length) {
+                    gastosFiltrados.slice().reverse().forEach(c => {
+                        tbodyDet.innerHTML += `<tr>
+                            <td>${c.data}</td>
+                            <td>${c.produto}</td>
+                            <td>${c.qtd}</td>
+                            <td>R$ ${c.valorUnitario.toFixed(2)}</td>
+                            <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
+                            <td>${c.fornecedor}</td>
+                        </tr>`;
+                    });
+                } else {
+                    tbodyDet.innerHTML = '<tr><td colspan="6">Nenhuma compra nesta semana</td></tr>';
+                }
             }
         }
 
@@ -1423,8 +1474,10 @@
             }
         }
 
-        // ---------- FUNÇÃO PARA ATUALIZAR HISTÓRICO (TODOS OS PRODUTOS) ----------
         window.atualizarHistorico = function() {
+            const tituloHistorico = document.getElementById('historicoSemanaTitulo');
+            if (tituloHistorico) tituloHistorico.innerText = semanaAtual;
+            
             const tbody = document.getElementById('corpoHistorico');
             if (!tbody) return;
 
@@ -1443,7 +1496,6 @@
 
                 const saldo = comprasSemana - vendasSemana;
 
-                // Calcular valores totais
                 compras
                     .filter(c => c.semana === semanaAtual && c.produtoId === produto.id)
                     .forEach(c => totalComprasValor += c.valorTotal);
@@ -1460,7 +1512,6 @@
                 </tr>`;
             });
 
-            // Atualizar resumo da semana
             const elTotalCompras = document.getElementById('totalComprasSemana');
             const elTotalVendas = document.getElementById('totalVendasSemana');
             
@@ -1566,14 +1617,16 @@
                 });
             }
 
-            // Atualizar compras se a aba estiver aberta
             if (document.getElementById('tabelaCompras')) {
                 atualizarCompras();
             }
 
-            // Atualizar histórico se a aba estiver aberta
             if (document.getElementById('tabelaHistorico')) {
                 atualizarHistorico();
+            }
+
+            if (document.getElementById('corpoTodosGastos')) {
+                atualizarGastos();
             }
 
             atualizarVendas();
