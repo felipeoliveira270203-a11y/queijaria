@@ -517,6 +517,46 @@
             font-weight: bold;
             border: 2px solid #654321;
         }
+        
+        /* Estilos para a aba de configurações */
+        .config-usuario-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #cd853f;
+        }
+        
+        .config-usuario-item:last-child {
+            border-bottom: none;
+        }
+        
+        .config-usuario-info {
+            flex: 2;
+        }
+        
+        .config-usuario-nome {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .config-usuario-nivel {
+            font-size: 0.8rem;
+            color: #8b4513;
+        }
+        
+        .config-usuario-acoes {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .config-senha-input {
+            width: 150px;
+            padding: 6px 10px;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 </head>
@@ -579,7 +619,7 @@
 
     <script>
         // ---------- USUÁRIOS PRÉ-CADASTRADOS ----------
-        const USUARIOS = [
+        let USUARIOS = [
             { usuario: 'ClaudioVale', senha: 'Queijo@Serra92', nivel: 'ADM' },
             { usuario: 'AntonioVale', senha: 'Queijaria!Vale83', nivel: 'ADM' },
             { usuario: 'IgorNogueira', senha: 'Minas#Cura47', nivel: 'VENDEDOR' }
@@ -611,6 +651,93 @@
         let compras = [];
         let vendas = [];
         let contadorId = 21;
+
+        // ---------- FUNÇÕES DE GERENCIAMENTO DE USUÁRIOS ----------
+        async function salvarUsuarios() {
+            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS };
+            try {
+                await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
+                console.log('✅ Usuários salvos na nuvem');
+            } catch (erro) {
+                console.error('Erro ao salvar usuários:', erro);
+            }
+        }
+
+        async function carregarUsuarios() {
+            try {
+                const resposta = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
+                if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
+                const dadosJson = await resposta.json();
+                const dados = dadosJson.record;
+                if (dados.usuarios && dados.usuarios.length > 0) {
+                    USUARIOS = dados.usuarios;
+                    console.log('✅ Usuários carregados da nuvem');
+                }
+            } catch (erro) {
+                console.log('Usando usuários padrão');
+            }
+        }
+
+        function atualizarConfiguracoes() {
+            const container = document.getElementById('corpoConfiguracoes');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            for (let i = 0; i < USUARIOS.length; i++) {
+                const u = USUARIOS[i];
+                const div = document.createElement('div');
+                div.className = 'config-usuario-item';
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'config-usuario-info';
+                infoDiv.innerHTML = `
+                    <div class="config-usuario-nome">${u.usuario}</div>
+                    <div class="config-usuario-nivel">${u.nivel === 'ADM' ? '👑 Administrador' : '🧑‍🌾 Vendedor'}</div>
+                `;
+                
+                const acoesDiv = document.createElement('div');
+                acoesDiv.className = 'config-usuario-acoes';
+                
+                const inputSenha = document.createElement('input');
+                inputSenha.type = 'password';
+                inputSenha.className = 'config-senha-input';
+                inputSenha.placeholder = 'Nova senha';
+                inputSenha.id = `nova_senha_${u.usuario}`;
+                
+                const btnSalvar = document.createElement('button');
+                btnSalvar.className = 'btn-small btn-success';
+                btnSalvar.innerText = 'Alterar';
+                btnSalvar.style.margin = '0';
+                btnSalvar.onclick = function() {
+                    const novaSenha = document.getElementById(`nova_senha_${u.usuario}`).value;
+                    if (novaSenha && novaSenha.length >= 4) {
+                        alterarSenhaUsuario(u.usuario, novaSenha);
+                    } else if (novaSenha) {
+                        alert('A senha deve ter pelo menos 4 caracteres');
+                    } else {
+                        alert('Digite uma nova senha');
+                    }
+                };
+                
+                acoesDiv.appendChild(inputSenha);
+                acoesDiv.appendChild(btnSalvar);
+                
+                div.appendChild(infoDiv);
+                div.appendChild(acoesDiv);
+                container.appendChild(div);
+            }
+        }
+        
+        function alterarSenhaUsuario(usuario, novaSenha) {
+            const userIndex = USUARIOS.findIndex(u => u.usuario === usuario);
+            if (userIndex !== -1) {
+                USUARIOS[userIndex].senha = novaSenha;
+                salvarUsuarios();
+                alert(`✅ Senha de ${usuario} alterada com sucesso!`);
+                atualizarConfiguracoes();
+            }
+        }
 
         // ---------- SESSÃO 24h ----------
         function verificarSessao() {
@@ -690,7 +817,8 @@
                 { nome: '📊 Resultado', aba: 'relatorios' },
                 { nome: '👤 Vendedores', aba: 'vendedores' },
                 { nome: '📈 Histórico', aba: 'historico' },
-                { nome: '⚙️ Produtos', aba: 'produtos' }
+                { nome: '⚙️ Produtos', aba: 'produtos' },
+                { nome: '⚙️ Configurações', aba: 'configuracoes' }
             ];
 
             itensComuns.forEach(item => {
@@ -750,12 +878,22 @@
                     atualizarSelects();
                     atualizarTudo();
                 }
+                if (aba === 'configuracoes') {
+                    atualizarConfiguracoes();
+                }
             }, 50);
         };
 
-        // ---------- TEMPLATES DAS ABAS ----------
+        // ---------- TEMPLATES DAS ABAS (ADICIONANDO CONFIGURAÇÕES) ----------
         function obterTemplateAba(aba) {
             switch (aba) {
+                case 'configuracoes': return `
+                    <div class="card">
+                        <div class="card-title">⚙️ GERENCIAR USUÁRIOS</div>
+                        <p style="margin-bottom: 15px; color: #8b4513;">Altere as senhas dos usuários cadastrados. As alterações são salvas automaticamente na nuvem.</p>
+                        <div id="corpoConfiguracoes"></div>
+                    </div>
+                `;
                 case 'vendas': return `
                     <div class="card">
                         <div class="card-title">➕ ANOTAR VENDA - SEMANA <span id="vendaSemanaAtual">${semanaAtual}</span></div>
@@ -925,7 +1063,7 @@
             }
         }
 
-        // ---------- FUNÇÕES DE SINCRONIZAÇÃO ----------
+        // ========== FUNÇÕES DE SINCRONIZAÇÃO (ATUALIZADAS PARA SALVAR USUÁRIOS) ==========
         function mostrarSincronizando(mostrar) {
             const el = document.getElementById('sincronizando');
             el.style.display = mostrar ? 'block' : 'none';
@@ -957,6 +1095,11 @@
                 historicoEstoque = dados.historicoEstoque || [];
                 contadorId = dados.contadorId || 21;
                 
+                // Carregar usuários se existirem
+                if (dados.usuarios && dados.usuarios.length > 0) {
+                    USUARIOS = dados.usuarios;
+                }
+                
                 compras = compras.map(c => ({ ...c, status: c.status || 'pendente' }));
                 
                 atualizarStatusConexao(true);
@@ -972,7 +1115,7 @@
 
         async function salvarDadosNaNuvem() {
             mostrarSincronizando(true);
-            const dados = { produtos, compras, vendas, historicoEstoque, contadorId };
+            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS };
             try {
                 await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
                 atualizarStatusConexao(true);
@@ -1014,7 +1157,7 @@
             atualizarTudo();
         }
 
-        // ---------- FUNÇÕES AUXILIARES ----------
+        // ========== DEMAIS FUNÇÕES (MANTIDAS IGUAIS AO ANTERIOR) ==========
         function getSemanaAtual() {
             const hoje = new Date();
             const inicio = new Date(hoje.getFullYear(), 0, 1);
@@ -1235,9 +1378,7 @@
             clienteQuitacaoPendente = null;
         };
 
-        // ========== ATUALIZAÇÃO DAS TABELAS (TODAS CORRIGIDAS) ==========
-        
-        // ESTOQUE - CORRIGIDA
+        // ========== ATUALIZAÇÃO DAS TABELAS (VERSÕES CORRIGIDAS) ==========
         function atualizarEstoque() {
             if (modoEdicaoAtivo) return;
             const tbody = document.querySelector('#tabelaEstoque tbody');
@@ -1290,7 +1431,7 @@
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             if (filtroVendedorVendas !== 'todos') filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
             if (!filtradas.length) { 
-                tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
+                tbody.innerHTML = '}<td colspan="6">Nenhuma venda}'; 
                 atualizarPendenteVendedores();
                 return; 
             }
@@ -1342,7 +1483,7 @@
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
             if (!comprasSemana.length) { 
-                tbody.innerHTML = '<tr><td colspan="7">Nenhuma compra nesta semana</td></tr>'; 
+                tbody.innerHTML = '}<td colspan="7">Nenhuma compra nesta semana}'; 
                 return; 
             }
             comprasSemana.slice().reverse().forEach(c => {
@@ -1448,7 +1589,7 @@
                 row.appendChild(tdAcoes);
                 tbody.appendChild(row);
             });
-            if (!pendentes.length) tbody.innerHTML = '<tr><td colspan="6">Ninguém deve</td></tr>';
+            if (!pendentes.length) tbody.innerHTML = '}<td colspan="6">Ninguém deve}';
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
@@ -1505,7 +1646,7 @@ José Cláudio do Vale`;
                     
                     tbodySem.appendChild(row);
                 });
-                if (!compras.length) tbodySem.innerHTML = '<tr><td colspan="3">Nenhum gasto</td></tr>';
+                if (!compras.length) tbodySem.innerHTML = '}<td colspan="3">Nenhum gasto}';
             }
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
@@ -1543,7 +1684,7 @@ José Cláudio do Vale`;
                         tbodyDet.appendChild(row);
                     });
                 } else {
-                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana</td>';
+                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana}';
                 }
             }
         }
@@ -1578,7 +1719,6 @@ José Cláudio do Vale`;
             if (elMargem) elMargem.innerText = (rec > 0 ? ((rec - gas) / rec * 100).toFixed(1) : 0) + '%';
         }
 
-        // VENDEDORES - CORRIGIDA
         function atualizarVendasPorVendedor() {
             const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const receb = { Cláudio: 0, Antônio: 0, Igor: 0 };
@@ -1649,7 +1789,6 @@ José Cláudio do Vale`;
             }
         }
 
-        // HISTÓRICO - CORRIGIDA
         window.atualizarHistorico = function() {
             const tituloHistorico = document.getElementById('historicoSemanaTitulo');
             if (tituloHistorico) tituloHistorico.innerText = semanaAtual;
@@ -1773,7 +1912,6 @@ José Cláudio do Vale`;
             alert('✅ Estoque ajustado!');
         };
 
-        // TABELA DE PRODUTOS - CORRIGIDA
         function atualizarTabelaProdutos() {
             const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
             if (!tbodyPrecos) return;
@@ -1933,7 +2071,8 @@ José Cláudio do Vale`;
         };
 
         // ---------- INICIALIZAÇÃO ----------
-        window.onload = function() {
+        window.onload = async function() {
+            await carregarUsuarios();
             if (verificarSessao()) {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('appScreen').classList.remove('hidden');
