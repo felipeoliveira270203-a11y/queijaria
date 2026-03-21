@@ -785,10 +785,9 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaVendas">
-                                <thead> <tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr> </thead>
+                                <thead> 的人<th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th> </thead>
                                 <tbody></tbody>
-                            </table>
-                        </div>
+                             </div>
                     </div>
                 `;
                 case 'estoque': return `
@@ -803,10 +802,9 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaEstoque">
-                                <thead> <tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr> </thead>
+                                <thead> 的人<th>Produto</th><th>Quantidade</th><th>Status</th> </thead>
                                 <tbody></tbody>
-                            </table>
-                        </div>
+                             </div>
                     </div>
                 `;
                 case 'clientes': return `
@@ -815,10 +813,9 @@
                         <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
                         <div class="tabela-container">
                             <table id="tabelaClientes">
-                                <thead> <tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr> </thead>
+                                <thead> 的人<th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th> </thead>
                                 <tbody></tbody>
-                            </table>
-                        </div>
+                             </div>
                         <div style="margin-top:15px;background:#daa520;padding:10px;border:2px solid #654321;border-radius:8px;text-align:center;"><span>💰 TOTAL A RECEBER: </span><span id="totalCobranca" style="font-size:1.3rem;font-weight:bold;">R$ 0,00</span></div>
                     </div>
                 `;
@@ -836,10 +833,9 @@
                         <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
                         <div class="tabela-container">
                             <table id="tabelaCompras">
-                                <thead> <tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr> </thead>
+                                <thead> 的人<th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th> </thead>
                                 <tbody></tbody>
-                            </table>
-                        </div>
+                             </div>
                     </div>
                 `;
                 case 'gastos': return `
@@ -1239,21 +1235,36 @@
             clienteQuitacaoPendente = null;
         };
 
-        // ========== ATUALIZAÇÃO DAS TABELAS (CORRIGIDAS) ==========
+        // ========== ATUALIZAÇÃO DAS TABELAS (TODAS CORRIGIDAS) ==========
+        
+        // ESTOQUE - CORRIGIDA
         function atualizarEstoque() {
             if (modoEdicaoAtivo) return;
             const tbody = document.querySelector('#tabelaEstoque tbody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            produtos.forEach(p => {
-                const classe = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
-                const status = p.estoque <= 2 ? '⚡ Acabando' : '✔️ Tem';
-                tbody.innerHTML += `}\ee
-                    一般<strong>${p.nome}</strong>ee
-                    <td class="${classe}">${p.estoque}</td>
-                    <td>${status}</td>
-                 ee|`;
-            });
+            
+            for (let i = 0; i < produtos.length; i++) {
+                const p = produtos[i];
+                const row = document.createElement('tr');
+                
+                const tdProduto = document.createElement('td');
+                tdProduto.innerText = p.nome;
+                row.appendChild(tdProduto);
+                
+                const tdQuantidade = document.createElement('td');
+                const spanQuantidade = document.createElement('span');
+                spanQuantidade.className = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
+                spanQuantidade.innerText = p.estoque;
+                tdQuantidade.appendChild(spanQuantidade);
+                row.appendChild(tdQuantidade);
+                
+                const tdStatus = document.createElement('td');
+                tdStatus.innerText = p.estoque <= 2 ? '⚡ Acabando' : '✔️ Tem';
+                row.appendChild(tdStatus);
+                
+                tbody.appendChild(row);
+            }
         }
 
         function atualizarPendenteVendedores() {
@@ -1279,19 +1290,46 @@
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             if (filtroVendedorVendas !== 'todos') filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
             if (!filtradas.length) { 
-                tbody.innerHTML = '}<td colspan="6">Nenhuma venda</tr>'; 
+                tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
                 atualizarPendenteVendedores();
                 return; 
             }
             filtradas.slice().reverse().forEach(v => {
-                tbody.innerHTML += `}
-                    <td><span class="vendedor-badge">${v.vendedor}</span></td>
-                    <td>${v.cliente}</td>
-                    <td>${v.produto} (${v.qtd}x)</td>
-                    <td>R$ ${v.valorTotal.toFixed(2)}</td>
-                    <td><span class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
-                    <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td>
-                `;
+                const row = document.createElement('tr');
+                
+                const tdVendedor = document.createElement('td');
+                tdVendedor.innerHTML = '<span class="vendedor-badge">' + v.vendedor + '</span>';
+                row.appendChild(tdVendedor);
+                
+                const tdCliente = document.createElement('td');
+                tdCliente.innerText = v.cliente;
+                row.appendChild(tdCliente);
+                
+                const tdProduto = document.createElement('td');
+                tdProduto.innerText = v.produto + ' (' + v.qtd + 'x)';
+                row.appendChild(tdProduto);
+                
+                const tdTotal = document.createElement('td');
+                tdTotal.innerText = 'R$ ' + v.valorTotal.toFixed(2);
+                row.appendChild(tdTotal);
+                
+                const tdStatus = document.createElement('td');
+                const spanStatus = document.createElement('span');
+                spanStatus.className = v.status === 'pago' ? 'status-pago' : 'status-pendente';
+                spanStatus.innerText = v.status === 'pago' ? '✅ Pago' : '⏳ Pendente';
+                spanStatus.onclick = function() { alterarStatusVenda(v.id); };
+                tdStatus.appendChild(spanStatus);
+                row.appendChild(tdStatus);
+                
+                const tdAcoes = document.createElement('td');
+                const btnExcluir = document.createElement('button');
+                btnExcluir.className = 'acao-btn excluir';
+                btnExcluir.innerHTML = '🗑️';
+                btnExcluir.onclick = function() { excluirVenda(v.id); };
+                tdAcoes.appendChild(btnExcluir);
+                row.appendChild(tdAcoes);
+                
+                tbody.appendChild(row);
             });
             atualizarPendenteVendedores();
         }
@@ -1304,19 +1342,50 @@
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
             if (!comprasSemana.length) { 
-                tbody.innerHTML = '}<td colspan="7">Nenhuma compra nesta semana</tr>'; 
+                tbody.innerHTML = '<tr><td colspan="7">Nenhuma compra nesta semana</td></tr>'; 
                 return; 
             }
             comprasSemana.slice().reverse().forEach(c => {
-                tbody.innerHTML += `}
-                    <td>${c.produto}</td>
-                    <td>${c.qtd}</td>
-                    <td>R$ ${c.valorUnitario.toFixed(2)}</td>
-                    <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
-                    <td>${c.fornecedor}</td>
-                    <td><span class="${c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente'}" onclick="alterarStatusCompra(${c.id})">${c.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
-                    <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
-                `;
+                const row = document.createElement('tr');
+                
+                const tdProduto = document.createElement('td');
+                tdProduto.innerText = c.produto;
+                row.appendChild(tdProduto);
+                
+                const tdQtd = document.createElement('td');
+                tdQtd.innerText = c.qtd;
+                row.appendChild(tdQtd);
+                
+                const tdUnitario = document.createElement('td');
+                tdUnitario.innerText = 'R$ ' + c.valorUnitario.toFixed(2);
+                row.appendChild(tdUnitario);
+                
+                const tdTotal = document.createElement('td');
+                tdTotal.className = 'valor-vermelho';
+                tdTotal.innerText = 'R$ ' + c.valorTotal.toFixed(2);
+                row.appendChild(tdTotal);
+                
+                const tdFornecedor = document.createElement('td');
+                tdFornecedor.innerText = c.fornecedor;
+                row.appendChild(tdFornecedor);
+                
+                const tdStatus = document.createElement('td');
+                const spanStatus = document.createElement('span');
+                spanStatus.className = c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente';
+                spanStatus.innerText = c.status === 'pago' ? '✅ Pago' : '⏳ Pendente';
+                spanStatus.onclick = function() { alterarStatusCompra(c.id); };
+                tdStatus.appendChild(spanStatus);
+                row.appendChild(tdStatus);
+                
+                const tdAcoes = document.createElement('td');
+                const btnExcluir = document.createElement('button');
+                btnExcluir.className = 'acao-btn excluir';
+                btnExcluir.innerHTML = '🗑️';
+                btnExcluir.onclick = function() { excluirCompra(c.id); };
+                tdAcoes.appendChild(btnExcluir);
+                row.appendChild(tdAcoes);
+                
+                tbody.appendChild(row);
             });
         }
 
@@ -1338,19 +1407,48 @@
             let totalGeral = 0;
             Object.entries(agrupado).forEach(([c, d]) => {
                 totalGeral += d.total;
-                tbody.innerHTML += `}
-                    <td><strong>${c}</strong></td>
-                    <td><span class="status-pendente">R$ ${d.total.toFixed(2)}</span></td>
-                    <td><span class="vendedor-badge">${d.vendedor}</span></td>
-                    <td>${d.itens.join('<br>')}</td>
-                    <td>${d.datas.join('<br>')}</td>
-                    <td>
-                        <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
-                        <button class="acao-btn editar" onclick="abrirModalQuitacao('${c}')" style="background:#2e8b57;color:white;">✅ Quitar</button>
-                    </td>
-                `;
+                const row = document.createElement('tr');
+                
+                const tdCliente = document.createElement('td');
+                tdCliente.innerHTML = '<strong>' + c + '</strong>';
+                row.appendChild(tdCliente);
+                
+                const tdDebito = document.createElement('td');
+                tdDebito.innerHTML = '<span class="status-pendente">R$ ' + d.total.toFixed(2) + '</span>';
+                row.appendChild(tdDebito);
+                
+                const tdVendedor = document.createElement('td');
+                tdVendedor.innerHTML = '<span class="vendedor-badge">' + d.vendedor + '</span>';
+                row.appendChild(tdVendedor);
+                
+                const tdProdutos = document.createElement('td');
+                tdProdutos.innerHTML = d.itens.join('<br>');
+                row.appendChild(tdProdutos);
+                
+                const tdData = document.createElement('td');
+                tdData.innerHTML = d.datas.join('<br>');
+                row.appendChild(tdData);
+                
+                const tdAcoes = document.createElement('td');
+                
+                const btnWhatsApp = document.createElement('button');
+                btnWhatsApp.className = 'acao-btn editar';
+                btnWhatsApp.innerHTML = '📱';
+                btnWhatsApp.onclick = function() { enviarWhatsAppCobranca(c, d.total, d.vendedor, d.itens.join(', ')); };
+                tdAcoes.appendChild(btnWhatsApp);
+                
+                const btnQuitar = document.createElement('button');
+                btnQuitar.className = 'acao-btn editar';
+                btnQuitar.innerHTML = '✅ Quitar';
+                btnQuitar.style.backgroundColor = '#2e8b57';
+                btnQuitar.style.color = '#f5e6d3';
+                btnQuitar.onclick = function() { abrirModalQuitacao(c); };
+                tdAcoes.appendChild(btnQuitar);
+                
+                row.appendChild(tdAcoes);
+                tbody.appendChild(row);
             });
-            if (!pendentes.length) tbody.innerHTML = '}<td colspan="6">Ninguém deve</tr>';
+            if (!pendentes.length) tbody.innerHTML = '<tr><td colspan="6">Ninguém deve</td></tr>';
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
@@ -1390,13 +1488,24 @@ José Cláudio do Vale`;
             if (tbodySem) {
                 tbodySem.innerHTML = '';
                 Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
-                    tbodySem.innerHTML += `}
-                        <td>Semana ${s}</td>
-                        <td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td>
-                        <td>${porSemana[s].qtd}</td>
-                    `;
+                    const row = document.createElement('tr');
+                    
+                    const tdSemana = document.createElement('td');
+                    tdSemana.innerText = 'Semana ' + s;
+                    row.appendChild(tdSemana);
+                    
+                    const tdTotal = document.createElement('td');
+                    tdTotal.className = 'valor-vermelho';
+                    tdTotal.innerText = 'R$ ' + porSemana[s].total.toFixed(2);
+                    row.appendChild(tdTotal);
+                    
+                    const tdQtd = document.createElement('td');
+                    tdQtd.innerText = porSemana[s].qtd;
+                    row.appendChild(tdQtd);
+                    
+                    tbodySem.appendChild(row);
                 });
-                if (!compras.length) tbodySem.innerHTML = '}<td colspan="3">Nenhum gasto</tr>';
+                if (!compras.length) tbodySem.innerHTML = '<tr><td colspan="3">Nenhum gasto</td></tr>';
             }
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
@@ -1404,17 +1513,37 @@ José Cláudio do Vale`;
                 const gastosFiltrados = compras.filter(c => c.semana === semanaAtual);
                 if (gastosFiltrados.length) {
                     gastosFiltrados.slice().reverse().forEach(c => {
-                        tbodyDet.innerHTML += `}
-                            <td>${c.data}</td>
-                            <td>${c.produto}</td>
-                            <td>${c.qtd}</td>
-                            <td>R$ ${c.valorUnitario.toFixed(2)}</td>
-                            <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
-                            <td>${c.fornecedor}</td>
-                        `;
+                        const row = document.createElement('tr');
+                        
+                        const tdData = document.createElement('td');
+                        tdData.innerText = c.data;
+                        row.appendChild(tdData);
+                        
+                        const tdProduto = document.createElement('td');
+                        tdProduto.innerText = c.produto;
+                        row.appendChild(tdProduto);
+                        
+                        const tdQtd = document.createElement('td');
+                        tdQtd.innerText = c.qtd;
+                        row.appendChild(tdQtd);
+                        
+                        const tdUnitario = document.createElement('td');
+                        tdUnitario.innerText = 'R$ ' + c.valorUnitario.toFixed(2);
+                        row.appendChild(tdUnitario);
+                        
+                        const tdTotal = document.createElement('td');
+                        tdTotal.className = 'valor-vermelho';
+                        tdTotal.innerText = 'R$ ' + c.valorTotal.toFixed(2);
+                        row.appendChild(tdTotal);
+                        
+                        const tdFornecedor = document.createElement('td');
+                        tdFornecedor.innerText = c.fornecedor;
+                        row.appendChild(tdFornecedor);
+                        
+                        tbodyDet.appendChild(row);
                     });
                 } else {
-                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana</tr>';
+                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana</td>';
                 }
             }
         }
@@ -1449,7 +1578,7 @@ José Cláudio do Vale`;
             if (elMargem) elMargem.innerText = (rec > 0 ? ((rec - gas) / rec * 100).toFixed(1) : 0) + '%';
         }
 
-        // ========== FUNÇÃO CORRIGIDA: VENDAS POR VENDEDOR ==========
+        // VENDEDORES - CORRIGIDA
         function atualizarVendasPorVendedor() {
             const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const receb = { Cláudio: 0, Antônio: 0, Igor: 0 };
@@ -1475,7 +1604,6 @@ José Cláudio do Vale`;
                 }
             });
             
-            // Atualizar os cards
             const elClaudio = document.getElementById('vendasClaudio');
             const elAntonio = document.getElementById('vendasAntonio');
             const elIgor = document.getElementById('vendasIgor');
@@ -1484,7 +1612,6 @@ José Cláudio do Vale`;
             if (elAntonio) elAntonio.innerText = 'R$ ' + vends.Antônio.toFixed(2);
             if (elIgor) elIgor.innerText = 'R$ ' + vends.Igor.toFixed(2);
             
-            // Montar a tabela corretamente
             const tbody = document.getElementById('corpoVendasPorVendedor');
             if (tbody) {
                 tbody.innerHTML = '';
@@ -1522,7 +1649,7 @@ José Cláudio do Vale`;
             }
         }
 
-        // ========== FUNÇÃO CORRIGIDA: HISTÓRICO ==========
+        // HISTÓRICO - CORRIGIDA
         window.atualizarHistorico = function() {
             const tituloHistorico = document.getElementById('historicoSemanaTitulo');
             if (tituloHistorico) tituloHistorico.innerText = semanaAtual;
@@ -1646,7 +1773,7 @@ José Cláudio do Vale`;
             alert('✅ Estoque ajustado!');
         };
 
-        // ========== FUNÇÃO CORRIGIDA: TABELA DE PRODUTOS ==========
+        // TABELA DE PRODUTOS - CORRIGIDA
         function atualizarTabelaProdutos() {
             const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
             if (!tbodyPrecos) return;
@@ -1666,7 +1793,10 @@ José Cláudio do Vale`;
                 row.appendChild(tdPreco);
                 
                 const tdEstoque = document.createElement('td');
-                tdEstoque.innerHTML = '<span class="' + (p.estoque <= 2 ? 'status-pendente' : 'status-pago') + '">' + p.estoque + '</span>';
+                const spanEstoque = document.createElement('span');
+                spanEstoque.className = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
+                spanEstoque.innerText = p.estoque;
+                tdEstoque.appendChild(spanEstoque);
                 row.appendChild(tdEstoque);
                 
                 const tdAcoes = document.createElement('td');
@@ -1772,7 +1902,7 @@ José Cláudio do Vale`;
             });
             win.document.write(`
                         </tbody>
-                     </table>
+                    </table>
                     <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
                 </body>
                 </html>
