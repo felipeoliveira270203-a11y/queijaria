@@ -753,7 +753,7 @@
             }, 50);
         };
 
-        // ---------- TEMPLATES DAS ABAS ----------
+        // ---------- TEMPLATES DAS ABAS (CORRIGIDOS) ----------
         function obterTemplateAba(aba) {
             switch (aba) {
                 case 'vendas': return `
@@ -783,7 +783,14 @@
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Antônio',this)">Antônio</button>
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Igor',this)">Igor</button>
                         </div>
-                        <div class="tabela-container"><table id="tabelaVendas"><thead>——<th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th>--</thead><tbody></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaVendas">
+                                <thead>
+                                    <tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 `;
                 case 'estoque': return `
@@ -799,16 +806,25 @@
                         <div class="tabela-container">
                             <table id="tabelaEstoque">
                                 <thead>
-                                    的人<th>Produto</th><th>Quantidade</th><th>Status</th>  </thead>
+                                    <tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr>
+                                </thead>
                                 <tbody></tbody>
-                             </div>
+                            </table>
+                        </div>
                     </div>
                 `;
                 case 'clientes': return `
                     <div class="card">
                         <div class="card-title">👥 LISTA DE COBRANÇA <button class="btn-excel" style="padding:5px 10px;width:auto;" onclick="imprimirCobranca()">🖨️ IMPRIMIR</button></div>
                         <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
-                        <div class="tabela-container"><table id="tabelaClientes"><thead>——<th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th>--</thead><tbody></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaClientes">
+                                <thead>
+                                    <tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                         <div style="margin-top:15px;background:#daa520;padding:10px;border:2px solid #654321;border-radius:8px;text-align:center;"><span>💰 TOTAL A RECEBER: </span><span id="totalCobranca" style="font-size:1.3rem;font-weight:bold;">R$ 0,00</span></div>
                     </div>
                 `;
@@ -824,7 +840,14 @@
                     </div>
                     <div class="card">
                         <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaCompras"><thead>——<th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th>--</thead><tbody></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaCompras">
+                                <thead>
+                                    <tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 `;
                 case 'gastos': return `
@@ -835,9 +858,19 @@
                             <div class="resumo-card"><div class="label">Essa semana</div><div class="valor" id="totalGastoSemana">R$ 0</div></div>
                         </div>
                         <div class="card-title">📅 GASTOS POR SEMANA</div>
-                        <div class="tabela-container"><table id="tabelaGastosSemana"><thead>——<th>Semana</th><th>Total</th><th>Qtd</th>--</thead><tbody id="corpoGastosSemana"></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaGastosSemana">
+                                <thead>
+                                    <tr><th>Semana</th><th>Total</th><th>Qtd</th> </thead>
+                                <tbody id="corpoGastosSemana"></tbody>
+                             </div>
                         <div class="card-title">📋 DETALHE DOS GASTOS - SEMANA <span id="gastosSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaTodosGastos"><thead>——<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th>--</thead><tbody id="corpoTodosGastos"></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaTodosGastos">
+                                <thead>
+                                    的人<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th> </thead>
+                                <tbody id="corpoTodosGastos"></tbody>
+                             </div>
                     </div>
                 `;
                 case 'relatorios': return `
@@ -864,7 +897,12 @@
                             <div class="resumo-card"><div class="label">Antônio</div><div class="valor" id="vendasAntonio">R$ 0</div></div>
                             <div class="resumo-card"><div class="label">Igor</div><div class="valor" id="vendasIgor">R$ 0</div></div>
                         </div>
-                        <div class="tabela-container"><table id="tabelaVendasPorVendedor"><thead>——<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th>--</thead><tbody id="corpoVendasPorVendedor"></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaVendasPorVendedor">
+                                <thead>
+                                    的人<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th> </thead>
+                                <tbody id="corpoVendasPorVendedor"></tbody>
+                             </div>
                     </div>
                 `;
                 case 'historico': return `
@@ -878,7 +916,7 @@
                         <div class="tabela-container">
                             <table id="tabelaHistorico">
                                 <thead>
-                                    的人<th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th>  </thead>
+                                    的人<th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead>
                                 <tbody id="corpoHistorico"></tbody>
                              </div>
                     </div>
@@ -892,7 +930,12 @@
                     </div>
                     <div class="card">
                         <div class="card-title">📋 TABELA DE PREÇO</div>
-                        <div class="tabela-container"><table id="tabelaPrecos"><thead>——<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th>--</thead><tbody></tbody>  </div>
+                        <div class="tabela-container">
+                            <table id="tabelaPrecos">
+                                <thead>
+                                    的人<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th> </thead>
+                                <tbody></tbody>
+                             </div>
                     </div>
                 `;
                 default: return '';
@@ -1102,7 +1145,7 @@
             atualizarTudo();
         };
 
-        // ========== FUNÇÕES DE EXCLUSÃO (CORRIGIDAS) ==========
+        // ========== FUNÇÕES DE EXCLUSÃO ==========
         window.excluirVenda = function(id) {
             if (confirm('Tem certeza que quer apagar esta venda?')) {
                 const venda = vendas.find(v => v.id === id);
@@ -1222,11 +1265,7 @@
             produtos.forEach(p => {
                 const classe = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
                 const status = p.estoque <= 2 ? '⚡ Acabando' : '✔️ Tem';
-                tbody.innerHTML += `|ee
-                    了一般${p.nome}ee
-                    了一般<span class="${classe}">${p.estoque}</span>ee
-                    了一般${status}ee
-                 ee|`;
+                tbody.innerHTML += `<tr><td>${p.nome}</td><td><span class="${classe}">${p.estoque}</span></td><td>${status}</td></tr>`;
             });
         }
 
@@ -1253,19 +1292,19 @@
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             if (filtroVendedorVendas !== 'todos') filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
             if (!filtradas.length) { 
-                tbody.innerHTML = '|<td colspan="6">Nenhuma venda</td>|'; 
+                tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
                 atualizarPendenteVendedores();
                 return; 
             }
             filtradas.slice().reverse().forEach(v => {
-                tbody.innerHTML += `|<tr>
+                tbody.innerHTML += `<tr>
                     <td><span class="vendedor-badge">${v.vendedor}</span></td>
                     <td>${v.cliente}</td>
                     <td>${v.produto} (${v.qtd}x)</td>
                     <td>R$ ${v.valorTotal.toFixed(2)}</td>
                     <td><span class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
                     <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td>
-                </tr>|`;
+                </tr>`;
             });
             atualizarPendenteVendedores();
         }
@@ -1278,11 +1317,11 @@
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
             if (!comprasSemana.length) { 
-                tbody.innerHTML = '|<td colspan="7">Nenhuma compra nesta semana</td>|'; 
+                tbody.innerHTML = '<tr><td colspan="7">Nenhuma compra nesta semana</td></tr>'; 
                 return; 
             }
             comprasSemana.slice().reverse().forEach(c => {
-                tbody.innerHTML += `|<tr>
+                tbody.innerHTML += `<tr>
                     <td>${c.produto}</td>
                     <td>${c.qtd}</td>
                     <td>R$ ${c.valorUnitario.toFixed(2)}</td>
@@ -1290,7 +1329,7 @@
                     <td>${c.fornecedor}</td>
                     <td><span class="${c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente'}" onclick="alterarStatusCompra(${c.id})">${c.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
                     <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
-                </tr>|`;
+                </tr>`;
             });
         }
 
@@ -1302,7 +1341,9 @@
             if (filtroCobrancaAtual !== 'todos') pendentes = pendentes.filter(v => v.vendedor === filtroCobrancaAtual);
             const agrupado = {};
             pendentes.forEach(v => {
-                if (!agrupado[v.cliente]) agrupado[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [], datas: [] };
+                if (!agrupado[v.cliente]) {
+                    agrupado[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [], datas: [] };
+                }
                 agrupado[v.cliente].total += v.valorTotal;
                 agrupado[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
                 agrupado[v.cliente].datas.push(v.data);
@@ -1310,7 +1351,7 @@
             let totalGeral = 0;
             Object.entries(agrupado).forEach(([c, d]) => {
                 totalGeral += d.total;
-                tbody.innerHTML += `|<tr>
+                tbody.innerHTML += `<tr>
                     <td><strong>${c}</strong></td>
                     <td><span class="status-pendente">R$ ${d.total.toFixed(2)}</span></td>
                     <td><span class="vendedor-badge">${d.vendedor}</span></td>
@@ -1320,9 +1361,9 @@
                         <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
                         <button class="acao-btn editar" onclick="abrirModalQuitacao('${c}')" style="background:#2e8b57;color:white;">✅ Quitar</button>
                     </td>
-                </tr>|`;
+                </tr>`;
             });
-            if (!pendentes.length) tbody.innerHTML = '|<td colspan="6">Ninguém deve</td>|';
+            if (!pendentes.length) tbody.innerHTML = '<tr><td colspan="6">Ninguém deve</td></tr>';
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
@@ -1362,9 +1403,9 @@ José Cláudio do Vale`;
             if (tbodySem) {
                 tbodySem.innerHTML = '';
                 Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
-                    tbodySem.innerHTML += `|<tr><td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td></tr>|`;
+                    tbodySem.innerHTML += `<tr><td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td></tr>`;
                 });
-                if (!compras.length) tbodySem.innerHTML = '|<td colspan="3">Nenhum gasto</td>|';
+                if (!compras.length) tbodySem.innerHTML = '<tr><td colspan="3">Nenhum gasto</td></tr>';
             }
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
@@ -1372,17 +1413,17 @@ José Cláudio do Vale`;
                 const gastosFiltrados = compras.filter(c => c.semana === semanaAtual);
                 if (gastosFiltrados.length) {
                     gastosFiltrados.slice().reverse().forEach(c => {
-                        tbodyDet.innerHTML += `|<tr>
+                        tbodyDet.innerHTML += `<tr>
                             <td>${c.data}</td>
                             <td>${c.produto}</td>
                             <td>${c.qtd}</td>
                             <td>R$ ${c.valorUnitario.toFixed(2)}</td>
                             <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
                             <td>${c.fornecedor}</td>
-                        </tr>|`;
+                        </tr>`;
                     });
                 } else {
-                    tbodyDet.innerHTML = '|<td colspan="6">Nenhuma compra nesta semana</td>|';
+                    tbodyDet.innerHTML = '<tr><td colspan="6">Nenhuma compra nesta semana</td></tr>';
                 }
             }
         }
@@ -1438,12 +1479,12 @@ José Cláudio do Vale`;
             if (tbody) {
                 tbody.innerHTML = '';
                 ['Cláudio', 'Antônio', 'Igor'].forEach(v => {
-                    tbody.innerHTML += `|ee
-                        了一般<strong>${v}</strong>ee
+                    tbody.innerHTML += `}|ee
+                        一般<strong>${v}</strong>ee
                         <td class="valor-verde">R$ ${vends[v].toFixed(2)}ee
                         <td class="valor-verde">R$ ${receb[v].toFixed(2)}ee
                         <td class="valor-vermelho">R$ ${dev[v].toFixed(2)}ee
-                        了一般${qtd[v]}ee
+                        一般${qtd[v]}ee
                      ee|`;
                 });
             }
@@ -1463,11 +1504,11 @@ José Cláudio do Vale`;
                 const saldo = comprasSemana - vendasSemana;
                 compras.filter(c => c.semana === semanaAtual && c.produtoId === produto.id).forEach(c => totalComprasValor += c.valorTotal);
                 vendas.filter(v => v.semana === semanaAtual && v.produtoId === produto.id).forEach(v => totalVendasValor += v.valorTotal);
-                tbody.innerHTML += `|ee
-                    了一般<strong>${produto.nome}</strong>ee
+                tbody.innerHTML += `}|ee
+                    一般<strong>${produto.nome}</strong>ee
                     <td class="valor-verde">${comprasSemana}ee
                     <td class="valor-vermelho">${vendasSemana}ee
-                    了一般${saldo}ee
+                    一般${saldo}ee
                  ee|`;
             });
             const elTotalCompras = document.getElementById('totalComprasSemana');
@@ -1551,11 +1592,11 @@ José Cláudio do Vale`;
             if (tbodyPrecos) {
                 tbodyPrecos.innerHTML = '';
                 produtos.forEach(p => {
-                    tbodyPrecos.innerHTML += `|ee
-                        了一般${p.nome}ee
-                        了一般R$ ${p.preco.toFixed(2)}ee
-                        了一般<span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>ee
-                        了一般<button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button>ee
+                    tbodyPrecos.innerHTML += `}|ee
+                        一般${p.nome}ee
+                        一般R$ ${p.preco.toFixed(2)}ee
+                        一般<span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>ee
+                        一般<button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button>ee
                      ee|`;
                 });
             }
@@ -1624,22 +1665,17 @@ José Cláudio do Vale`;
                 <body>
                     <h1>🧀 QUEIJARIA DO MINEIRO</h1>
                     <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
-                     <table>
+                    表格
                         <thead>
-                            的人<th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th>  </thead>
+                            的人<th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
-                win.document.write(`|ee
-                    了一般<strong>${c}</strong>ee
-                    了一般${d.vendedor}ee
-                    了一般R$ ${d.total.toFixed(2)}ee
-                    了一般${d.itens.join(', ')}ee
-                 ee|`);
+                win.document.write(`<tr><td><strong>${c}</strong></td><td>${d.vendedor}</td><td>R$ ${d.total.toFixed(2)}</td><td>${d.itens.join(', ')}</td></tr>`);
             });
             win.document.write(`
                         </tbody>
-                      </table>
+                     </table>
                     <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
                 </body>
                 </html>
