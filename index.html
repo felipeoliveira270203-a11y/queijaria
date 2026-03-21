@@ -785,9 +785,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaVendas">
-                                <thead>
-                                    <tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr>
-                                </thead>
+                                <thead><tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -805,9 +803,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaEstoque">
-                                <thead>
-                                    <tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr>
-                                </thead>
+                                <thead><tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr></thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -819,9 +815,7 @@
                         <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
                         <div class="tabela-container">
                             <table id="tabelaClientes">
-                                <thead>
-                                    <tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr>
-                                </thead>
+                                <thead><tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr></thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -842,9 +836,7 @@
                         <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
                         <div class="tabela-container">
                             <table id="tabelaCompras">
-                                <thead>
-                                    <tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr>
-                                </thead>
+                                <thead><tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr></thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -860,15 +852,13 @@
                         <div class="card-title">📅 GASTOS POR SEMANA</div>
                         <div class="tabela-container">
                             <table id="tabelaGastosSemana">
-                                <thead>
-                                    <tr><th>Semana</th><th>Total</th><th>Qtd</th> </thead>
+                                <thead><tr><th>Semana</th><th>Total</th><th>Qtd</th> </thead>
                                 <tbody id="corpoGastosSemana"></tbody>
                              </div>
                         <div class="card-title">📋 DETALHE DOS GASTOS - SEMANA <span id="gastosSemanaTitulo">${semanaAtual}</span></div>
                         <div class="tabela-container">
                             <table id="tabelaTodosGastos">
-                                <thead>
-                                    的人<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th> </thead>
+                                <thead>的人<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th> </thead>
                                 <tbody id="corpoTodosGastos"></tbody>
                              </div>
                     </div>
@@ -899,8 +889,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaVendasPorVendedor">
-                                <thead>
-                                    的人<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th> </thead>
+                                <thead>的人<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th> </thead>
                                 <tbody id="corpoVendasPorVendedor"></tbody>
                              </div>
                     </div>
@@ -915,8 +904,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaHistorico">
-                                <thead>
-                                    的人<th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead>
+                                <thead>的人<th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead>
                                 <tbody id="corpoHistorico"></tbody>
                              </div>
                     </div>
@@ -932,8 +920,7 @@
                         <div class="card-title">📋 TABELA DE PREÇO</div>
                         <div class="tabela-container">
                             <table id="tabelaPrecos">
-                                <thead>
-                                    的人<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th> </thead>
+                                <thead>的人<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th> </thead>
                                 <tbody></tbody>
                              </div>
                     </div>
@@ -974,11 +961,7 @@
                 historicoEstoque = dados.historicoEstoque || [];
                 contadorId = dados.contadorId || 21;
                 
-                // Garantir que todas as compras tenham status (para compatibilidade com dados antigos)
-                compras = compras.map(c => ({
-                    ...c,
-                    status: c.status || 'pendente'
-                }));
+                compras = compras.map(c => ({ ...c, status: c.status || 'pendente' }));
                 
                 atualizarStatusConexao(true);
                 atualizarTudo();
@@ -1256,7 +1239,7 @@
             clienteQuitacaoPendente = null;
         };
 
-        // ========== ATUALIZAÇÃO DAS TABELAS ==========
+        // ========== ATUALIZAÇÃO DAS TABELAS (CORRIGIDAS) ==========
         function atualizarEstoque() {
             if (modoEdicaoAtivo) return;
             const tbody = document.querySelector('#tabelaEstoque tbody');
@@ -1479,7 +1462,7 @@ José Cláudio do Vale`;
             if (tbody) {
                 tbody.innerHTML = '';
                 ['Cláudio', 'Antônio', 'Igor'].forEach(v => {
-                    tbody.innerHTML += `}|ee
+                    tbody.innerHTML += `}\ee
                         一般<strong>${v}</strong>ee
                         <td class="valor-verde">R$ ${vends[v].toFixed(2)}ee
                         <td class="valor-verde">R$ ${receb[v].toFixed(2)}ee
@@ -1504,7 +1487,7 @@ José Cláudio do Vale`;
                 const saldo = comprasSemana - vendasSemana;
                 compras.filter(c => c.semana === semanaAtual && c.produtoId === produto.id).forEach(c => totalComprasValor += c.valorTotal);
                 vendas.filter(v => v.semana === semanaAtual && v.produtoId === produto.id).forEach(v => totalVendasValor += v.valorTotal);
-                tbody.innerHTML += `}|ee
+                tbody.innerHTML += `}\ee
                     一般<strong>${produto.nome}</strong>ee
                     <td class="valor-verde">${comprasSemana}ee
                     <td class="valor-vermelho">${vendasSemana}ee
@@ -1592,7 +1575,7 @@ José Cláudio do Vale`;
             if (tbodyPrecos) {
                 tbodyPrecos.innerHTML = '';
                 produtos.forEach(p => {
-                    tbodyPrecos.innerHTML += `}|ee
+                    tbodyPrecos.innerHTML += `}\ee
                         一般${p.nome}ee
                         一般R$ ${p.preco.toFixed(2)}ee
                         一般<span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>ee
@@ -1665,9 +1648,10 @@ José Cláudio do Vale`;
                 <body>
                     <h1>🧀 QUEIJARIA DO MINEIRO</h1>
                     <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
-                    表格
+                    <table border="1">
                         <thead>
-                            的人<th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
+                            <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th></tr>
+                        </thead>
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
@@ -1675,7 +1659,7 @@ José Cláudio do Vale`;
             });
             win.document.write(`
                         </tbody>
-                     </table>
+                    </table>
                     <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
                 </body>
                 </html>
