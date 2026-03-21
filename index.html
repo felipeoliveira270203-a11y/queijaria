@@ -753,7 +753,7 @@
             }, 50);
         };
 
-        // ---------- TEMPLATES DAS ABAS (CORRIGIDOS) ----------
+        // ---------- TEMPLATES DAS ABAS ----------
         function obterTemplateAba(aba) {
             switch (aba) {
                 case 'vendas': return `
@@ -785,7 +785,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaVendas">
-                                <thead><tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead>
+                                <thead> <tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Status</th><th>Ações</th></tr> </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -803,7 +803,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaEstoque">
-                                <thead><tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr></thead>
+                                <thead> <tr><th>Produto</th><th>Quantidade</th><th>Status</th></tr> </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -815,7 +815,7 @@
                         <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
                         <div class="tabela-container">
                             <table id="tabelaClientes">
-                                <thead><tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr></thead>
+                                <thead> <tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th></tr> </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -836,7 +836,7 @@
                         <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
                         <div class="tabela-container">
                             <table id="tabelaCompras">
-                                <thead><tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr></thead>
+                                <thead> <tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th></tr> </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -852,13 +852,13 @@
                         <div class="card-title">📅 GASTOS POR SEMANA</div>
                         <div class="tabela-container">
                             <table id="tabelaGastosSemana">
-                                <thead><tr><th>Semana</th><th>Total</th><th>Qtd</th> </thead>
+                                <thead> 的人<th>Semana</th><th>Total</th><th>Qtd</th> </thead>
                                 <tbody id="corpoGastosSemana"></tbody>
                              </div>
                         <div class="card-title">📋 DETALHE DOS GASTOS - SEMANA <span id="gastosSemanaTitulo">${semanaAtual}</span></div>
                         <div class="tabela-container">
                             <table id="tabelaTodosGastos">
-                                <thead>的人<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th> </thead>
+                                <thead> 的人<th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th> </thead>
                                 <tbody id="corpoTodosGastos"></tbody>
                              </div>
                     </div>
@@ -889,7 +889,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaVendasPorVendedor">
-                                <thead>的人<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th> </thead>
+                                <thead> 的人<th>Vendedor</th><th>Total</th><th>Recebido</th><th>A Receber</th><th>Qtd</th> </thead>
                                 <tbody id="corpoVendasPorVendedor"></tbody>
                              </div>
                     </div>
@@ -904,7 +904,7 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaHistorico">
-                                <thead>的人<th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead>
+                                <thead> 的人<th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead>
                                 <tbody id="corpoHistorico"></tbody>
                              </div>
                     </div>
@@ -920,7 +920,7 @@
                         <div class="card-title">📋 TABELA DE PREÇO</div>
                         <div class="tabela-container">
                             <table id="tabelaPrecos">
-                                <thead>的人<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th> </thead>
+                                <thead> 的人<th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th> </thead>
                                 <tbody></tbody>
                              </div>
                     </div>
@@ -1248,7 +1248,11 @@
             produtos.forEach(p => {
                 const classe = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
                 const status = p.estoque <= 2 ? '⚡ Acabando' : '✔️ Tem';
-                tbody.innerHTML += `<tr><td>${p.nome}</td><td><span class="${classe}">${p.estoque}</span></td><td>${status}</td></tr>`;
+                tbody.innerHTML += `}\ee
+                    一般<strong>${p.nome}</strong>ee
+                    <td class="${classe}">${p.estoque}</td>
+                    <td>${status}</td>
+                 ee|`;
             });
         }
 
@@ -1275,19 +1279,19 @@
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             if (filtroVendedorVendas !== 'todos') filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
             if (!filtradas.length) { 
-                tbody.innerHTML = '<tr><td colspan="6">Nenhuma venda</td></tr>'; 
+                tbody.innerHTML = '}<td colspan="6">Nenhuma venda</tr>'; 
                 atualizarPendenteVendedores();
                 return; 
             }
             filtradas.slice().reverse().forEach(v => {
-                tbody.innerHTML += `<tr>
+                tbody.innerHTML += `}
                     <td><span class="vendedor-badge">${v.vendedor}</span></td>
                     <td>${v.cliente}</td>
                     <td>${v.produto} (${v.qtd}x)</td>
                     <td>R$ ${v.valorTotal.toFixed(2)}</td>
                     <td><span class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
                     <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button></td>
-                </tr>`;
+                `;
             });
             atualizarPendenteVendedores();
         }
@@ -1300,11 +1304,11 @@
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
             if (!comprasSemana.length) { 
-                tbody.innerHTML = '<tr><td colspan="7">Nenhuma compra nesta semana</td></tr>'; 
+                tbody.innerHTML = '}<td colspan="7">Nenhuma compra nesta semana</tr>'; 
                 return; 
             }
             comprasSemana.slice().reverse().forEach(c => {
-                tbody.innerHTML += `<tr>
+                tbody.innerHTML += `}
                     <td>${c.produto}</td>
                     <td>${c.qtd}</td>
                     <td>R$ ${c.valorUnitario.toFixed(2)}</td>
@@ -1312,7 +1316,7 @@
                     <td>${c.fornecedor}</td>
                     <td><span class="${c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente'}" onclick="alterarStatusCompra(${c.id})">${c.status === 'pago' ? '✅ Pago' : '⏳ Pendente'}</span></td>
                     <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button></td>
-                </tr>`;
+                `;
             });
         }
 
@@ -1334,7 +1338,7 @@
             let totalGeral = 0;
             Object.entries(agrupado).forEach(([c, d]) => {
                 totalGeral += d.total;
-                tbody.innerHTML += `<tr>
+                tbody.innerHTML += `}
                     <td><strong>${c}</strong></td>
                     <td><span class="status-pendente">R$ ${d.total.toFixed(2)}</span></td>
                     <td><span class="vendedor-badge">${d.vendedor}</span></td>
@@ -1344,9 +1348,9 @@
                         <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
                         <button class="acao-btn editar" onclick="abrirModalQuitacao('${c}')" style="background:#2e8b57;color:white;">✅ Quitar</button>
                     </td>
-                </tr>`;
+                `;
             });
-            if (!pendentes.length) tbody.innerHTML = '<tr><td colspan="6">Ninguém deve</td></tr>';
+            if (!pendentes.length) tbody.innerHTML = '}<td colspan="6">Ninguém deve</tr>';
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
@@ -1386,9 +1390,13 @@ José Cláudio do Vale`;
             if (tbodySem) {
                 tbodySem.innerHTML = '';
                 Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
-                    tbodySem.innerHTML += `<tr><td>Semana ${s}</td><td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td><td>${porSemana[s].qtd}</td></tr>`;
+                    tbodySem.innerHTML += `}
+                        <td>Semana ${s}</td>
+                        <td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td>
+                        <td>${porSemana[s].qtd}</td>
+                    `;
                 });
-                if (!compras.length) tbodySem.innerHTML = '<tr><td colspan="3">Nenhum gasto</td></tr>';
+                if (!compras.length) tbodySem.innerHTML = '}<td colspan="3">Nenhum gasto</tr>';
             }
             const tbodyDet = document.getElementById('corpoTodosGastos');
             if (tbodyDet) {
@@ -1396,17 +1404,17 @@ José Cláudio do Vale`;
                 const gastosFiltrados = compras.filter(c => c.semana === semanaAtual);
                 if (gastosFiltrados.length) {
                     gastosFiltrados.slice().reverse().forEach(c => {
-                        tbodyDet.innerHTML += `<tr>
+                        tbodyDet.innerHTML += `}
                             <td>${c.data}</td>
                             <td>${c.produto}</td>
                             <td>${c.qtd}</td>
                             <td>R$ ${c.valorUnitario.toFixed(2)}</td>
                             <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
                             <td>${c.fornecedor}</td>
-                        </tr>`;
+                        `;
                     });
                 } else {
-                    tbodyDet.innerHTML = '<tr><td colspan="6">Nenhuma compra nesta semana</td></tr>';
+                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana</tr>';
                 }
             }
         }
@@ -1441,61 +1449,141 @@ José Cláudio do Vale`;
             if (elMargem) elMargem.innerText = (rec > 0 ? ((rec - gas) / rec * 100).toFixed(1) : 0) + '%';
         }
 
+        // ========== FUNÇÃO CORRIGIDA: VENDAS POR VENDEDOR ==========
         function atualizarVendasPorVendedor() {
             const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const receb = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const dev = { Cláudio: 0, Antônio: 0, Igor: 0 };
             const qtd = { Cláudio: 0, Antônio: 0, Igor: 0 };
+            
             vendas.forEach(v => {
-                vends[v.vendedor] += v.valorTotal;
-                qtd[v.vendedor] += 1;
-                if (v.status === 'pago') receb[v.vendedor] += v.valorTotal;
-                else dev[v.vendedor] += v.valorTotal;
+                if (v.vendedor === 'Cláudio') {
+                    vends.Cláudio += v.valorTotal;
+                    qtd.Cláudio += 1;
+                    if (v.status === 'pago') receb.Cláudio += v.valorTotal;
+                    else dev.Cláudio += v.valorTotal;
+                } else if (v.vendedor === 'Antônio') {
+                    vends.Antônio += v.valorTotal;
+                    qtd.Antônio += 1;
+                    if (v.status === 'pago') receb.Antônio += v.valorTotal;
+                    else dev.Antônio += v.valorTotal;
+                } else if (v.vendedor === 'Igor') {
+                    vends.Igor += v.valorTotal;
+                    qtd.Igor += 1;
+                    if (v.status === 'pago') receb.Igor += v.valorTotal;
+                    else dev.Igor += v.valorTotal;
+                }
             });
+            
+            // Atualizar os cards
             const elClaudio = document.getElementById('vendasClaudio');
             const elAntonio = document.getElementById('vendasAntonio');
             const elIgor = document.getElementById('vendasIgor');
+            
             if (elClaudio) elClaudio.innerText = 'R$ ' + vends.Cláudio.toFixed(2);
             if (elAntonio) elAntonio.innerText = 'R$ ' + vends.Antônio.toFixed(2);
             if (elIgor) elIgor.innerText = 'R$ ' + vends.Igor.toFixed(2);
+            
+            // Montar a tabela corretamente
             const tbody = document.getElementById('corpoVendasPorVendedor');
             if (tbody) {
                 tbody.innerHTML = '';
-                ['Cláudio', 'Antônio', 'Igor'].forEach(v => {
-                    tbody.innerHTML += `}\ee
-                        一般<strong>${v}</strong>ee
-                        <td class="valor-verde">R$ ${vends[v].toFixed(2)}ee
-                        <td class="valor-verde">R$ ${receb[v].toFixed(2)}ee
-                        <td class="valor-vermelho">R$ ${dev[v].toFixed(2)}ee
-                        一般${qtd[v]}ee
-                     ee|`;
-                });
+                
+                const vendedores = ['Cláudio', 'Antônio', 'Igor'];
+                for (let i = 0; i < vendedores.length; i++) {
+                    const v = vendedores[i];
+                    const row = document.createElement('tr');
+                    
+                    const tdVendedor = document.createElement('td');
+                    tdVendedor.innerHTML = '<strong>' + v + '</strong>';
+                    row.appendChild(tdVendedor);
+                    
+                    const tdTotal = document.createElement('td');
+                    tdTotal.className = 'valor-verde';
+                    tdTotal.innerText = 'R$ ' + vends[v].toFixed(2);
+                    row.appendChild(tdTotal);
+                    
+                    const tdRecebido = document.createElement('td');
+                    tdRecebido.className = 'valor-verde';
+                    tdRecebido.innerText = 'R$ ' + receb[v].toFixed(2);
+                    row.appendChild(tdRecebido);
+                    
+                    const tdDev = document.createElement('td');
+                    tdDev.className = 'valor-vermelho';
+                    tdDev.innerText = 'R$ ' + dev[v].toFixed(2);
+                    row.appendChild(tdDev);
+                    
+                    const tdQtd = document.createElement('td');
+                    tdQtd.innerText = qtd[v];
+                    row.appendChild(tdQtd);
+                    
+                    tbody.appendChild(row);
+                }
             }
         }
 
+        // ========== FUNÇÃO CORRIGIDA: HISTÓRICO ==========
         window.atualizarHistorico = function() {
             const tituloHistorico = document.getElementById('historicoSemanaTitulo');
             if (tituloHistorico) tituloHistorico.innerText = semanaAtual;
+            
             const tbody = document.getElementById('corpoHistorico');
             if (!tbody) return;
+            
             tbody.innerHTML = '';
             let totalComprasValor = 0;
             let totalVendasValor = 0;
-            produtos.forEach(produto => {
-                const comprasSemana = compras.filter(c => c.semana === semanaAtual && c.produtoId === produto.id).reduce((acc, c) => acc + c.qtd, 0);
-                const vendasSemana = vendas.filter(v => v.semana === semanaAtual && v.produtoId === produto.id).reduce((acc, v) => acc + v.qtd, 0);
+            
+            for (let i = 0; i < produtos.length; i++) {
+                const produto = produtos[i];
+                
+                let comprasSemana = 0;
+                let vendasSemana = 0;
+                
+                for (let j = 0; j < compras.length; j++) {
+                    const c = compras[j];
+                    if (c.semana === semanaAtual && c.produtoId === produto.id) {
+                        comprasSemana += c.qtd;
+                        totalComprasValor += c.valorTotal;
+                    }
+                }
+                
+                for (let j = 0; j < vendas.length; j++) {
+                    const v = vendas[j];
+                    if (v.semana === semanaAtual && v.produtoId === produto.id) {
+                        vendasSemana += v.qtd;
+                        totalVendasValor += v.valorTotal;
+                    }
+                }
+                
                 const saldo = comprasSemana - vendasSemana;
-                compras.filter(c => c.semana === semanaAtual && c.produtoId === produto.id).forEach(c => totalComprasValor += c.valorTotal);
-                vendas.filter(v => v.semana === semanaAtual && v.produtoId === produto.id).forEach(v => totalVendasValor += v.valorTotal);
-                tbody.innerHTML += `}\ee
-                    一般<strong>${produto.nome}</strong>ee
-                    <td class="valor-verde">${comprasSemana}ee
-                    <td class="valor-vermelho">${vendasSemana}ee
-                    一般${saldo}ee
-                 ee|`;
-            });
+                
+                const row = document.createElement('tr');
+                
+                const tdProduto = document.createElement('td');
+                tdProduto.innerHTML = '<strong>' + produto.nome + '</strong>';
+                row.appendChild(tdProduto);
+                
+                const tdCompras = document.createElement('td');
+                tdCompras.className = 'valor-verde';
+                tdCompras.innerText = comprasSemana;
+                row.appendChild(tdCompras);
+                
+                const tdVendas = document.createElement('td');
+                tdVendas.className = 'valor-vermelho';
+                tdVendas.innerText = vendasSemana;
+                row.appendChild(tdVendas);
+                
+                const tdSaldo = document.createElement('td');
+                tdSaldo.innerText = saldo;
+                row.appendChild(tdSaldo);
+                
+                tbody.appendChild(row);
+            }
+            
             const elTotalCompras = document.getElementById('totalComprasSemana');
             const elTotalVendas = document.getElementById('totalVendasSemana');
+            
             if (elTotalCompras) elTotalCompras.innerText = 'R$ ' + totalComprasValor.toFixed(2);
             if (elTotalVendas) elTotalVendas.innerText = 'R$ ' + totalVendasValor.toFixed(2);
         };
@@ -1558,6 +1646,41 @@ José Cláudio do Vale`;
             alert('✅ Estoque ajustado!');
         };
 
+        // ========== FUNÇÃO CORRIGIDA: TABELA DE PRODUTOS ==========
+        function atualizarTabelaProdutos() {
+            const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
+            if (!tbodyPrecos) return;
+            
+            tbodyPrecos.innerHTML = '';
+            
+            for (let i = 0; i < produtos.length; i++) {
+                const p = produtos[i];
+                const row = document.createElement('tr');
+                
+                const tdNome = document.createElement('td');
+                tdNome.innerText = p.nome;
+                row.appendChild(tdNome);
+                
+                const tdPreco = document.createElement('td');
+                tdPreco.innerText = 'R$ ' + p.preco.toFixed(2);
+                row.appendChild(tdPreco);
+                
+                const tdEstoque = document.createElement('td');
+                tdEstoque.innerHTML = '<span class="' + (p.estoque <= 2 ? 'status-pendente' : 'status-pago') + '">' + p.estoque + '</span>';
+                row.appendChild(tdEstoque);
+                
+                const tdAcoes = document.createElement('td');
+                const btnExcluir = document.createElement('button');
+                btnExcluir.className = 'acao-btn excluir';
+                btnExcluir.innerHTML = '🗑️';
+                btnExcluir.onclick = function() { excluirProduto(p.id); };
+                tdAcoes.appendChild(btnExcluir);
+                row.appendChild(tdAcoes);
+                
+                tbodyPrecos.appendChild(row);
+            }
+        }
+
         function atualizarTudo() {
             atualizarSelects();
             calcularValorVenda();
@@ -1571,18 +1694,7 @@ José Cláudio do Vale`;
 
             if (document.getElementById('tabelaEstoque') && !modoEdicaoAtivo) atualizarEstoque();
 
-            const tbodyPrecos = document.querySelector('#tabelaPrecos tbody');
-            if (tbodyPrecos) {
-                tbodyPrecos.innerHTML = '';
-                produtos.forEach(p => {
-                    tbodyPrecos.innerHTML += `}\ee
-                        一般${p.nome}ee
-                        一般R$ ${p.preco.toFixed(2)}ee
-                        一般<span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>ee
-                        一般<button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button>ee
-                     ee|`;
-                });
-            }
+            atualizarTabelaProdutos();
 
             if (document.getElementById('tabelaCompras')) atualizarCompras();
             if (document.getElementById('tabelaHistorico')) atualizarHistorico();
@@ -1630,7 +1742,9 @@ José Cláudio do Vale`;
             if (filtroCobrancaAtual !== 'todos') cobrancas = cobrancas.filter(v => v.vendedor === filtroCobrancaAtual);
             const clientes = {};
             cobrancas.forEach(v => {
-                if (!clientes[v.cliente]) clientes[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [] };
+                if (!clientes[v.cliente]) {
+                    clientes[v.cliente] = { total: 0, vendedor: v.vendedor, itens: [] };
+                }
                 clientes[v.cliente].total += v.valorTotal;
                 clientes[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
             });
@@ -1650,8 +1764,7 @@ José Cláudio do Vale`;
                     <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
                     <table border="1">
                         <thead>
-                            <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th></tr>
-                        </thead>
+                            的人<th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
@@ -1659,7 +1772,7 @@ José Cláudio do Vale`;
             });
             win.document.write(`
                         </tbody>
-                    </table>
+                     </table>
                     <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
                 </body>
                 </html>
