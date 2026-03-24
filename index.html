@@ -517,45 +517,26 @@
             font-weight: bold;
             border: 2px solid #654321;
         }
-        
-        /* Estilos para a aba de configurações */
-        .config-usuario-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #cd853f;
+
+        /* Estilos para busca */
+        .busca-container {
+            margin-bottom: 15px;
         }
         
-        .config-usuario-item:last-child {
-            border-bottom: none;
+        .busca-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #8b4513;
+            border-radius: 20px;
+            font-size: 1rem;
+            background: #fff8dc;
         }
         
-        .config-usuario-info {
-            flex: 2;
-        }
-        
-        .config-usuario-nome {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .config-usuario-nivel {
+        .resultado-busca {
             font-size: 0.8rem;
             color: #8b4513;
-        }
-        
-        .config-usuario-acoes {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .config-senha-input {
-            width: 150px;
-            padding: 6px 10px;
-            border: 2px solid #8b4513;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            margin-top: 5px;
+            text-align: right;
         }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -645,6 +626,8 @@
         let historicoEstoque = [];
         let filtroCobrancaAtual = 'todos';
         let filtroVendedorVendas = 'todos';
+        let filtroProdutoVendas = 'todos';
+        let buscaCliente = '';
         let modoEdicaoAtivo = false;
         let clienteQuitacaoPendente = null;
         let produtos = [];
@@ -675,67 +658,6 @@
                 }
             } catch (erro) {
                 console.log('Usando usuários padrão');
-            }
-        }
-
-        function atualizarConfiguracoes() {
-            const container = document.getElementById('corpoConfiguracoes');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            for (let i = 0; i < USUARIOS.length; i++) {
-                const u = USUARIOS[i];
-                const div = document.createElement('div');
-                div.className = 'config-usuario-item';
-                
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'config-usuario-info';
-                infoDiv.innerHTML = `
-                    <div class="config-usuario-nome">${u.usuario}</div>
-                    <div class="config-usuario-nivel">${u.nivel === 'ADM' ? '👑 Administrador' : '🧑‍🌾 Vendedor'}</div>
-                `;
-                
-                const acoesDiv = document.createElement('div');
-                acoesDiv.className = 'config-usuario-acoes';
-                
-                const inputSenha = document.createElement('input');
-                inputSenha.type = 'password';
-                inputSenha.className = 'config-senha-input';
-                inputSenha.placeholder = 'Nova senha';
-                inputSenha.id = `nova_senha_${u.usuario}`;
-                
-                const btnSalvar = document.createElement('button');
-                btnSalvar.className = 'btn-small btn-success';
-                btnSalvar.innerText = 'Alterar';
-                btnSalvar.style.margin = '0';
-                btnSalvar.onclick = function() {
-                    const novaSenha = document.getElementById(`nova_senha_${u.usuario}`).value;
-                    if (novaSenha && novaSenha.length >= 4) {
-                        alterarSenhaUsuario(u.usuario, novaSenha);
-                    } else if (novaSenha) {
-                        alert('A senha deve ter pelo menos 4 caracteres');
-                    } else {
-                        alert('Digite uma nova senha');
-                    }
-                };
-                
-                acoesDiv.appendChild(inputSenha);
-                acoesDiv.appendChild(btnSalvar);
-                
-                div.appendChild(infoDiv);
-                div.appendChild(acoesDiv);
-                container.appendChild(div);
-            }
-        }
-        
-        function alterarSenhaUsuario(usuario, novaSenha) {
-            const userIndex = USUARIOS.findIndex(u => u.usuario === usuario);
-            if (userIndex !== -1) {
-                USUARIOS[userIndex].senha = novaSenha;
-                salvarUsuarios();
-                alert(`✅ Senha de ${usuario} alterada com sucesso!`);
-                atualizarConfiguracoes();
             }
         }
 
@@ -847,6 +769,7 @@
 
             setTimeout(() => {
                 if (aba === 'vendas') { 
+                    atualizarFiltroProdutos();
                     atualizarVendas(); 
                     calcularValorVenda();
                     atualizarSelects();
@@ -861,7 +784,19 @@
                         document.getElementById('btnCancelarEdicao').style.display = 'none';
                     }
                 }
-                if (aba === 'clientes') atualizarClientes();
+                if (aba === 'clientes') {
+                    atualizarClientes();
+                    // Adicionar evento de busca
+                    const buscaInput = document.getElementById('buscaCliente');
+                    if (buscaInput) {
+                        buscaInput.value = '';
+                        buscaCliente = '';
+                        buscaInput.addEventListener('input', function(e) {
+                            buscaCliente = e.target.value.toLowerCase();
+                            atualizarClientes();
+                        });
+                    }
+                }
                 if (aba === 'compras') { 
                     calcularTotalCompra(); 
                     atualizarSelects();
@@ -884,7 +819,24 @@
             }, 50);
         };
 
-        // ---------- TEMPLATES DAS ABAS (ADICIONANDO CONFIGURAÇÕES) ----------
+        // Função para atualizar o filtro de produtos
+        function atualizarFiltroProdutos() {
+            const selectProduto = document.getElementById('filtroProdutoVendas');
+            if (!selectProduto) return;
+            
+            selectProduto.innerHTML = '<option value="todos">📦 Todos os produtos</option>';
+            produtos.forEach(p => {
+                selectProduto.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+            });
+            
+            selectProduto.value = filtroProdutoVendas;
+            selectProduto.onchange = function() {
+                filtroProdutoVendas = this.value;
+                atualizarVendas();
+            };
+        }
+
+        // ---------- TEMPLATES DAS ABAS ----------
         function obterTemplateAba(aba) {
             switch (aba) {
                 case 'configuracoes': return `
@@ -911,6 +863,12 @@
                             <div class="resumo-card" style="background: #b22222;"><div class="label">Cláudio</div><div class="valor" id="pendenteClaudio">R$ 0</div></div>
                             <div class="resumo-card" style="background: #b22222;"><div class="label">Antônio</div><div class="valor" id="pendenteAntonio">R$ 0</div></div>
                             <div class="resumo-card" style="background: #b22222;"><div class="label">Igor</div><div class="valor" id="pendenteIgor">R$ 0</div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔍 FILTRAR POR PRODUTO</div>
+                        <div class="form-group">
+                            <select id="filtroProdutoVendas" class="filtro-produto"></select>
                         </div>
                     </div>
                     <div class="card">
@@ -948,6 +906,10 @@
                 case 'clientes': return `
                     <div class="card">
                         <div class="card-title">👥 LISTA DE COBRANÇA <button class="btn-excel" style="padding:5px 10px;width:auto;" onclick="imprimirCobranca()">🖨️ IMPRIMIR</button></div>
+                        <div class="busca-container">
+                            <input type="text" id="buscaCliente" class="busca-input" placeholder="🔍 Pesquisar cliente...">
+                            <div class="resultado-busca" id="resultadoBusca"></div>
+                        </div>
                         <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
                         <div class="tabela-container">
                             <table id="tabelaClientes">
@@ -1063,7 +1025,7 @@
             }
         }
 
-        // ========== FUNÇÕES DE SINCRONIZAÇÃO (ATUALIZADAS PARA SALVAR USUÁRIOS) ==========
+        // ========== FUNÇÕES DE SINCRONIZAÇÃO ==========
         function mostrarSincronizando(mostrar) {
             const el = document.getElementById('sincronizando');
             el.style.display = mostrar ? 'block' : 'none';
@@ -1095,7 +1057,6 @@
                 historicoEstoque = dados.historicoEstoque || [];
                 contadorId = dados.contadorId || 21;
                 
-                // Carregar usuários se existirem
                 if (dados.usuarios && dados.usuarios.length > 0) {
                     USUARIOS = dados.usuarios;
                 }
@@ -1157,7 +1118,7 @@
             atualizarTudo();
         }
 
-        // ========== DEMAIS FUNÇÕES (MANTIDAS IGUAIS AO ANTERIOR) ==========
+        // ========== FUNÇÕES AUXILIARES ==========
         function getSemanaAtual() {
             const hoje = new Date();
             const inicio = new Date(hoje.getFullYear(), 0, 1);
@@ -1378,7 +1339,7 @@
             clienteQuitacaoPendente = null;
         };
 
-        // ========== ATUALIZAÇÃO DAS TABELAS (VERSÕES CORRIGIDAS) ==========
+        // ========== ATUALIZAÇÃO DAS TABELAS ==========
         function atualizarEstoque() {
             if (modoEdicaoAtivo) return;
             const tbody = document.querySelector('#tabelaEstoque tbody');
@@ -1428,8 +1389,20 @@
             const tbody = document.querySelector('#tabelaVendas tbody');
             if (!tbody) return;
             tbody.innerHTML = '';
+            
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
-            if (filtroVendedorVendas !== 'todos') filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
+            
+            // Filtrar por vendedor
+            if (filtroVendedorVendas !== 'todos') {
+                filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
+            }
+            
+            // Filtrar por produto
+            if (filtroProdutoVendas !== 'todos') {
+                const produtoId = parseInt(filtroProdutoVendas);
+                filtradas = filtradas.filter(v => v.produtoId === produtoId);
+            }
+            
             if (!filtradas.length) { 
                 tbody.innerHTML = '}<td colspan="6">Nenhuma venda}'; 
                 atualizarPendenteVendedores();
@@ -1536,6 +1509,8 @@
             tbody.innerHTML = '';
             let pendentes = vendas.filter(v => v.status === 'pendente');
             if (filtroCobrancaAtual !== 'todos') pendentes = pendentes.filter(v => v.vendedor === filtroCobrancaAtual);
+            
+            // Agrupar por cliente
             const agrupado = {};
             pendentes.forEach(v => {
                 if (!agrupado[v.cliente]) {
@@ -1545,8 +1520,24 @@
                 agrupado[v.cliente].itens.push(`${v.qtd}x ${v.produto}`);
                 agrupado[v.cliente].datas.push(v.data);
             });
+            
+            // Filtrar por busca
+            let clientesFiltrados = Object.entries(agrupado);
+            if (buscaCliente && buscaCliente.trim() !== '') {
+                clientesFiltrados = clientesFiltrados.filter(([c, d]) => 
+                    c.toLowerCase().includes(buscaCliente.toLowerCase())
+                );
+                const resultadoBusca = document.getElementById('resultadoBusca');
+                if (resultadoBusca) {
+                    resultadoBusca.innerText = `${clientesFiltrados.length} cliente(s) encontrado(s)`;
+                }
+            } else {
+                const resultadoBusca = document.getElementById('resultadoBusca');
+                if (resultadoBusca) resultadoBusca.innerText = '';
+            }
+            
             let totalGeral = 0;
-            Object.entries(agrupado).forEach(([c, d]) => {
+            clientesFiltrados.forEach(([c, d]) => {
                 totalGeral += d.total;
                 const row = document.createElement('tr');
                 
@@ -1589,7 +1580,9 @@
                 row.appendChild(tdAcoes);
                 tbody.appendChild(row);
             });
-            if (!pendentes.length) tbody.innerHTML = '}<td colspan="6">Ninguém deve}';
+            if (!pendentes.length || clientesFiltrados.length === 0) {
+                tbody.innerHTML = '}<td colspan="6">Ninguém deve}';
+            }
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
@@ -1949,6 +1942,67 @@ José Cláudio do Vale`;
             }
         }
 
+        function atualizarConfiguracoes() {
+            const container = document.getElementById('corpoConfiguracoes');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            for (let i = 0; i < USUARIOS.length; i++) {
+                const u = USUARIOS[i];
+                const div = document.createElement('div');
+                div.className = 'config-usuario-item';
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'config-usuario-info';
+                infoDiv.innerHTML = `
+                    <div class="config-usuario-nome">${u.usuario}</div>
+                    <div class="config-usuario-nivel">${u.nivel === 'ADM' ? '👑 Administrador' : '🧑‍🌾 Vendedor'}</div>
+                `;
+                
+                const acoesDiv = document.createElement('div');
+                acoesDiv.className = 'config-usuario-acoes';
+                
+                const inputSenha = document.createElement('input');
+                inputSenha.type = 'password';
+                inputSenha.className = 'config-senha-input';
+                inputSenha.placeholder = 'Nova senha';
+                inputSenha.id = `nova_senha_${u.usuario}`;
+                
+                const btnSalvar = document.createElement('button');
+                btnSalvar.className = 'btn-small btn-success';
+                btnSalvar.innerText = 'Alterar';
+                btnSalvar.style.margin = '0';
+                btnSalvar.onclick = function() {
+                    const novaSenha = document.getElementById(`nova_senha_${u.usuario}`).value;
+                    if (novaSenha && novaSenha.length >= 4) {
+                        alterarSenhaUsuario(u.usuario, novaSenha);
+                    } else if (novaSenha) {
+                        alert('A senha deve ter pelo menos 4 caracteres');
+                    } else {
+                        alert('Digite uma nova senha');
+                    }
+                };
+                
+                acoesDiv.appendChild(inputSenha);
+                acoesDiv.appendChild(btnSalvar);
+                
+                div.appendChild(infoDiv);
+                div.appendChild(acoesDiv);
+                container.appendChild(div);
+            }
+        }
+        
+        function alterarSenhaUsuario(usuario, novaSenha) {
+            const userIndex = USUARIOS.findIndex(u => u.usuario === usuario);
+            if (userIndex !== -1) {
+                USUARIOS[userIndex].senha = novaSenha;
+                salvarUsuarios();
+                alert(`✅ Senha de ${usuario} alterada com sucesso!`);
+                atualizarConfiguracoes();
+            }
+        }
+
         function atualizarTudo() {
             atualizarSelects();
             calcularValorVenda();
@@ -2008,6 +2062,12 @@ José Cláudio do Vale`;
         window.imprimirCobranca = function() {
             let cobrancas = vendas.filter(v => v.status === 'pendente');
             if (filtroCobrancaAtual !== 'todos') cobrancas = cobrancas.filter(v => v.vendedor === filtroCobrancaAtual);
+            
+            // Aplicar busca na impressão também
+            if (buscaCliente && buscaCliente.trim() !== '') {
+                cobrancas = cobrancas.filter(v => v.cliente.toLowerCase().includes(buscaCliente.toLowerCase()));
+            }
+            
             const clientes = {};
             cobrancas.forEach(v => {
                 if (!clientes[v.cliente]) {
@@ -2030,6 +2090,7 @@ José Cláudio do Vale`;
                 <body>
                     <h1>🧀 QUEIJARIA DO MINEIRO</h1>
                     <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
+                    ${buscaCliente ? `<p><strong>Pesquisa: "${buscaCliente}"</strong></p>` : ''}
                     <table border="1">
                         <thead>
                             的人<th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
