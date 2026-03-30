@@ -349,6 +349,21 @@
             border: 2px solid #3f2b1c;
         }
 
+        .status-contatado {
+            background-color: #2e8b57;
+            color: #f5e6d3;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .checkbox-contato {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin: 0;
+        }
+
         .hidden {
             display: none !important;
         }
@@ -518,7 +533,6 @@
             border: 2px solid #654321;
         }
 
-        /* Estilos para busca */
         .busca-container {
             margin-bottom: 15px;
         }
@@ -537,6 +551,55 @@
             color: #8b4513;
             margin-top: 5px;
             text-align: right;
+        }
+
+        .config-usuario-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #cd853f;
+        }
+        
+        .config-usuario-item:last-child {
+            border-bottom: none;
+        }
+        
+        .config-usuario-info {
+            flex: 2;
+        }
+        
+        .config-usuario-nome {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .config-usuario-nivel {
+            font-size: 0.8rem;
+            color: #8b4513;
+        }
+        
+        .config-usuario-acoes {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .config-senha-input {
+            width: 150px;
+            padding: 6px 10px;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .lucro-positivo {
+            color: #2e8b57;
+            font-weight: bold;
+        }
+
+        .lucro-negativo {
+            color: #b22222;
+            font-weight: bold;
         }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -625,11 +688,13 @@
         let semanaAtual = getSemanaAtual();
         let historicoEstoque = [];
         let filtroCobrancaAtual = 'todos';
+        let filtroContatoAtual = 'todos';
         let filtroVendedorVendas = 'todos';
         let filtroProdutoVendas = 'todos';
         let buscaCliente = '';
         let modoEdicaoAtivo = false;
         let clienteQuitacaoPendente = null;
+        let clientesContatados = []; // Armazena clientes já contatados
         let produtos = [];
         let compras = [];
         let vendas = [];
@@ -637,12 +702,12 @@
 
         // ---------- FUNÇÕES DE GERENCIAMENTO DE USUÁRIOS ----------
         async function salvarUsuarios() {
-            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS };
+            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS, clientesContatados };
             try {
                 await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
-                console.log('✅ Usuários salvos na nuvem');
+                console.log('✅ Dados salvos na nuvem');
             } catch (erro) {
-                console.error('Erro ao salvar usuários:', erro);
+                console.error('Erro ao salvar:', erro);
             }
         }
 
@@ -654,10 +719,13 @@
                 const dados = dadosJson.record;
                 if (dados.usuarios && dados.usuarios.length > 0) {
                     USUARIOS = dados.usuarios;
-                    console.log('✅ Usuários carregados da nuvem');
                 }
+                if (dados.clientesContatados) {
+                    clientesContatados = dados.clientesContatados;
+                }
+                console.log('✅ Dados carregados da nuvem');
             } catch (erro) {
-                console.log('Usando usuários padrão');
+                console.log('Usando dados padrão');
             }
         }
 
@@ -738,6 +806,7 @@
                 { nome: '💸 Gastos', aba: 'gastos' },
                 { nome: '📊 Resultado', aba: 'relatorios' },
                 { nome: '👤 Vendedores', aba: 'vendedores' },
+                { nome: '📈 Lucro por Produto', aba: 'lucroProduto' },
                 { nome: '📈 Histórico', aba: 'historico' },
                 { nome: '⚙️ Produtos', aba: 'produtos' },
                 { nome: '⚙️ Configurações', aba: 'configuracoes' }
@@ -786,7 +855,6 @@
                 }
                 if (aba === 'clientes') {
                     atualizarClientes();
-                    // Adicionar evento de busca
                     const buscaInput = document.getElementById('buscaCliente');
                     if (buscaInput) {
                         buscaInput.value = '';
@@ -805,6 +873,7 @@
                 if (aba === 'gastos') atualizarGastos();
                 if (aba === 'relatorios') atualizarRelatorio();
                 if (aba === 'vendedores') atualizarVendasPorVendedor();
+                if (aba === 'lucroProduto') atualizarLucroPorProduto();
                 if (aba === 'historico') {
                     atualizarSelects();
                     atualizarHistorico();
@@ -836,6 +905,122 @@
             };
         }
 
+        // Função para marcar/desmarcar cliente como contatado
+        window.toggleClienteContatado = function(cliente) {
+            const index = clientesContatados.indexOf(cliente);
+            if (index === -1) {
+                clientesContatados.push(cliente);
+            } else {
+                clientesContatados.splice(index, 1);
+            }
+            salvarDadosNaNuvem();
+            atualizarClientes();
+        };
+
+        // Função para filtrar por contato
+        window.filtrarContatos = function(filtro, el) {
+            document.querySelectorAll('#conteudoAbas .filtro-contato').forEach(b => b.classList.remove('ativo'));
+            el.classList.add('ativo');
+            filtroContatoAtual = filtro;
+            atualizarClientes();
+        };
+
+        // Função para calcular lucro por produto
+        function atualizarLucroPorProduto() {
+            const tbody = document.getElementById('corpoLucroProduto');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            // Calcular lucro por produto
+            const lucroPorProduto = {};
+            
+            produtos.forEach(produto => {
+                lucroPorProduto[produto.id] = {
+                    nome: produto.nome,
+                    preco: produto.preco,
+                    custoMedio: produto.custoMedio || 0,
+                    quantidadeVendida: 0,
+                    faturamento: 0,
+                    custoTotal: 0,
+                    lucro: 0,
+                    margem: 0
+                };
+            });
+            
+            vendas.forEach(venda => {
+                const produto = produtos.find(p => p.id === venda.produtoId);
+                if (produto) {
+                    const lucro = lucroPorProduto[venda.produtoId];
+                    if (lucro) {
+                        lucro.quantidadeVendida += venda.qtd;
+                        lucro.faturamento += venda.valorTotal;
+                        lucro.custoTotal += (produto.custoMedio || 0) * venda.qtd;
+                    }
+                }
+            });
+            
+            // Calcular lucro e margem
+            Object.values(lucroPorProduto).forEach(p => {
+                p.lucro = p.faturamento - p.custoTotal;
+                p.margem = p.faturamento > 0 ? (p.lucro / p.faturamento * 100) : 0;
+            });
+            
+            // Ordenar por maior lucro
+            const produtosOrdenados = Object.values(lucroPorProduto).sort((a, b) => b.lucro - a.lucro);
+            
+            let totalLucro = 0;
+            let totalFaturamento = 0;
+            
+            produtosOrdenados.forEach(p => {
+                if (p.quantidadeVendida > 0 || p.lucro !== 0) {
+                    totalLucro += p.lucro;
+                    totalFaturamento += p.faturamento;
+                    
+                    const row = document.createElement('tr');
+                    
+                    const tdNome = document.createElement('td');
+                    tdNome.innerHTML = '<strong>' + p.nome + '</strong>';
+                    row.appendChild(tdNome);
+                    
+                    const tdQtd = document.createElement('td');
+                    tdQtd.innerText = p.quantidadeVendida;
+                    row.appendChild(tdQtd);
+                    
+                    const tdFaturamento = document.createElement('td');
+                    tdFaturamento.innerText = 'R$ ' + p.faturamento.toFixed(2);
+                    row.appendChild(tdFaturamento);
+                    
+                    const tdCusto = document.createElement('td');
+                    tdCusto.innerText = 'R$ ' + p.custoTotal.toFixed(2);
+                    row.appendChild(tdCusto);
+                    
+                    const tdLucro = document.createElement('td');
+                    tdLucro.className = p.lucro >= 0 ? 'lucro-positivo' : 'lucro-negativo';
+                    tdLucro.innerText = 'R$ ' + p.lucro.toFixed(2);
+                    row.appendChild(tdLucro);
+                    
+                    const tdMargem = document.createElement('td');
+                    tdMargem.className = p.margem >= 0 ? 'lucro-positivo' : 'lucro-negativo';
+                    tdMargem.innerText = p.margem.toFixed(1) + '%';
+                    row.appendChild(tdMargem);
+                    
+                    tbody.appendChild(row);
+                }
+            });
+            
+            // Atualizar resumo
+            const totalLucroEl = document.getElementById('totalLucroGeral');
+            const margemMediaEl = document.getElementById('margemMedia');
+            
+            if (totalLucroEl) totalLucroEl.innerText = 'R$ ' + totalLucro.toFixed(2);
+            if (margemMediaEl) margemMediaEl.innerText = (totalFaturamento > 0 ? (totalLucro / totalFaturamento * 100).toFixed(1) : 0) + '%';
+            
+            if (produtosOrdenados.filter(p => p.quantidadeVendida > 0).length === 0) {
+                tbody.innerHTML = '}<td colspan="6">Nenhuma venda registrada}';
+            }
+        }
+
         // ---------- TEMPLATES DAS ABAS ----------
         function obterTemplateAba(aba) {
             switch (aba) {
@@ -844,6 +1029,21 @@
                         <div class="card-title">⚙️ GERENCIAR USUÁRIOS</div>
                         <p style="margin-bottom: 15px; color: #8b4513;">Altere as senhas dos usuários cadastrados. As alterações são salvas automaticamente na nuvem.</p>
                         <div id="corpoConfiguracoes"></div>
+                    </div>
+                `;
+                case 'lucroProduto': return `
+                    <div class="card">
+                        <div class="card-title">📈 LUCRO POR PRODUTO</div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">Total Lucro</div><div class="valor" id="totalLucroGeral">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #daa520;"><div class="label">Margem Média</div><div class="valor" id="margemMedia">0%</div></div>
+                        </div>
+                        <div class="tabela-container">
+                            <table id="tabelaLucroProduto">
+                                <thead>
+                                    的人<th>Produto</th><th>Qtd Vendida</th><th>Faturamento</th><th>Custo Total</th><th>Lucro</th><th>Margem</th> </thead>
+                                <tbody id="corpoLucroProduto"></tbody>
+                             </div>
                     </div>
                 `;
                 case 'vendas': return `
@@ -910,10 +1110,20 @@
                             <input type="text" id="buscaCliente" class="busca-input" placeholder="🔍 Pesquisar cliente...">
                             <div class="resultado-busca" id="resultadoBusca"></div>
                         </div>
-                        <div class="filtros"><button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button><button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button><button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button><button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button></div>
+                        <div class="filtros">
+                            <button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">Todos</button>
+                            <button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">Cláudio</button>
+                            <button class="filtro-btn" onclick="filtrarCobrancas('Antônio',this)">Antônio</button>
+                            <button class="filtro-btn" onclick="filtrarCobrancas('Igor',this)">Igor</button>
+                        </div>
+                        <div class="filtros">
+                            <button class="filtro-btn filtro-contato ativo" onclick="filtrarContatos('todos',this)">📋 Todos</button>
+                            <button class="filtro-btn filtro-contato" onclick="filtrarContatos('nao_contatados',this)">📞 Não contatados</button>
+                            <button class="filtro-btn filtro-contato" onclick="filtrarContatos('contatados',this)">✅ Contatados</button>
+                        </div>
                         <div class="tabela-container">
                             <table id="tabelaClientes">
-                                <thead> 的人<th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Ações</th> </thead>
+                                <thead> 的人<th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Contato</th><th>Ações</th> </thead>
                                 <tbody></tbody>
                              </div>
                         <div style="margin-top:15px;background:#daa520;padding:10px;border:2px solid #654321;border-radius:8px;text-align:center;"><span>💰 TOTAL A RECEBER: </span><span id="totalCobranca" style="font-size:1.3rem;font-weight:bold;">R$ 0,00</span></div>
@@ -1060,6 +1270,9 @@
                 if (dados.usuarios && dados.usuarios.length > 0) {
                     USUARIOS = dados.usuarios;
                 }
+                if (dados.clientesContatados) {
+                    clientesContatados = dados.clientesContatados;
+                }
                 
                 compras = compras.map(c => ({ ...c, status: c.status || 'pendente' }));
                 
@@ -1076,7 +1289,7 @@
 
         async function salvarDadosNaNuvem() {
             mostrarSincronizando(true);
-            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS };
+            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS, clientesContatados };
             try {
                 await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
                 atualizarStatusConexao(true);
@@ -1090,26 +1303,26 @@
 
         function usarDadosIniciais() {
             produtos = [
-                {id:1, nome:"Cachaça litro", preco:28, estoque:0},
-                {id:2, nome:"Doce de leite pedaço", preco:5, estoque:0},
-                {id:3, nome:"Doce de leite pote", preco:18, estoque:0},
-                {id:4, nome:"Doce de pote fruta", preco:18, estoque:0},
-                {id:5, nome:"Geleia", preco:20, estoque:0},
-                {id:6, nome:"Goiabada", preco:20, estoque:0},
-                {id:7, nome:"Linguiça", preco:25, estoque:0},
-                {id:8, nome:"Manteiga pequena", preco:12, estoque:0},
-                {id:9, nome:"Parmesão capa preta", preco:45, estoque:0},
-                {id:10, nome:"Queijo 4 cores", preco:45, estoque:0},
-                {id:11, nome:"Queijo do reino", preco:45, estoque:0},
-                {id:12, nome:"Queijo minas frescal", preco:28, estoque:0},
-                {id:13, nome:"Queijo minas padrão", preco:40, estoque:0},
-                {id:14, nome:"Queijo mussarela temperado", preco:35, estoque:0},
-                {id:15, nome:"Queijo mussarelinha", preco:32, estoque:0},
-                {id:16, nome:"Queijo nozinho", preco:36, estoque:0},
-                {id:17, nome:"Queijo parmesão", preco:45, estoque:0},
-                {id:18, nome:"Queijo provolone temperado", preco:37, estoque:0},
-                {id:19, nome:"Requeijão", preco:18, estoque:0},
-                {id:20, nome:"Queijo Prato", preco:45, estoque:0}
+                {id:1, nome:"Cachaça litro", preco:28, estoque:0, custoMedio:16.8},
+                {id:2, nome:"Doce de leite pedaço", preco:5, estoque:0, custoMedio:3},
+                {id:3, nome:"Doce de leite pote", preco:18, estoque:0, custoMedio:10.8},
+                {id:4, nome:"Doce de pote fruta", preco:18, estoque:0, custoMedio:10.8},
+                {id:5, nome:"Geleia", preco:20, estoque:0, custoMedio:12},
+                {id:6, nome:"Goiabada", preco:20, estoque:0, custoMedio:12},
+                {id:7, nome:"Linguiça", preco:25, estoque:0, custoMedio:15},
+                {id:8, nome:"Manteiga pequena", preco:12, estoque:0, custoMedio:7.2},
+                {id:9, nome:"Parmesão capa preta", preco:45, estoque:0, custoMedio:27},
+                {id:10, nome:"Queijo 4 cores", preco:45, estoque:0, custoMedio:27},
+                {id:11, nome:"Queijo do reino", preco:45, estoque:0, custoMedio:27},
+                {id:12, nome:"Queijo minas frescal", preco:28, estoque:0, custoMedio:16.8},
+                {id:13, nome:"Queijo minas padrão", preco:40, estoque:0, custoMedio:24},
+                {id:14, nome:"Queijo mussarela temperado", preco:35, estoque:0, custoMedio:21},
+                {id:15, nome:"Queijo mussarelinha", preco:32, estoque:0, custoMedio:19.2},
+                {id:16, nome:"Queijo nozinho", preco:36, estoque:0, custoMedio:21.6},
+                {id:17, nome:"Queijo parmesão", preco:45, estoque:0, custoMedio:27},
+                {id:18, nome:"Queijo provolone temperado", preco:37, estoque:0, custoMedio:22.2},
+                {id:19, nome:"Requeijão", preco:18, estoque:0, custoMedio:10.8},
+                {id:20, nome:"Queijo Prato", preco:45, estoque:0, custoMedio:27}
             ];
             compras = [];
             vendas = [];
@@ -1178,7 +1391,14 @@
             if (!prodId || !qtd || !unit || !forn) return alert('Preencha tudo!');
             const prod = produtos.find(p => p.id === prodId);
             const total = qtd * unit;
+            
+            // Atualizar custo médio
+            const custoTotalAtual = (prod.custoMedio || 0) * prod.estoque;
+            const novoCustoTotal = custoTotalAtual + total;
+            const novaQuantidade = prod.estoque + qtd;
+            prod.custoMedio = novoCustoTotal / novaQuantidade;
             prod.estoque += qtd;
+            
             compras.push({ 
                 id: Date.now(), 
                 semana: semanaAtual, 
@@ -1207,8 +1427,14 @@
             if (!vend || !cliente || !prodId || !qtd) return alert('Preencha tudo!');
             const prod = produtos.find(p => p.id === prodId);
             if (prod.estoque < qtd) return alert(`Só tem ${prod.estoque} no estoque!`);
+            
+            const valorUnitario = prod.preco;
+            const valorTotal = valorUnitario * qtd;
+            const custoTotal = (prod.custoMedio || 0) * qtd;
+            const lucro = valorTotal - custoTotal;
+            
             prod.estoque -= qtd;
-            const total = prod.preco * qtd;
+            
             vendas.push({ 
                 id: Date.now(), 
                 semana: semanaAtual, 
@@ -1217,8 +1443,10 @@
                 produtoId: prodId, 
                 produto: prod.nome, 
                 qtd, 
-                valorUnitario: prod.preco, 
-                valorTotal: total, 
+                valorUnitario: valorUnitario, 
+                valorTotal: valorTotal, 
+                custoTotal: custoTotal,
+                lucro: lucro,
                 status: 'pendente',
                 data: new Date().toLocaleDateString() 
             });
@@ -1276,6 +1504,7 @@
                 atualizarClientes();
                 atualizarVendasPorVendedor();
                 atualizarPendenteVendedores();
+                atualizarLucroPorProduto();
             }
         };
 
@@ -1329,6 +1558,7 @@
                 atualizarVendas();
                 atualizarVendasPorVendedor();
                 atualizarPendenteVendedores();
+                atualizarLucroPorProduto();
                 fecharModalConfirmacao();
                 alert(`✅ Débitos de ${clienteQuitacaoPendente} quitados com sucesso!`);
             }
@@ -1392,12 +1622,10 @@
             
             let filtradas = vendas.filter(v => v.semana === semanaAtual);
             
-            // Filtrar por vendedor
             if (filtroVendedorVendas !== 'todos') {
                 filtradas = filtradas.filter(v => v.vendedor === filtroVendedorVendas);
             }
             
-            // Filtrar por produto
             if (filtroProdutoVendas !== 'todos') {
                 const produtoId = parseInt(filtroProdutoVendas);
                 filtradas = filtradas.filter(v => v.produtoId === produtoId);
@@ -1536,6 +1764,13 @@
                 if (resultadoBusca) resultadoBusca.innerText = '';
             }
             
+            // Filtrar por contato
+            if (filtroContatoAtual === 'contatados') {
+                clientesFiltrados = clientesFiltrados.filter(([c, d]) => clientesContatados.includes(c));
+            } else if (filtroContatoAtual === 'nao_contatados') {
+                clientesFiltrados = clientesFiltrados.filter(([c, d]) => !clientesContatados.includes(c));
+            }
+            
             let totalGeral = 0;
             clientesFiltrados.forEach(([c, d]) => {
                 totalGeral += d.total;
@@ -1561,6 +1796,15 @@
                 tdData.innerHTML = d.datas.join('<br>');
                 row.appendChild(tdData);
                 
+                const tdContato = document.createElement('td');
+                const checkContato = document.createElement('input');
+                checkContato.type = 'checkbox';
+                checkContato.className = 'checkbox-contato';
+                checkContato.checked = clientesContatados.includes(c);
+                checkContato.onchange = function() { toggleClienteContatado(c); };
+                tdContato.appendChild(checkContato);
+                row.appendChild(tdContato);
+                
                 const tdAcoes = document.createElement('td');
                 
                 const btnWhatsApp = document.createElement('button');
@@ -1581,7 +1825,7 @@
                 tbody.appendChild(row);
             });
             if (!pendentes.length || clientesFiltrados.length === 0) {
-                tbody.innerHTML = '}<td colspan="6">Ninguém deve}';
+                tbody.innerHTML = '}<td colspan="7">Ninguém deve}';
             }
             document.getElementById('totalCobranca').innerText = 'R$ ' + totalGeral.toFixed(2);
         }
@@ -1851,7 +2095,7 @@ José Cláudio do Vale`;
             const nome = document.getElementById('novoProdutoNome')?.value;
             const preco = parseFloat(document.getElementById('novoProdutoPreco')?.value);
             if (!nome || !preco) return alert('Preencha nome e preço!');
-            produtos.push({ id: contadorId++, nome, preco, estoque: 0 });
+            produtos.push({ id: contadorId++, nome, preco, estoque: 0, custoMedio: preco * 0.6 });
             salvarDadosNaNuvem();
             document.getElementById('novoProdutoNome').value = '';
             document.getElementById('novoProdutoPreco').value = '';
@@ -2027,6 +2271,7 @@ José Cláudio do Vale`;
             atualizarGastos();
             atualizarClientes();
             atualizarVendasPorVendedor();
+            atualizarLucroPorProduto();
         }
 
         function atualizarSelectSemanas() {
@@ -2063,9 +2308,14 @@ José Cláudio do Vale`;
             let cobrancas = vendas.filter(v => v.status === 'pendente');
             if (filtroCobrancaAtual !== 'todos') cobrancas = cobrancas.filter(v => v.vendedor === filtroCobrancaAtual);
             
-            // Aplicar busca na impressão também
             if (buscaCliente && buscaCliente.trim() !== '') {
                 cobrancas = cobrancas.filter(v => v.cliente.toLowerCase().includes(buscaCliente.toLowerCase()));
+            }
+            
+            if (filtroContatoAtual === 'contatados') {
+                cobrancas = cobrancas.filter(v => clientesContatados.includes(v.cliente));
+            } else if (filtroContatoAtual === 'nao_contatados') {
+                cobrancas = cobrancas.filter(v => !clientesContatados.includes(v.cliente));
             }
             
             const clientes = {};
@@ -2091,6 +2341,8 @@ José Cláudio do Vale`;
                     <h1>🧀 QUEIJARIA DO MINEIRO</h1>
                     <h2>Cobrança - ${new Date().toLocaleDateString()}</h2>
                     ${buscaCliente ? `<p><strong>Pesquisa: "${buscaCliente}"</strong></p>` : ''}
+                    ${filtroContatoAtual === 'contatados' ? '<p><strong>Filtro: Clientes contatados</strong></p>' : ''}
+                    ${filtroContatoAtual === 'nao_contatados' ? '<p><strong>Filtro: Clientes não contatados</strong></p>' : ''}
                     <table border="1">
                         <thead>
                             的人<th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
@@ -2101,7 +2353,7 @@ José Cláudio do Vale`;
             });
             win.document.write(`
                         </tbody>
-                    </table>
+                     </table>
                     <p style="font-size:1.5rem;">Total: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</p>
                 </body>
                 </html>
@@ -2115,12 +2367,30 @@ José Cláudio do Vale`;
                 const resp = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
                 const dados = (await resp.json()).record;
                 const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque }))), 'Produtos');
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque, 'Custo Médio': p.custoMedio || 0 }))), 'Produtos');
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.vendas.map(v => ({ Data: v.data, Vendedor: v.vendedor, Cliente: v.cliente, Produto: v.produto, Qtd: v.qtd, 'Total (R$)': v.valorTotal, Status: v.status === 'pago' ? 'Pago' : 'Pendente' }))), 'Vendas');
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.compras.map(c => ({ Data: c.data, Produto: c.produto, Qtd: c.qtd, 'Unitário': c.valorUnitario, 'Total': c.valorTotal, Fornecedor: c.fornecedor, Status: c.status === 'pago' ? 'Pago' : 'Pendente' }))), 'Compras');
-                const vends = { Cláudio: 0, Antônio: 0, Igor: 0 };
-                dados.vendas.forEach(v => vends[v.vendedor] += v.valorTotal);
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(Object.entries(vends).map(([v, t]) => ({ Vendedor: v, 'Total Vendido (R$)': t }))), 'Vend por Vendedor');
+                
+                // Calcular lucro por produto para o Excel
+                const lucroProdutos = [];
+                dados.produtos.forEach(p => {
+                    const vendasProduto = dados.vendas.filter(v => v.produtoId === p.id);
+                    const qtdVendida = vendasProduto.reduce((acc, v) => acc + v.qtd, 0);
+                    const faturamento = vendasProduto.reduce((acc, v) => acc + v.valorTotal, 0);
+                    const custoTotal = (p.custoMedio || 0) * qtdVendida;
+                    const lucro = faturamento - custoTotal;
+                    const margem = faturamento > 0 ? (lucro / faturamento * 100) : 0;
+                    lucroProdutos.push({
+                        Produto: p.nome,
+                        'Qtd Vendida': qtdVendida,
+                        Faturamento: faturamento,
+                        'Custo Total': custoTotal,
+                        Lucro: lucro,
+                        Margem: margem.toFixed(1) + '%'
+                    });
+                });
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(lucroProdutos.filter(l => l['Qtd Vendida'] > 0)), 'Lucro por Produto');
+                
                 XLSX.writeFile(wb, `queijaria_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
                 alert('✅ Excel gerado!');
             } catch (erro) { 
