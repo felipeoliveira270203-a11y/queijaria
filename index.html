@@ -694,7 +694,7 @@
         let buscaCliente = '';
         let modoEdicaoAtivo = false;
         let clienteQuitacaoPendente = null;
-        let clientesContatados = []; // Armazena clientes já contatados
+        let clientesContatados = [];
         let produtos = [];
         let compras = [];
         let vendas = [];
@@ -925,21 +925,21 @@
             atualizarClientes();
         };
 
-        // Função para calcular lucro por produto
+        // ---------- FUNÇÃO CORRIGIDA: LUCRO POR PRODUTO ----------
         function atualizarLucroPorProduto() {
             const tbody = document.getElementById('corpoLucroProduto');
             if (!tbody) return;
             
             tbody.innerHTML = '';
             
-            // Calcular lucro por produto
+            // Inicializar estrutura para cada produto
             const lucroPorProduto = {};
             
             produtos.forEach(produto => {
                 lucroPorProduto[produto.id] = {
                     nome: produto.nome,
                     preco: produto.preco,
-                    custoMedio: produto.custoMedio || 0,
+                    quantidadeComprada: 0,
                     quantidadeVendida: 0,
                     faturamento: 0,
                     custoTotal: 0,
@@ -948,15 +948,23 @@
                 };
             });
             
-            vendas.forEach(venda => {
-                const produto = produtos.find(p => p.id === venda.produtoId);
+            // Calcular COMPRAS da semana para cada produto
+            const comprasSemana = compras.filter(c => c.semana === semanaAtual);
+            comprasSemana.forEach(compra => {
+                const produto = lucroPorProduto[compra.produtoId];
                 if (produto) {
-                    const lucro = lucroPorProduto[venda.produtoId];
-                    if (lucro) {
-                        lucro.quantidadeVendida += venda.qtd;
-                        lucro.faturamento += venda.valorTotal;
-                        lucro.custoTotal += (produto.custoMedio || 0) * venda.qtd;
-                    }
+                    produto.quantidadeComprada += compra.qtd;
+                    produto.custoTotal += compra.valorTotal;
+                }
+            });
+            
+            // Calcular VENDAS da semana para cada produto
+            const vendasSemana = vendas.filter(v => v.semana === semanaAtual);
+            vendasSemana.forEach(venda => {
+                const produto = lucroPorProduto[venda.produtoId];
+                if (produto) {
+                    produto.quantidadeVendida += venda.qtd;
+                    produto.faturamento += venda.valorTotal;
                 }
             });
             
@@ -971,11 +979,13 @@
             
             let totalLucro = 0;
             let totalFaturamento = 0;
+            let totalCusto = 0;
             
             produtosOrdenados.forEach(p => {
-                if (p.quantidadeVendida > 0 || p.lucro !== 0) {
+                if (p.quantidadeComprada > 0 || p.quantidadeVendida > 0) {
                     totalLucro += p.lucro;
                     totalFaturamento += p.faturamento;
+                    totalCusto += p.custoTotal;
                     
                     const row = document.createElement('tr');
                     
@@ -983,15 +993,20 @@
                     tdNome.innerHTML = '<strong>' + p.nome + '</strong>';
                     row.appendChild(tdNome);
                     
-                    const tdQtd = document.createElement('td');
-                    tdQtd.innerText = p.quantidadeVendida;
-                    row.appendChild(tdQtd);
+                    const tdQtdComprada = document.createElement('td');
+                    tdQtdComprada.innerText = p.quantidadeComprada;
+                    row.appendChild(tdQtdComprada);
+                    
+                    const tdQtdVendida = document.createElement('td');
+                    tdQtdVendida.innerText = p.quantidadeVendida;
+                    row.appendChild(tdQtdVendida);
                     
                     const tdFaturamento = document.createElement('td');
                     tdFaturamento.innerText = 'R$ ' + p.faturamento.toFixed(2);
                     row.appendChild(tdFaturamento);
                     
                     const tdCusto = document.createElement('td');
+                    tdCusto.className = 'valor-vermelho';
                     tdCusto.innerText = 'R$ ' + p.custoTotal.toFixed(2);
                     row.appendChild(tdCusto);
                     
@@ -1012,12 +1027,16 @@
             // Atualizar resumo
             const totalLucroEl = document.getElementById('totalLucroGeral');
             const margemMediaEl = document.getElementById('margemMedia');
+            const totalCustoEl = document.getElementById('totalCustoGeral');
+            const totalFaturamentoEl = document.getElementById('totalFaturamentoGeral');
             
             if (totalLucroEl) totalLucroEl.innerText = 'R$ ' + totalLucro.toFixed(2);
+            if (totalCustoEl) totalCustoEl.innerText = 'R$ ' + totalCusto.toFixed(2);
+            if (totalFaturamentoEl) totalFaturamentoEl.innerText = 'R$ ' + totalFaturamento.toFixed(2);
             if (margemMediaEl) margemMediaEl.innerText = (totalFaturamento > 0 ? (totalLucro / totalFaturamento * 100).toFixed(1) : 0) + '%';
             
-            if (produtosOrdenados.filter(p => p.quantidadeVendida > 0).length === 0) {
-                tbody.innerHTML = '}<td colspan="6">Nenhuma venda registrada}';
+            if (comprasSemana.length === 0 && vendasSemana.length === 0) {
+                tbody.innerHTML = '}<td colspan="7">Nenhum movimento nesta semana}';
             }
         }
 
@@ -1033,15 +1052,19 @@
                 `;
                 case 'lucroProduto': return `
                     <div class="card">
-                        <div class="card-title">📈 LUCRO POR PRODUTO</div>
+                        <div class="card-title">📈 LUCRO POR PRODUTO - SEMANA ${semanaAtual}</div>
                         <div class="resumo-grid">
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">Total Lucro</div><div class="valor" id="totalLucroGeral">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #daa520;"><div class="label">Margem Média</div><div class="valor" id="margemMedia">0%</div></div>
+                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">Total Faturamento</div><div class="valor" id="totalFaturamentoGeral">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #b22222;"><div class="label">Total Custo</div><div class="valor" id="totalCustoGeral">R$ 0</div></div>
+                        </div>
+                        <div class="resumo-grid">
+                            <div class="resumo-card" style="background: #daa520;"><div class="label">Lucro Total</div><div class="valor" id="totalLucroGeral">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #cd853f;"><div class="label">Margem Média</div><div class="valor" id="margemMedia">0%</div></div>
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaLucroProduto">
                                 <thead>
-                                    的人<th>Produto</th><th>Qtd Vendida</th><th>Faturamento</th><th>Custo Total</th><th>Lucro</th><th>Margem</th> </thead>
+                                    的人<th>Produto</th><th>Comprado</th><th>Vendido</th><th>Faturamento</th><th>Custo</th><th>Lucro</th><th>Margem</th> </thead>
                                 <tbody id="corpoLucroProduto"></tbody>
                              </div>
                     </div>
@@ -1392,11 +1415,7 @@
             const prod = produtos.find(p => p.id === prodId);
             const total = qtd * unit;
             
-            // Atualizar custo médio
-            const custoTotalAtual = (prod.custoMedio || 0) * prod.estoque;
-            const novoCustoTotal = custoTotalAtual + total;
-            const novaQuantidade = prod.estoque + qtd;
-            prod.custoMedio = novoCustoTotal / novaQuantidade;
+            // Atualizar estoque
             prod.estoque += qtd;
             
             compras.push({ 
@@ -1430,8 +1449,6 @@
             
             const valorUnitario = prod.preco;
             const valorTotal = valorUnitario * qtd;
-            const custoTotal = (prod.custoMedio || 0) * qtd;
-            const lucro = valorTotal - custoTotal;
             
             prod.estoque -= qtd;
             
@@ -1444,9 +1461,7 @@
                 produto: prod.nome, 
                 qtd, 
                 valorUnitario: valorUnitario, 
-                valorTotal: valorTotal, 
-                custoTotal: custoTotal,
-                lucro: lucro,
+                valorTotal: valorTotal,
                 status: 'pendente',
                 data: new Date().toLocaleDateString() 
             });
@@ -2349,7 +2364,7 @@ José Cláudio do Vale`;
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
-                win.document.write(`<tr><td><strong>${c}</strong></td><td>${d.vendedor}</td><td>R$ ${d.total.toFixed(2)}</td><td>${d.itens.join(', ')}</td></tr>`);
+                win.document.write(`}<td><strong>${c}</strong></td><td>${d.vendedor}</td><td>R$ ${d.total.toFixed(2)}</td><td>${d.itens.join(', ')}</td> `);
             });
             win.document.write(`
                         </tbody>
@@ -2367,29 +2382,36 @@ José Cláudio do Vale`;
                 const resp = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
                 const dados = (await resp.json()).record;
                 const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque, 'Custo Médio': p.custoMedio || 0 }))), 'Produtos');
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.produtos.map(p => ({ Código: p.id, Produto: p.nome, 'Preço': p.preco, Estoque: p.estoque }))), 'Produtos');
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.vendas.map(v => ({ Data: v.data, Vendedor: v.vendedor, Cliente: v.cliente, Produto: v.produto, Qtd: v.qtd, 'Total (R$)': v.valorTotal, Status: v.status === 'pago' ? 'Pago' : 'Pendente' }))), 'Vendas');
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dados.compras.map(c => ({ Data: c.data, Produto: c.produto, Qtd: c.qtd, 'Unitário': c.valorUnitario, 'Total': c.valorTotal, Fornecedor: c.fornecedor, Status: c.status === 'pago' ? 'Pago' : 'Pendente' }))), 'Compras');
                 
-                // Calcular lucro por produto para o Excel
+                // Calcular lucro por produto para a semana atual no Excel
+                const comprasSemana = dados.compras.filter(c => c.semana === semanaAtual);
+                const vendasSemana = dados.vendas.filter(v => v.semana === semanaAtual);
                 const lucroProdutos = [];
                 dados.produtos.forEach(p => {
-                    const vendasProduto = dados.vendas.filter(v => v.produtoId === p.id);
-                    const qtdVendida = vendasProduto.reduce((acc, v) => acc + v.qtd, 0);
-                    const faturamento = vendasProduto.reduce((acc, v) => acc + v.valorTotal, 0);
-                    const custoTotal = (p.custoMedio || 0) * qtdVendida;
+                    const comprasProd = comprasSemana.filter(c => c.produtoId === p.id);
+                    const vendasProd = vendasSemana.filter(v => v.produtoId === p.id);
+                    const qtdComprada = comprasProd.reduce((acc, c) => acc + c.qtd, 0);
+                    const qtdVendida = vendasProd.reduce((acc, v) => acc + v.qtd, 0);
+                    const faturamento = vendasProd.reduce((acc, v) => acc + v.valorTotal, 0);
+                    const custoTotal = comprasProd.reduce((acc, c) => acc + c.valorTotal, 0);
                     const lucro = faturamento - custoTotal;
                     const margem = faturamento > 0 ? (lucro / faturamento * 100) : 0;
-                    lucroProdutos.push({
-                        Produto: p.nome,
-                        'Qtd Vendida': qtdVendida,
-                        Faturamento: faturamento,
-                        'Custo Total': custoTotal,
-                        Lucro: lucro,
-                        Margem: margem.toFixed(1) + '%'
-                    });
+                    if (qtdComprada > 0 || qtdVendida > 0) {
+                        lucroProdutos.push({
+                            Produto: p.nome,
+                            'Comprado (Qtd)': qtdComprada,
+                            'Vendido (Qtd)': qtdVendida,
+                            Faturamento: faturamento,
+                            Custo: custoTotal,
+                            Lucro: lucro,
+                            Margem: margem.toFixed(1) + '%'
+                        });
+                    }
                 });
-                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(lucroProdutos.filter(l => l['Qtd Vendida'] > 0)), 'Lucro por Produto');
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(lucroProdutos), 'Lucro por Produto');
                 
                 XLSX.writeFile(wb, `queijaria_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
                 alert('✅ Excel gerado!');
