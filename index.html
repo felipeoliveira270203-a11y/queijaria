@@ -41,7 +41,7 @@
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             letter-spacing: 2px;
         }
@@ -51,7 +51,7 @@
             color: #f5e6d3;
             padding: 5px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             border: 2px solid #654321;
             cursor: pointer;
         }
@@ -143,27 +143,27 @@
 
         .menu-inicial {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
         }
 
         .menu-card {
             background: #cd853f;
             border: 3px solid #654321;
-            border-radius: 15px;
-            padding: 20px 10px;
+            border-radius: 12px;
+            padding: 12px 5px;
             text-align: center;
-            box-shadow: 5px 5px 0px #3f2b1c;
+            box-shadow: 4px 4px 0px #3f2b1c;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1rem;
             color: #3f2b1c;
             transition: 0.1s;
         }
 
         .menu-card:active {
-            transform: translate(3px, 3px);
+            transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px #3f2b1c;
         }
 
@@ -172,11 +172,12 @@
             color: #f5e6d3;
             border: 2px solid #654321;
             border-radius: 20px;
-            padding: 5px 15px;
+            padding: 5px 12px;
             font-weight: bold;
             cursor: pointer;
             margin-left: 10px;
             box-shadow: 2px 2px 0px #3f2b1c;
+            font-size: 0.8rem;
         }
 
         .semana-selector {
@@ -196,7 +197,7 @@
             border: none;
             color: #3f2b1c;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.9rem;
             padding: 3px;
         }
 
@@ -204,9 +205,9 @@
             background: none;
             border: none;
             color: #3f2b1c;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            padding: 0 3px;
+            padding: 0 5px;
             font-weight: bold;
         }
 
@@ -214,34 +215,34 @@
             background: #f5e6d3;
             border: 4px solid #654321;
             border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 6px 6px 0px #3f2b1c;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 5px 5px 0px #3f2b1c;
         }
 
         .card-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #3f2b1c;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px dashed #8b4513;
-            padding-bottom: 8px;
+            border-bottom: 2px dashed #8b4513;
+            padding-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 4px;
             color: #3f2b1c;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -249,10 +250,10 @@
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 3px solid #8b4513;
+            padding: 10px;
+            border: 2px solid #8b4513;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             background-color: #fff8dc;
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
@@ -260,19 +261,19 @@
 
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background-color: #cd853f;
             color: #3f2b1c;
-            border: 3px solid #654321;
+            border: 2px solid #654321;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 4px 4px 0px #3f2b1c;
+            box-shadow: 3px 3px 0px #3f2b1c;
         }
 
         .btn-success {
@@ -291,63 +292,65 @@
         }
 
         .btn-small {
-            padding: 6px 12px;
-            font-size: 0.9rem;
+            padding: 4px 8px;
+            font-size: 0.7rem;
             width: auto;
             display: inline-block;
         }
 
         .tabela-container {
             overflow-x: auto;
-            margin-top: 10px;
-            border: 2px solid #8b4513;
+            margin-top: 8px;
+            border: 1px solid #8b4513;
             background: #fff8dc;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.75rem;
         }
 
         th {
             text-align: left;
-            padding: 10px 8px;
+            padding: 6px 4px;
             background-color: #8b4513;
             color: #f5e6d3;
             font-weight: bold;
-            font-size: 0.9rem;
-            border-bottom: 3px solid #654321;
+            font-size: 0.7rem;
+            border-bottom: 2px solid #654321;
         }
 
         td {
-            padding: 10px 8px;
+            padding: 6px 4px;
             border-bottom: 1px solid #cd853f;
             color: #3f2b1c;
             font-weight: bold;
+            font-size: 0.7rem;
         }
 
         .status-pago, .status-compra-pago {
             background-color: #2e8b57;
             color: #f5e6d3;
-            padding: 4px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.65rem;
             font-weight: bold;
             cursor: pointer;
             display: inline-block;
-            border: 2px solid #3f2b1c;
+            border: 1px solid #3f2b1c;
         }
 
         .status-pendente, .status-compra-pendente {
             background-color: #b22222;
             color: #f5e6d3;
-            padding: 4px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.65rem;
             font-weight: bold;
             cursor: pointer;
             display: inline-block;
-            border: 2px solid #3f2b1c;
+            border: 1px solid #3f2b1c;
         }
 
         .hidden {
@@ -357,94 +360,94 @@
         .resumo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .resumo-card {
             background: #cd853f;
             color: #3f2b1c;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
-            border: 3px solid #654321;
-            box-shadow: 4px 4px 0px #3f2b1c;
+            border: 2px solid #654321;
+            box-shadow: 3px 3px 0px #3f2b1c;
         }
 
         .resumo-card .label {
-            font-size: 0.9rem;
+            font-size: 0.7rem;
             font-weight: bold;
             text-transform: uppercase;
         }
 
         .resumo-card .valor {
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: bold;
-            margin-top: 5px;
-            text-shadow: 2px 2px 0px #3f2b1c;
+            margin-top: 3px;
+            text-shadow: 1px 1px 0px #3f2b1c;
             color: #f5e6d3;
         }
 
         .filtros {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 5px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
 
         .filtro-btn {
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 4px 8px;
+            border-radius: 15px;
             background: #f5e6d3;
-            border: 2px solid #654321;
+            border: 1px solid #654321;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 2px 2px 0px #3f2b1c;
+            font-size: 0.7rem;
+            box-shadow: 1px 1px 0px #3f2b1c;
         }
 
         .filtro-btn.ativo {
             background: #cd853f;
             color: #3f2b1c;
-            border: 2px solid #f5e6d3;
+            border: 1px solid #f5e6d3;
         }
 
         .vendedor-badge {
             background-color: #daa520;
             color: #3f2b1c;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7rem;
+            padding: 2px 4px;
+            border-radius: 8px;
+            font-size: 0.6rem;
             font-weight: bold;
             border: 1px solid #3f2b1c;
-            margin-left: 5px;
         }
 
         .acao-btn {
             background: #f5e6d3;
-            border: 2px solid #654321;
-            font-size: 1.2rem;
+            border: 1px solid #654321;
+            font-size: 0.8rem;
             cursor: pointer;
-            padding: 5px 8px;
-            border-radius: 5px;
-            margin: 2px;
-            box-shadow: 2px 2px 0px #3f2b1c;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin: 1px;
+            box-shadow: 1px 1px 0px #3f2b1c;
         }
 
         .estoque-editavel {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
         }
 
         .sincronizando {
             position: fixed;
-            bottom: 100px;
-            left: 20px;
+            bottom: 80px;
+            left: 10px;
             background: #2e8b57;
             color: #f5e6d3;
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 2px solid #654321;
-            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid #654321;
+            font-size: 0.7rem;
             display: none;
             z-index: 1001;
         }
@@ -465,23 +468,23 @@
         .modal-content {
             background: #f5e6d3;
             border: 4px solid #654321;
-            border-radius: 20px;
-            padding: 25px;
-            max-width: 400px;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 350px;
             width: 90%;
             text-align: center;
-            box-shadow: 10px 10px 0px #3f2b1c;
+            box-shadow: 8px 8px 0px #3f2b1c;
         }
 
         .modal-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
             color: #3f2b1c;
         }
 
         .modal-content p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            font-size: 1rem;
+            margin-bottom: 15px;
         }
 
         .modal-botoes {
@@ -491,12 +494,12 @@
         }
 
         .modal-botoes button {
-            padding: 10px 20px;
+            padding: 8px 15px;
             border: 2px solid #654321;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 3px 3px 0px #3f2b1c;
+            box-shadow: 2px 2px 0px #3f2b1c;
         }
 
         .btn-confirmar {
@@ -510,22 +513,22 @@
         }
 
         .busca-container {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .busca-input {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 2px solid #8b4513;
-            border-radius: 20px;
-            font-size: 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
             background: #fff8dc;
         }
         
         .resultado-busca {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             color: #8b4513;
-            margin-top: 5px;
+            margin-top: 3px;
             text-align: right;
         }
 
@@ -533,7 +536,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
+            padding: 8px;
             border-bottom: 1px solid #cd853f;
         }
         
@@ -547,25 +550,25 @@
         
         .config-usuario-nome {
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 0.85rem;
         }
         
         .config-usuario-nivel {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             color: #8b4513;
         }
         
         .config-usuario-acoes {
             display: flex;
-            gap: 8px;
+            gap: 5px;
         }
         
         .config-senha-input {
-            width: 150px;
-            padding: 6px 10px;
-            border: 2px solid #8b4513;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            width: 100px;
+            padding: 4px 6px;
+            border: 1px solid #8b4513;
+            border-radius: 5px;
+            font-size: 0.7rem;
         }
 
         .lucro-positivo {
@@ -578,19 +581,9 @@
             font-weight: bold;
         }
 
-        .preco-editavel {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .preco-valor {
-            font-weight: bold;
-        }
-        
         .checkbox-contato {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
         }
         
@@ -604,23 +597,25 @@
             font-weight: bold;
         }
         
-        .custo-info {
-            font-size: 0.7rem;
-            color: #8b4513;
-            margin-top: 2px;
-        }
-        
         .backup-section {
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: 15px;
+            padding-top: 12px;
             border-top: 2px dashed #8b4513;
         }
         
         .atalho-info {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: #8b4513;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
+        }
+        
+        .custo-medio-badge {
+            background-color: #daa520;
+            padding: 2px 4px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            display: inline-block;
         }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -634,7 +629,7 @@
 
         <div id="loginScreen">
             <div class="login-box">
-                <h2>QUEIJARIA DO MINEIRO</h2>
+                <h2>🧀 QUEIJARIA DO MINEIRO</h2>
                 <input type="text" id="loginUsuario" placeholder="Usuário">
                 <input type="password" id="loginSenha" placeholder="Senha">
                 <button onclick="fazerLogin()">ENTRAR</button>
@@ -644,15 +639,15 @@
 
         <div id="appScreen" class="hidden">
             <div class="header">
-                <h1>QUEIJARIA DO MINEIRO</h1>
+                <h1>🧀 QUEIJARIA</h1>
                 <div class="badge-nuvem" id="statusConexao" onclick="forcarSincronizacao()">CONECTANDO...</div>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div class="semana-selector">
-                    <button onclick="semanaAnterior()">←</button>
+                    <button onclick="semanaAnterior()">◀</button>
                     <select id="selectSemana" onchange="mudarSemana()"></select>
-                    <button onclick="proximaSemana()">→</button>
+                    <button onclick="proximaSemana()">▶</button>
                 </div>
                 <button class="btn-sair" onclick="logout()">SAIR</button>
             </div>
@@ -662,11 +657,11 @@
         </div>
     </div>
 
-    <div class="sincronizando" id="sincronizando">SINCRONIZANDO...</div>
+    <div class="sincronizando" id="sincronizando">🔄 SINCRONIZANDO...</div>
 
     <div id="modalConfirmacao" class="modal" style="display: none;">
         <div class="modal-content">
-            <h3>QUITAR DÉBITO</h3>
+            <h3>✅ QUITAR DÉBITO</h3>
             <p id="modalMensagem"></p>
             <div class="modal-botoes">
                 <button class="btn-confirmar" onclick="confirmarQuitacao()">SIM</button>
@@ -683,7 +678,7 @@
             { usuario: 'IgorNogueira', senha: 'Minas#Cura47', nivel: 'VENDEDOR' }
         ];
 
-        // CONFIGURACAO JSONBIN
+        // CONFIGURACAO JSONBIN - ATUALIZE COM SEUS DADOS
         const JSONBIN_CONFIG = {
             BIN_ID: "69b50d08c3097a1dd523c95e",
             MASTER_KEY: "$2a$10$Zri5qBf3Hgz0cMNFcba8mOlJY0SwHHFtWh10Pj2NvuFQP/ZRdO1Q2"
@@ -716,10 +711,48 @@
         let vendas = [];
         let contadorId = 21;
 
+        // DADOS INICIAIS BASEADOS NOS PRINTS
+        function carregarDadosIniciaisDosPrints() {
+            produtos = [
+                {id:1, nome:"Cachaça litro", preco:28, estoque:0, custoMedio:10},
+                {id:2, nome:"Doce de leite pedaço", preco:5, estoque:49, custoMedio:0},
+                {id:3, nome:"Doce de leite pote", preco:18, estoque:24, custoMedio:0},
+                {id:4, nome:"Doce de pote fruta", preco:18, estoque:0, custoMedio:0},
+                {id:5, nome:"Geleia", preco:20, estoque:12, custoMedio:0},
+                {id:6, nome:"Goiabada", preco:20, estoque:14, custoMedio:0},
+                {id:7, nome:"Linguiça", preco:25, estoque:40, custoMedio:0},
+                {id:8, nome:"Manteiga pequena", preco:12, estoque:5, custoMedio:0},
+                {id:9, nome:"Parmesão capa preta", preco:45, estoque:0, custoMedio:0},
+                {id:10, nome:"Queijo 4 cores", preco:45, estoque:5, custoMedio:0},
+                {id:11, nome:"Queijo do reino", preco:45, estoque:4, custoMedio:0},
+                {id:12, nome:"Queijo minas frescal", preco:28, estoque:53, custoMedio:0},
+                {id:13, nome:"Queijo minas padrão", preco:40, estoque:17, custoMedio:0},
+                {id:14, nome:"Queijo mussarela temperado", preco:35, estoque:0, custoMedio:0},
+                {id:15, nome:"Queijo mussarelinha", preco:32, estoque:0, custoMedio:0},
+                {id:16, nome:"Queijo nozinho", preco:36, estoque:0, custoMedio:0},
+                {id:17, nome:"Queijo parmesão", preco:45, estoque:0, custoMedio:0},
+                {id:18, nome:"Queijo provolone temperado", preco:37, estoque:0, custoMedio:0},
+                {id:19, nome:"Requeijão", preco:18, estoque:0, custoMedio:0},
+                {id:20, nome:"Queijo Prato", preco:45, estoque:0, custoMedio:0}
+            ];
+            
+            compras = [
+                {id:100, semana:14, produtoId:1, produto:"Cachaça litro", qtd:1, valorUnitario:10, valorTotal:10, fornecedor:"Zé pinga", status:"pago", data:"4/1/2026"}
+            ];
+            
+            vendas = [
+                {id:200, semana:14, vendedor:"Cláudio", cliente:"Felipe", produtoId:2, produto:"Doce de leite pedaço", qtd:1, valorUnitario:5, valorTotal:5, lucro:0, custoMedio:0, status:"pendente", data:"4/1/2026"}
+            ];
+            
+            contadorId = 21;
+            
+            atualizarCustoMedioProdutos();
+        }
+
         // FUNÇÃO PARA CALCULAR CUSTO MÉDIO DE UM PRODUTO
         function calcularCustoMedio(produtoId) {
             const comprasProduto = compras.filter(c => c.produtoId === produtoId && c.status === 'pago');
-            if (comprasProduto.length === 0) return 0;
+            if (comprasProduto.length === 0) return produtos.find(p => p.id === produtoId)?.custoMedio || 0;
             
             let totalCusto = 0;
             let totalQuantidade = 0;
@@ -734,27 +767,35 @@
         // FUNÇÃO PARA ATUALIZAR CUSTO MÉDIO DE TODOS OS PRODUTOS
         function atualizarCustoMedioProdutos() {
             produtos.forEach(produto => {
-                produto.custoMedio = calcularCustoMedio(produto.id);
+                const novoCusto = calcularCustoMedio(produto.id);
+                if (novoCusto > 0) {
+                    produto.custoMedio = novoCusto;
+                }
+            });
+            
+            // Atualizar o lucro das vendas existentes
+            vendas.forEach(venda => {
+                const produto = produtos.find(p => p.id === venda.produtoId);
+                if (produto && produto.custoMedio) {
+                    venda.custoMedio = produto.custoMedio;
+                    venda.lucro = (venda.valorUnitario - produto.custoMedio) * venda.qtd;
+                }
             });
         }
 
         // FUNÇÃO PARA CALCULAR LUCRO DE UMA VENDA
         function calcularLucroVenda(venda) {
             const produto = produtos.find(p => p.id === venda.produtoId);
-            if (!produto || !produto.custoMedio) return 0;
-            return (venda.valorUnitario - produto.custoMedio) * venda.qtd;
+            if (!produto) return 0;
+            const custoMedio = produto.custoMedio || 0;
+            return (venda.valorUnitario - custoMedio) * venda.qtd;
         }
 
         // FUNÇÕES DE BACKUP
         function fazerBackupLocal() {
             const dados = { 
-                produtos, 
-                compras, 
-                vendas, 
-                historicoEstoque, 
-                contadorId, 
-                usuarios: USUARIOS, 
-                clientesContatados,
+                produtos, compras, vendas, historicoEstoque, contadorId, 
+                usuarios: USUARIOS, clientesContatados,
                 dataBackup: new Date().toISOString()
             };
             
@@ -769,13 +810,13 @@
             a.click();
             URL.revokeObjectURL(url);
             
-            alert('✅ Backup salvo! Arquivo baixado e armazenado no navegador.');
+            alert('✅ Backup salvo!');
         }
 
         function restaurarBackupLocal() {
             const backupStr = localStorage.getItem('backupQueijaria');
             if (!backupStr) {
-                alert('❌ Nenhum backup encontrado no navegador!');
+                alert('❌ Nenhum backup encontrado!');
                 return;
             }
             
@@ -801,8 +842,8 @@
                     alert('✅ Backup restaurado com sucesso!');
                 }
             } catch (erro) {
-                console.error('Erro ao restaurar backup:', erro);
-                alert('❌ Erro ao restaurar backup. Arquivo pode estar corrompido.');
+                console.error('Erro:', erro);
+                alert('❌ Erro ao restaurar backup.');
             }
         }
 
@@ -831,50 +872,14 @@
                         salvarDadosNaNuvem();
                         atualizarTudo();
                         
-                        alert('✅ Dados restaurados com sucesso!');
+                        alert('✅ Dados restaurados!');
                     }
                 } catch (erro) {
-                    console.error('Erro ao ler arquivo:', erro);
-                    alert('❌ Erro ao ler arquivo. Verifique se é um JSON válido.');
+                    alert('❌ Erro ao ler arquivo.');
                 }
                 event.target.value = '';
             };
             reader.readAsText(file);
-        }
-
-        async function verificarERecuperarDados() {
-            try {
-                document.getElementById('statusConexao').innerText = 'VERIFICANDO...';
-                const resposta = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
-                
-                if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
-                
-                const dados = await resposta.json();
-                const record = dados.record;
-                
-                const estaVazio = (!record.produtos || record.produtos.length === 0) && 
-                                  (!record.vendas || record.vendas.length === 0) &&
-                                  (!record.compras || record.compras.length === 0);
-                
-                if (estaVazio) {
-                    document.getElementById('statusConexao').innerText = '⚠️ DADOS ZERADOS';
-                    document.getElementById('statusConexao').style.backgroundColor = '#b22222';
-                    
-                    const backupLocal = localStorage.getItem('backupQueijaria');
-                    if (backupLocal && confirm('⚠️ Seus dados na nuvem foram zerados! Deseja restaurar do backup local?')) {
-                        restaurarBackupLocal();
-                        return true;
-                    }
-                } else {
-                    document.getElementById('statusConexao').innerText = '✅ CONECTADO';
-                    document.getElementById('statusConexao').style.backgroundColor = '#2e8b57';
-                }
-                return !estaVazio;
-            } catch (erro) {
-                console.error('Erro ao verificar:', erro);
-                document.getElementById('statusConexao').innerText = '⚠️ ERRO';
-                return false;
-            }
         }
 
         // FUNCOES DE SINCRONIZACAO
@@ -882,42 +887,37 @@
             const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS, clientesContatados };
             try {
                 await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
-                document.getElementById('statusConexao').innerText = '💾 SALVO';
-                document.getElementById('statusConexao').style.backgroundColor = '#2e8b57';
-                setTimeout(() => {
-                    if(document.getElementById('statusConexao')) {
-                        document.getElementById('statusConexao').innerText = '✅ CONECTADO';
-                    }
-                }, 2000);
-                
-                // Salvar backup automático
-                const backupAutomatico = {
-                    produtos, compras, vendas, historicoEstoque, contadorId,
-                    usuarios: USUARIOS, clientesContatados,
-                    dataBackup: new Date().toISOString()
-                };
-                localStorage.setItem('backupQueijaria', JSON.stringify(backupAutomatico));
-                
+                const statusEl = document.getElementById('statusConexao');
+                if(statusEl) {
+                    statusEl.innerText = '💾 SALVO';
+                    setTimeout(() => {
+                        if(document.getElementById('statusConexao')) {
+                            document.getElementById('statusConexao').innerText = '✅ ONLINE';
+                        }
+                    }, 1500);
+                }
             } catch (erro) {
                 console.error('Erro ao salvar:', erro);
-                document.getElementById('statusConexao').innerText = '❌ ERRO';
-                document.getElementById('statusConexao').style.backgroundColor = '#b22222';
             }
         }
 
         async function carregarDadosDaNuvem() {
             try {
-                document.getElementById('statusConexao').innerText = '🔄 CARREGANDO...';
+                const statusEl = document.getElementById('statusConexao');
+                if(statusEl) statusEl.innerText = '🔄 CARREGANDO...';
+                
                 const resposta = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
                 
-                if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
+                if (!resposta.ok) {
+                    throw new Error(`HTTP ${resposta.status}`);
+                }
                 
                 const dados = (await resposta.json()).record;
                 
-                if (!dados || Object.keys(dados).length === 0) {
-                    console.warn('Dados vazios da nuvem, usando dados iniciais');
-                    usarDadosIniciais();
-                    document.getElementById('statusConexao').innerText = '🆕 DADOS NOVOS';
+                if (!dados || Object.keys(dados).length === 0 || (!dados.produtos && !dados.vendas)) {
+                    console.log('Nenhum dado na nuvem, usando dados iniciais dos prints');
+                    carregarDadosIniciaisDosPrints();
+                    if(statusEl) statusEl.innerText = '🆕 DADOS LOCAIS';
                     return;
                 }
                 
@@ -941,18 +941,22 @@
                 };
                 localStorage.setItem('backupQueijaria', JSON.stringify(backupAutomatico));
                 
-                document.getElementById('statusConexao').innerText = '✅ CONECTADO';
-                document.getElementById('statusConexao').style.backgroundColor = '#2e8b57';
+                if(statusEl) {
+                    statusEl.innerText = '✅ ONLINE';
+                    statusEl.style.backgroundColor = '#2e8b57';
+                }
                 atualizarTudo();
                 
             } catch (erro) {
                 console.error('Erro ao carregar:', erro);
-                document.getElementById('statusConexao').innerText = '📱 OFFLINE';
-                document.getElementById('statusConexao').style.backgroundColor = '#b22222';
+                const statusEl = document.getElementById('statusConexao');
+                if(statusEl) {
+                    statusEl.innerText = '📱 OFFLINE';
+                    statusEl.style.backgroundColor = '#b22222';
+                }
                 
                 const backupLocal = localStorage.getItem('backupQueijaria');
                 if (backupLocal) {
-                    console.log('Usando backup local...');
                     try {
                         const dadosBackup = JSON.parse(backupLocal);
                         produtos = dadosBackup.produtos || [];
@@ -969,45 +973,14 @@
                         atualizarCustoMedioProdutos();
                         atualizarTudo();
                         
-                        alert('📱 Usando dados do backup local! Quando a conexão voltar, os dados serão sincronizados.');
+                        alert('📱 Usando backup local!');
                     } catch (e) {
-                        console.error('Erro ao carregar backup:', e);
-                        usarDadosIniciais();
+                        carregarDadosIniciaisDosPrints();
                     }
                 } else {
-                    usarDadosIniciais();
+                    carregarDadosIniciaisDosPrints();
                 }
             }
-        }
-
-        function usarDadosIniciais() {
-            produtos = [
-                {id:1, nome:"Cachaça litro", preco:28, estoque:0, custoMedio:0},
-                {id:2, nome:"Doce de leite pedaço", preco:5, estoque:0, custoMedio:0},
-                {id:3, nome:"Doce de leite pote", preco:18, estoque:0, custoMedio:0},
-                {id:4, nome:"Doce de pote fruta", preco:18, estoque:0, custoMedio:0},
-                {id:5, nome:"Geleia", preco:20, estoque:0, custoMedio:0},
-                {id:6, nome:"Goiabada", preco:20, estoque:0, custoMedio:0},
-                {id:7, nome:"Linguiça", preco:25, estoque:0, custoMedio:0},
-                {id:8, nome:"Manteiga pequena", preco:12, estoque:0, custoMedio:0},
-                {id:9, nome:"Parmesão capa preta", preco:45, estoque:0, custoMedio:0},
-                {id:10, nome:"Queijo 4 cores", preco:45, estoque:0, custoMedio:0},
-                {id:11, nome:"Queijo do reino", preco:45, estoque:0, custoMedio:0},
-                {id:12, nome:"Queijo minas frescal", preco:28, estoque:0, custoMedio:0},
-                {id:13, nome:"Queijo minas padrão", preco:40, estoque:0, custoMedio:0},
-                {id:14, nome:"Queijo mussarela temperado", preco:35, estoque:0, custoMedio:0},
-                {id:15, nome:"Queijo mussarelinha", preco:32, estoque:0, custoMedio:0},
-                {id:16, nome:"Queijo nozinho", preco:36, estoque:0, custoMedio:0},
-                {id:17, nome:"Queijo parmesão", preco:45, estoque:0, custoMedio:0},
-                {id:18, nome:"Queijo provolone temperado", preco:37, estoque:0, custoMedio:0},
-                {id:19, nome:"Requeijão", preco:18, estoque:0, custoMedio:0},
-                {id:20, nome:"Queijo Prato", preco:45, estoque:0, custoMedio:0}
-            ];
-            compras = [];
-            vendas = [];
-            historicoEstoque = [];
-            contadorId = 21;
-            atualizarTudo();
         }
 
         function getSemanaAtual() {
@@ -1057,10 +1030,10 @@
                 { nome: '💸 GASTOS', aba: 'gastos' },
                 { nome: '📊 RESULTADO', aba: 'relatorios' },
                 { nome: '👥 VENDEDORES', aba: 'vendedores' },
-                { nome: '📈 LUCRO PRODUTO', aba: 'lucroProduto' },
+                { nome: '📈 LUCRO', aba: 'lucroProduto' },
                 { nome: '📜 HISTÓRICO', aba: 'historico' },
                 { nome: '🏷️ PRODUTOS', aba: 'produtos' },
-                { nome: '⚙️ CONFIGURAÇÕES', aba: 'configuracoes' }
+                { nome: '⚙️ CONFIG', aba: 'configuracoes' }
             ];
 
             itensComuns.forEach(item => {
@@ -1091,100 +1064,80 @@
             switch (aba) {
                 case 'configuracoes': return `
                     <div class="card">
-                        <div class="card-title">👥 GERENCIAR USUÁRIOS</div>
-                        <p style="margin-bottom: 15px; color: #8b4513;">Altere as senhas dos usuários cadastrados</p>
+                        <div class="card-title">👥 USUÁRIOS</div>
                         <div id="corpoConfiguracoes"></div>
                         <div class="backup-section">
-                            <div class="card-title">💾 BACKUP E RECUPERAÇÃO</div>
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <button class="btn btn-success" onclick="fazerBackupLocal()">📥 FAZER BACKUP AGORA</button>
-                                <button class="btn btn-warning" onclick="restaurarBackupLocal()">🔄 RESTAURAR BACKUP LOCAL</button>
-                                <div>
-                                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">📂 RESTAURAR DE ARQUIVO:</label>
-                                    <input type="file" id="restaurarArquivo" accept=".json" style="width: 100%; padding: 8px; border: 2px solid #8b4513; border-radius: 8px;">
-                                </div>
-                                <button class="btn" onclick="verificarERecuperarDados()">🔍 VERIFICAR DADOS NA NUVEM</button>
-                            </div>
-                            <div class="atalho-info">
-                                💡 Dica: Ctrl+B = Backup | Ctrl+R = Restaurar backup local
-                            </div>
+                            <div class="card-title">💾 BACKUP</div>
+                            <button class="btn btn-success" onclick="fazerBackupLocal()">📥 FAZER BACKUP</button>
+                            <button class="btn btn-warning" onclick="restaurarBackupLocal()">🔄 RESTAURAR LOCAL</button>
+                            <input type="file" id="restaurarArquivo" accept=".json" style="width:100%; margin-top:8px; padding:6px; border:2px solid #8b4513; border-radius:8px;">
+                            <div class="atalho-info">💡 Ctrl+B = Backup | Ctrl+R = Restaurar</div>
                         </div>
                     </div>
                 `;
                 case 'lucroProduto': return `
                     <div class="card">
-                        <div class="card-title">📈 LUCRO POR PRODUTO - SEMANA ${semanaAtual}</div>
+                        <div class="card-title">📈 LUCRO - SEMANA ${semanaAtual}</div>
                         <div class="resumo-grid">
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">FATURAMENTO</div><div class="valor" id="totalFaturamentoGeral">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #b22222;"><div class="label">CUSTO TOTAL</div><div class="valor" id="totalCustoGeral">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#2e8b57"><div class="label">FATURAMENTO</div><div class="valor" id="totalFaturamentoGeral">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#b22222"><div class="label">CUSTO TOTAL</div><div class="valor" id="totalCustoGeral">R$ 0</div></div>
                         </div>
                         <div class="resumo-grid">
-                            <div class="resumo-card" style="background: #daa520;"><div class="label">LUCRO TOTAL</div><div class="valor" id="totalLucroGeral">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #cd853f;"><div class="label">MARGEM MÉDIA</div><div class="valor" id="margemMedia">0%</div></div>
+                            <div class="resumo-card" style="background:#daa520"><div class="label">LUCRO TOTAL</div><div class="valor" id="totalLucroGeral">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#cd853f"><div class="label">MARGEM</div><div class="valor" id="margemMedia">0%</div></div>
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaLucroProduto">
-                                <thead> caption<th>Produto</th><th>Custo Médio</th><th>Comprado</th><th>Vendido</th><th>Faturamento</th><th>Custo Total</th><th>Lucro</th><th>Margem</th> </thead>
+                                <thead><tr><th>Produto</th><th>Custo Médio</th><th>Comprado</th><th>Vendido</th><th>Faturamento</th><th>Custo</th><th>Lucro</th><th>Margem</th></tr></thead>
                                 <tbody id="corpoLucroProduto"></tbody>
-                              </table>
+                            </table>
                         </div>
                     </div>
                 `;
                 case 'vendas': return `
                     <div class="card">
-                        <div class="card-title">💰 ANOTAR VENDA - SEMANA ${semanaAtual}</div>
+                        <div class="card-title">💰 NOVA VENDA - SEM ${semanaAtual}</div>
                         <div class="form-group"><label>Vendedor</label><select id="vendedorVenda"><option>Cláudio</option><option>Antônio</option><option>Igor</option></select></div>
                         <div class="form-group"><label>Cliente</label><input type="text" id="clienteVenda" placeholder="Nome" list="clientesList"><datalist id="clientesList"></datalist></div>
                         <div class="form-group"><label>Produto</label><select id="produtoVenda" onchange="calcularValorVenda()"></select></div>
-                        <div class="form-group"><label>Quantidade</label><input type="number" id="qtdVenda" value="1" min="1" oninput="calcularValorVenda()"></div>
-                        <div class="form-group"><label>Preço (R$)</label><input type="text" id="valorUnitarioVenda" readonly></div>
-                        <div class="form-group"><label>Total (R$)</label><input type="text" id="valorTotalVenda" readonly></div>
-                        <button class="btn btn-success" onclick="registrarVenda()">✅ ANOTAR VENDA</button>
+                        <div class="form-group"><label>Qtd</label><input type="number" id="qtdVenda" value="1" min="1" oninput="calcularValorVenda()"></div>
+                        <div class="form-group"><label>Total</label><input type="text" id="valorTotalVenda" readonly></div>
+                        <button class="btn btn-success" onclick="registrarVenda()">✅ REGISTRAR VENDA</button>
                     </div>
                     <div class="card">
-                        <div class="card-title">⚠️ PENDENTE POR VENDEDOR</div>
+                        <div class="card-title">⚠️ PENDENTES</div>
                         <div class="resumo-grid">
-                            <div class="resumo-card" style="background: #b22222;"><div class="label">Cláudio</div><div class="valor" id="pendenteClaudio">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #b22222;"><div class="label">Antônio</div><div class="valor" id="pendenteAntonio">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #b22222;"><div class="label">Igor</div><div class="valor" id="pendenteIgor">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#b22222"><div class="label">Cláudio</div><div class="valor" id="pendenteClaudio">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#b22222"><div class="label">Antônio</div><div class="valor" id="pendenteAntonio">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#b22222"><div class="label">Igor</div><div class="valor" id="pendenteIgor">R$ 0</div></div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-title">🔍 FILTRAR POR PRODUTO</div>
-                        <div class="form-group"><select id="filtroProdutoVendas"></select></div>
+                        <div class="card-title">🔍 FILTROS</div>
+                        <select id="filtroProdutoVendas" style="width:100%; padding:8px; margin-bottom:8px;"></select>
+                        <input type="text" id="buscaClienteVendas" placeholder="Buscar cliente..." style="width:100%; padding:8px; border:2px solid #8b4513; border-radius:8px;">
                     </div>
                     <div class="card">
-                        <div class="card-title">🔎 PESQUISAR CLIENTE</div>
-                        <div class="busca-container"><input type="text" id="buscaClienteVendas" class="busca-input" placeholder="Digite o nome do cliente..."><div class="resultado-busca" id="resultadoBuscaVendas"></div></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">📋 VENDAS DA SEMANA <span id="vendaSemanaTitulo">${semanaAtual}</span></div>
+                        <div class="card-title">📋 VENDAS SEMANA ${semanaAtual}</div>
                         <div class="filtros">
                             <button class="filtro-btn ativo" onclick="filtrarVendasVendedor('todos',this)">TODOS</button>
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Cláudio',this)">CLÁUDIO</button>
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Antônio',this)">ANTÔNIO</button>
                             <button class="filtro-btn" onclick="filtrarVendasVendedor('Igor',this)">IGOR</button>
                         </div>
-                        <div class="tabela-container"><table id="tabelaVendas"><thead> <tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Lucro</th><th>Status</th><th>Ações</th> </thead><tbody></tbody> </div>
+                        <div class="tabela-container"><table id="tabelaVendas"><thead><tr><th>Vendedor</th><th>Cliente</th><th>Produto</th><th>Total</th><th>Lucro</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'estoque': return `
                     <div class="card">
-                        <div class="card-title">
-                            <span>📦 ESTOQUE ATUAL</span>
-                            <div>
-                                <button class="btn-small btn-warning" onclick="entrarModoEdicaoEstoque()" id="btnModoEdicaoEstoque">✏️ AJUSTAR</button>
-                                <button class="btn-small btn-success" onclick="salvarAjustesEstoque()" id="btnSalvarEstoque" style="display: none;">💾 SALVAR</button>
-                                <button class="btn-small btn-danger" onclick="cancelarEdicaoEstoque()" id="btnCancelarEdicao" style="display: none;">❌ CANCELAR</button>
-                            </div>
-                        </div>
-                        <div class="tabela-container"><table id="tabelaEstoque"><thead> <tr><th>Produto</th><th>Quantidade</th><th>Custo Médio</th><th>Status</th> </thead><tbody></tbody> </div>
+                        <div class="card-title">📦 ESTOQUE <button class="btn-small btn-warning" onclick="entrarModoEdicaoEstoque()" id="btnModoEdicaoEstoque" style="float:right;">✏️ AJUSTAR</button></div>
+                        <div class="tabela-container"><table id="tabelaEstoque"><thead><tr><th>Produto</th><th>Qtd</th><th>Custo Médio</th><th>Status</th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'clientes': return `
                     <div class="card">
-                        <div class="card-title">📋 LISTA DE COBRANÇA <button class="btn-excel" style="padding:5px 10px;width:auto;" onclick="imprimirCobranca()">🖨️ IMPRIMIR</button></div>
-                        <div class="busca-container"><input type="text" id="buscaCliente" class="busca-input" placeholder="Pesquisar cliente..."><div class="resultado-busca" id="resultadoBusca"></div></div>
+                        <div class="card-title">📋 COBRANÇAS <button class="btn-excel" style="padding:2px 8px;width:auto;" onclick="imprimirCobranca()">🖨️ IMPRIMIR</button></div>
+                        <input type="text" id="buscaCliente" placeholder="Pesquisar cliente..." style="width:100%; padding:8px; margin-bottom:8px; border:2px solid #8b4513; border-radius:8px;">
                         <div class="filtros">
                             <button class="filtro-btn ativo" onclick="filtrarCobrancas('todos',this)">TODOS</button>
                             <button class="filtro-btn" onclick="filtrarCobrancas('Cláudio',this)">CLÁUDIO</button>
@@ -1196,90 +1149,89 @@
                             <button class="filtro-btn filtro-contato" onclick="filtrarContatos('nao_contatados',this)">NÃO CONTATADOS</button>
                             <button class="filtro-btn filtro-contato" onclick="filtrarContatos('contatados',this)">CONTATADOS</button>
                         </div>
-                        <div class="tabela-container"><table id="tabelaClientes"><thead> <tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>Contato</th><th>Ações</th> </thead><tbody></tbody> </div>
-                        <div style="margin-top:15px;background:#daa520;padding:10px;border:2px solid #654321;border-radius:8px;text-align:center;"><span>💰 TOTAL A RECEBER: </span><span id="totalCobranca" style="font-size:1.3rem;font-weight:bold;">R$ 0,00</span></div>
+                        <div class="tabela-container"><table id="tabelaClientes"><thead><tr><th>Cliente</th><th>Débito</th><th>Vendedor</th><th>Produtos</th><th>Data</th><th>✓</th><th></th></tr></thead><tbody></tbody></table></div>
+                        <div style="margin-top:10px;background:#daa520;padding:8px;border-radius:8px;text-align:center;"><strong>💰 TOTAL: </strong><span id="totalCobranca">R$ 0,00</span></div>
                     </div>
                 `;
                 case 'compras': return `
                     <div class="card">
-                        <div class="card-title">🛒 COMPRAR - SEMANA ${semanaAtual}</div>
+                        <div class="card-title">🛒 COMPRAR - SEM ${semanaAtual}</div>
                         <div class="form-group"><label>Produto</label><select id="compraProduto" onchange="calcularTotalCompra()"></select></div>
-                        <div class="form-group"><label>Quantidade</label><input type="number" id="compraQtd" value="1" min="1" oninput="calcularTotalCompra()"></div>
+                        <div class="form-group"><label>Qtd</label><input type="number" id="compraQtd" value="1" min="1" oninput="calcularTotalCompra()"></div>
                         <div class="form-group"><label>Preço Unitário (R$)</label><input type="number" id="compraValorUnitario" step="0.01" oninput="calcularTotalCompra()"></div>
-                        <div class="campo-total" style="background:#daa520;padding:15px;border:3px solid #654321;border-radius:8px;margin:15px 0;text-align:center;"><div class="label">TOTAL</div><div class="valor" id="compraTotalDestaque" style="font-size:2rem;">R$ 0,00</div></div>
+                        <div style="background:#daa520;padding:10px;border-radius:8px;margin:10px 0;text-align:center;"><strong>TOTAL: R$ <span id="compraTotalDestaque">0,00</span></strong></div>
                         <div class="form-group"><label>Fornecedor</label><input type="text" id="compraFornecedor" placeholder="Quem vendeu"></div>
-                        <button class="btn btn-success" onclick="registrarCompra()">✅ REGISTRAR</button>
+                        <button class="btn btn-success" onclick="registrarCompra()">✅ REGISTRAR COMPRA</button>
                     </div>
                     <div class="card">
-                        <div class="card-title">📋 COMPRAS DA SEMANA <span id="compraSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaCompras"><thead> <tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th>Ações</th> </thead><tbody></tbody> </div>
+                        <div class="card-title">📋 COMPRAS SEMANA ${semanaAtual}</div>
+                        <div class="tabela-container"><table id="tabelaCompras"><thead><tr><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 case 'gastos': return `
                     <div class="card">
-                        <div class="card-title">💸 QUANTO GASTEI</div>
+                        <div class="card-title">💸 GASTOS</div>
                         <div class="resumo-grid">
-                            <div class="resumo-card"><div class="label">Total Gasto</div><div class="valor" id="totalGastoGeral">R$ 0</div></div>
-                            <div class="resumo-card"><div class="label">Essa semana</div><div class="valor" id="totalGastoSemana">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">TOTAL GASTO</div><div class="valor" id="totalGastoGeral">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">ESTA SEMANA</div><div class="valor" id="totalGastoSemana">R$ 0</div></div>
                         </div>
-                        <div class="card-title">📊 GASTOS POR SEMANA</div>
-                        <div class="tabela-container"><table id="tabelaGastosSemana"><thead> <tr><th>Semana</th><th>Total</th><th>Qtd</th> </thead><tbody id="corpoGastosSemana"></tbody> </div>
-                        <div class="card-title">📋 DETALHE DOS GASTOS - SEMANA <span id="gastosSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="tabela-container"><table id="tabelaTodosGastos"><thead> <tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th> </thead><tbody id="corpoTodosGastos"></tbody> </div>
+                        <div class="card-title">📊 POR SEMANA</div>
+                        <div class="tabela-container"><table id="tabelaGastosSemana"><thead><tr><th>Semana</th><th>Total</th><th>Qtd</th></tr></thead><tbody id="corpoGastosSemana"></tbody></table></div>
+                        <div class="card-title">📋 DETALHES - SEM ${semanaAtual}</div>
+                        <div class="tabela-container"><table id="tabelaTodosGastos"><thead><tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Unitário</th><th>Total</th><th>Fornecedor</th></tr></thead><tbody id="corpoTodosGastos"></tbody></table></div>
                     </div>
                 `;
                 case 'relatorios': return `
-                    <div style="margin-bottom:15px;"><button class="btn btn-excel" onclick="exportarParaExcel()">📊 EXPORTAR EXCEL</button></div>
                     <div class="card">
-                        <div class="card-title">📈 RESULTADO</div>
+                        <button class="btn btn-excel" onclick="exportarParaExcel()">📊 EXPORTAR EXCEL</button>
+                        <div class="card-title" style="margin-top:10px;">📈 RESULTADO</div>
                         <div class="resumo-grid">
-                            <div class="resumo-card"><div class="label">Vendeu</div><div class="valor" id="relFaturamento">R$ 0</div></div>
-                            <div class="resumo-card"><div class="label">Gastou</div><div class="valor" id="relGastos">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">VENDAS</div><div class="valor" id="relFaturamento">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">GASTOS</div><div class="valor" id="relGastos">R$ 0</div></div>
                         </div>
                         <div class="resumo-grid">
-                            <div class="resumo-card"><div class="label">Lucro Real</div><div class="valor" id="relLucro">R$ 0</div></div>
-                            <div class="resumo-card"><div class="label">Margem</div><div class="valor" id="relMargem">0%</div></div>
+                            <div class="resumo-card"><div class="label">LUCRO REAL</div><div class="valor" id="relLucro">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">MARGEM</div><div class="valor" id="relMargem">0%</div></div>
                         </div>
-                        <div class="form-group"><label>Período</label><select id="periodoRelatorio" onchange="atualizarRelatorio()"><option value="semana">Essa semana</option><option value="mes">Este mês</option><option value="ano">Este ano</option><option value="total">Todo período</option></select></div>
+                        <select id="periodoRelatorio" onchange="atualizarRelatorio()" style="width:100%; padding:8px; margin-top:8px;">
+                            <option value="semana">Esta semana</option><option value="mes">Este mês</option><option value="ano">Este ano</option><option value="total">Todo período</option>
+                        </select>
                     </div>
-                    <div class="card"><div class="card-title">📊 VENDAS VS GASTOS</div><div id="graficoComparativo" style="height:180px;display:flex;gap:5px;background:#fff8dc;border:3px solid #8b4513;padding:10px;"></div></div>
                 `;
                 case 'vendedores': return `
                     <div class="card">
-                        <div class="card-title">👥 VENDAS POR VENDEDOR</div>
+                        <div class="card-title">👥 VENDEDORES</div>
                         <div class="resumo-grid">
-                            <div class="resumo-card"><div class="label">Cláudio</div><div class="valor" id="vendasClaudio">R$ 0</div></div>
-                            <div class="resumo-card"><div class="label">Antônio</div><div class="valor" id="vendasAntonio">R$ 0</div></div>
-                            <div class="resumo-card"><div class="label">Igor</div><div class="valor" id="vendasIgor">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Cláudio Vendas</div><div class="valor" id="vendasClaudio">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Antônio Vendas</div><div class="valor" id="vendasAntonio">R$ 0</div></div>
+                            <div class="resumo-card"><div class="label">Igor Vendas</div><div class="valor" id="vendasIgor">R$ 0</div></div>
                         </div>
                         <div class="resumo-grid">
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">💰 LUCRO REAL Cláudio</div><div class="valor" id="lucroClaudio">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">💰 LUCRO REAL Antônio</div><div class="valor" id="lucroAntonio">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">💰 LUCRO REAL Igor</div><div class="valor" id="lucroIgor">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#2e8b57"><div class="label">💰 Lucro Cláudio</div><div class="valor" id="lucroClaudio">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#2e8b57"><div class="label">💰 Lucro Antônio</div><div class="valor" id="lucroAntonio">R$ 0</div></div>
+                            <div class="resumo-card" style="background:#2e8b57"><div class="label">💰 Lucro Igor</div><div class="valor" id="lucroIgor">R$ 0</div></div>
                         </div>
-                        <div class="card-title">📅 FILTRAR POR MÊS</div>
-                        <div class="form-group"><select id="filtroMesVendedor">${opcoesMeses}</select></div>
-                        <div class="tabela-container"><table id="tabelaVendasPorVendedor"><thead> <tr><th>Vendedor</th><th>Total Vendido</th><th>Recebido</th><th>Lucro Real</th><th>A Receber</th><th>Qtd</th> </thead><tbody id="corpoVendasPorVendedor"></tbody> </div>
+                        <select id="filtroMesVendedor" style="width:100%; padding:8px; margin:10px 0;">${opcoesMeses}</select>
+                        <div class="tabela-container"><table id="tabelaVendasPorVendedor"><thead><tr><th>Vendedor</th><th>Vendido</th><th>Recebido</th><th>Lucro Real</th><th>A Receber</th><th>Qtd</th></tr></thead><tbody id="corpoVendasPorVendedor"></tbody></table></div>
                     </div>
                 `;
                 case 'historico': return `
                     <div class="card">
-                        <div class="card-title">📜 HISTÓRICO - SEMANA <span id="historicoSemanaTitulo">${semanaAtual}</span></div>
-                        <div class="resumo-semana" style="background:#daa520;padding:10px;border-radius:8px;margin-bottom:15px;text-align:center;"><strong>Resumo da Semana:</strong><br>Total Compras: <span id="totalComprasSemana">R$ 0</span> | Total Vendas: <span id="totalVendasSemana">R$ 0</span></div>
-                        <div class="tabela-container"><table id="tabelaHistorico"><thead> <tr><th>Produto</th><th>Compras (Qtd)</th><th>Vendas (Qtd)</th><th>Saldo</th> </thead><tbody id="corpoHistorico"></tbody> </div>
+                        <div class="card-title">📜 HISTÓRICO - SEM ${semanaAtual}</div>
+                        <div style="background:#daa520;padding:8px;border-radius:8px;margin-bottom:10px;text-align:center;"><strong>Resumo:</strong> Compras: <span id="totalComprasSemana">R$ 0</span> | Vendas: <span id="totalVendasSemana">R$ 0</span></div>
+                        <div class="tabela-container"><table id="tabelaHistorico"><thead><tr><th>Produto</th><th>Compras</th><th>Vendas</th><th>Saldo</th></tr></thead><tbody id="corpoHistorico"></tbody></table></div>
                     </div>
                 `;
                 case 'produtos': return `
                     <div class="card">
-                        <div class="card-title">🏷️ CADASTRAR PRODUTO</div>
-                        <div class="form-group"><label>Nome</label><input type="text" id="novoProdutoNome" placeholder="Ex: Queijo"></div>
-                        <div class="form-group"><label>Preço (R$)</label><input type="number" id="novoProdutoPreco" step="0.01"></div>
+                        <div class="card-title">🏷️ NOVO PRODUTO</div>
+                        <input type="text" id="novoProdutoNome" placeholder="Nome" style="width:100%; padding:8px; margin-bottom:8px; border:2px solid #8b4513; border-radius:8px;">
+                        <input type="number" id="novoProdutoPreco" placeholder="Preço" step="0.01" style="width:100%; padding:8px; margin-bottom:8px; border:2px solid #8b4513; border-radius:8px;">
                         <button class="btn" onclick="cadastrarProduto()">➕ CADASTRAR</button>
                     </div>
                     <div class="card">
-                        <div class="card-title">📋 TABELA DE PREÇOS</div>
-                        <div class="tabela-container"><table id="tabelaPrecos"><thead> <tr><th>Produto</th><th>Preço</th><th>Custo Médio</th><th>Estoque</th><th>Ações</th> </thead><tbody></tbody> </div>
-                        <p style="margin-top: 10px; font-size: 0.8rem; color: #8b4513;">✏️ Clique no lápis ao lado do preço para alterar</p>
+                        <div class="card-title">📋 PRODUTOS</div>
+                        <div class="tabela-container"><table id="tabelaPrecos"><thead><tr><th>Produto</th><th>Preço</th><th>Custo Médio</th><th>Estoque</th><th></th></tr></thead><tbody></tbody></table></div>
                     </div>
                 `;
                 default: return '';
@@ -1309,14 +1261,6 @@
                 if (aba === 'estoque') {
                     atualizarEstoque();
                     modoEdicaoAtivo = false;
-                    const btnEdicao = document.getElementById('btnModoEdicaoEstoque');
-                    if (btnEdicao) {
-                        btnEdicao.style.display = 'inline-block';
-                        const btnSalvar = document.getElementById('btnSalvarEstoque');
-                        const btnCancelar = document.getElementById('btnCancelarEdicao');
-                        if (btnSalvar) btnSalvar.style.display = 'none';
-                        if (btnCancelar) btnCancelar.style.display = 'none';
-                    }
                 }
                 if (aba === 'clientes') {
                     atualizarClientes();
@@ -1354,22 +1298,20 @@
                 if (aba === 'configuracoes') {
                     atualizarConfiguracoes();
                     const fileInput = document.getElementById('restaurarArquivo');
-                    if (fileInput) {
-                        fileInput.onchange = restaurarDeArquivo;
-                    }
+                    if (fileInput) fileInput.onchange = restaurarDeArquivo;
                 }
             }, 50);
         };
 
         function atualizarFiltroProdutos() {
-            const selectProduto = document.getElementById('filtroProdutoVendas');
-            if (!selectProduto) return;
-            selectProduto.innerHTML = '<option value="todos">TODOS OS PRODUTOS</option>';
+            const select = document.getElementById('filtroProdutoVendas');
+            if (!select) return;
+            select.innerHTML = '<option value="todos">TODOS OS PRODUTOS</option>';
             produtos.forEach(p => {
-                selectProduto.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+                select.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
             });
-            selectProduto.value = filtroProdutoVendas;
-            selectProduto.onchange = function() {
+            select.value = filtroProdutoVendas;
+            select.onchange = function() {
                 filtroProdutoVendas = this.value;
                 atualizarVendas();
             };
@@ -1382,7 +1324,7 @@
                 selVenda.innerHTML = '';
                 produtos.forEach(p => {
                     const custoInfo = p.custoMedio ? ` (custo: R$ ${p.custoMedio.toFixed(2)})` : '';
-                    selVenda.innerHTML += `<option value="${p.id}">${p.nome} - R$ ${p.preco.toFixed(2)}${custoInfo} (tem ${p.estoque})</option>`;
+                    selVenda.innerHTML += `<option value="${p.id}">${p.nome} - R$ ${p.preco.toFixed(2)}${custoInfo} (${p.estoque})</option>`;
                 });
             }
             if (selCompra) {
@@ -1401,9 +1343,7 @@
             const qtd = parseInt(document.getElementById('qtdVenda')?.value) || 1;
             const prod = produtos.find(p => p.id == id);
             if (prod) {
-                const unitInput = document.getElementById('valorUnitarioVenda');
                 const totalInput = document.getElementById('valorTotalVenda');
-                if(unitInput) unitInput.value = 'R$ ' + prod.preco.toFixed(2);
                 if(totalInput) totalInput.value = 'R$ ' + (prod.preco * qtd).toFixed(2);
             }
         }
@@ -1413,7 +1353,7 @@
             const unit = parseFloat(document.getElementById('compraValorUnitario')?.value) || 0;
             const total = qtd * unit;
             const el = document.getElementById('compraTotalDestaque');
-            if (el) el.innerText = 'R$ ' + total.toFixed(2).replace('.',',');
+            if (el) el.innerText = total.toFixed(2).replace('.',',');
         }
 
         window.registrarVenda = function() {
@@ -1445,12 +1385,10 @@
                 data: new Date().toLocaleDateString()
             });
             salvarSnapshotEstoque(semanaAtual);
-            const clienteInput = document.getElementById('clienteVenda');
-            if(clienteInput) clienteInput.value = '';
-            const qtdInput = document.getElementById('qtdVenda');
-            if(qtdInput) qtdInput.value = '1';
+            document.getElementById('clienteVenda').value = '';
+            document.getElementById('qtdVenda').value = '1';
             atualizarTudo();
-            alert('✅ Venda registrada com sucesso!');
+            alert('✅ Venda registrada!');
         };
 
         window.registrarCompra = function() {
@@ -1476,22 +1414,17 @@
             });
             
             atualizarCustoMedioProdutos();
-            
             salvarSnapshotEstoque(semanaAtual);
-            const qtdInput = document.getElementById('compraQtd');
-            const unitInput = document.getElementById('compraValorUnitario');
-            const fornInput = document.getElementById('compraFornecedor');
-            if(qtdInput) qtdInput.value = '1';
-            if(unitInput) unitInput.value = '';
-            if(fornInput) fornInput.value = '';
-            const totalEl = document.getElementById('compraTotalDestaque');
-            if(totalEl) totalEl.innerText = 'R$ 0,00';
+            document.getElementById('compraQtd').value = '1';
+            document.getElementById('compraValorUnitario').value = '';
+            document.getElementById('compraFornecedor').value = '';
+            document.getElementById('compraTotalDestaque').innerText = '0,00';
             atualizarTudo();
-            alert('✅ Compra registrada com sucesso!');
+            alert('✅ Compra registrada!');
         };
 
         window.excluirVenda = function(id) {
-            if (confirm('Tem certeza que quer apagar esta venda?')) {
+            if (confirm('Tem certeza?')) {
                 const venda = vendas.find(v => v.id === id);
                 if (venda) {
                     const prod = produtos.find(p => p.id === venda.produtoId);
@@ -1504,7 +1437,7 @@
         };
 
         window.excluirCompra = function(id) {
-            if (confirm('Tem certeza que quer apagar esta compra?')) {
+            if (confirm('Tem certeza?')) {
                 const compra = compras.find(c => c.id === id);
                 if (compra) {
                     const prod = produtos.find(p => p.id === compra.produtoId);
@@ -1521,7 +1454,7 @@
         };
 
         window.excluirProduto = function(id) {
-            if (confirm('Tem certeza que quer apagar este produto?')) {
+            if (confirm('Tem certeza?')) {
                 produtos = produtos.filter(p => p.id !== id);
                 salvarDadosNaNuvem();
                 atualizarTudo();
@@ -1574,17 +1507,14 @@
 
         window.toggleClienteContatado = function(cliente) {
             const index = clientesContatados.indexOf(cliente);
-            if (index === -1) {
-                clientesContatados.push(cliente);
-            } else {
-                clientesContatados.splice(index, 1);
-            }
+            if (index === -1) clientesContatados.push(cliente);
+            else clientesContatados.splice(index, 1);
             salvarDadosNaNuvem();
             atualizarClientes();
         };
 
         window.editarPrecoProduto = function(id, valorAtual) {
-            const novoPreco = prompt(`Digite o novo preço para o produto:`, valorAtual);
+            const novoPreco = prompt(`Novo preço para o produto:`, valorAtual);
             if (novoPreco && !isNaN(parseFloat(novoPreco)) && parseFloat(novoPreco) > 0) {
                 const produto = produtos.find(p => p.id === id);
                 if (produto) {
@@ -1592,10 +1522,8 @@
                     salvarDadosNaNuvem();
                     atualizarTabelaProdutos();
                     atualizarSelects();
-                    alert(`✅ Preço de ${produto.nome} alterado para R$ ${produto.preco.toFixed(2)}`);
+                    alert(`✅ Preço alterado para R$ ${produto.preco.toFixed(2)}`);
                 }
-            } else if (novoPreco) {
-                alert('Digite um valor válido!');
             }
         };
 
@@ -1616,7 +1544,7 @@
             }
             
             vendasFiltradas.forEach(v => {
-                const lucroVenda = v.lucro || (v.custoMedio ? (v.valorUnitario - v.custoMedio) * v.qtd : 0);
+                const lucroVenda = v.lucro || calcularLucroVenda(v);
                 
                 if (v.vendedor === 'Cláudio') {
                     vends.Cláudio += v.valorTotal;
@@ -1671,12 +1599,12 @@
                     const vKey = v === 'Cláudio' ? 'Cláudio' : (v === 'Antônio' ? 'Antônio' : 'Igor');
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td><strong>${v}</strong>\\
-                        <td class="valor-verde">R$ ${vends[vKey].toFixed(2)}\\
-                        <td class="valor-verde">R$ ${receb[vKey].toFixed(2)}\\
-                        <td class="${lucroReal[vKey] >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">R$ ${lucroReal[vKey].toFixed(2)}\\
-                        <td class="valor-vermelho">R$ ${dev[vKey].toFixed(2)}\\
-                        <td>${qtd[vKey]}\\
+                        <td>${v}
+                        <td class="valor-verde">R$ ${vends[vKey].toFixed(2)}</td>
+                        <td class="valor-verde">R$ ${receb[vKey].toFixed(2)}</td>
+                        <td class="${lucroReal[vKey] >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">R$ ${lucroReal[vKey].toFixed(2)}</td>
+                        <td class="valor-vermelho">R$ ${dev[vKey].toFixed(2)}</td>
+                        <td>${qtd[vKey]}</td>
                     `;
                     tbody.appendChild(row);
                 }
@@ -1731,14 +1659,14 @@
                     totalCusto += custoReal;
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td><strong>${p.nome}</strong>\\
-                        <td class="valor-verde">R$ ${p.custoMedio.toFixed(2)}\\
-                        <td>${p.quantidadeComprada}\\
-                        <td>${p.quantidadeVendida}\\
-                        <td class="valor-verde">R$ ${p.faturamento.toFixed(2)}\\
-                        <td class="valor-vermelho">R$ ${custoReal.toFixed(2)}\\
-                        <td class="${p.lucro >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">R$ ${p.lucro.toFixed(2)}\\
-                        <td class="${p.margem >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">${p.margem.toFixed(1)}%\\
+                        <td><strong>${p.nome}</strong></td>
+                        <td class="valor-verde">R$ ${p.custoMedio.toFixed(2)}</td>
+                        <td>${p.quantidadeComprada}</td>
+                        <td>${p.quantidadeVendida}</td>
+                        <td class="valor-verde">R$ ${p.faturamento.toFixed(2)}</td>
+                        <td class="valor-vermelho">R$ ${custoReal.toFixed(2)}</td>
+                        <td class="${p.lucro >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">R$ ${p.lucro.toFixed(2)}</td>
+                        <td class="${p.margem >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">${p.margem.toFixed(1)}%</td>
                     `;
                     tbody.appendChild(row);
                 }
@@ -1755,7 +1683,7 @@
             if(margemEl) margemEl.innerText = (totalFaturamento > 0 ? (totalLucro / totalFaturamento * 100).toFixed(1) : 0) + '%';
             
             if (comprasSemana.length === 0 && vendasSemana.length === 0 && tbody) {
-                tbody.innerHTML = '}<td colspan="8">Nenhum movimento nesta semana}';
+                tbody.innerHTML = '<tr><td colspan="8">Nenhum movimento nesta semana</td></tr>';
             }
         }
 
@@ -1779,21 +1707,21 @@
             }
             
             if (!filtradas.length) {
-                tbody.innerHTML = '}<td colspan="7">Nenhuma venda}';
+                tbody.innerHTML = '<tr><td colspan="7">Nenhuma venda</td></tr>';
                 atualizarPendenteVendedores();
                 return;
             }
             filtradas.slice().reverse().forEach(v => {
-                const lucroVenda = v.lucro || (v.custoMedio ? (v.valorUnitario - v.custoMedio) * v.qtd : 0);
+                const lucroVenda = v.lucro || calcularLucroVenda(v);
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    }<span class="vendedor-badge">${v.vendedor}</span>\\
-                    <td>${v.cliente}\\
-                    <td>${v.produto} (${v.qtd}x)\\
-                    <td class="valor-verde">R$ ${v.valorTotal.toFixed(2)}\\
-                    <td class="${lucroVenda >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">R$ ${lucroVenda.toFixed(2)}\\
-                    <td class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? 'PAGO' : 'PENDENTE'}\\
-                    <td><button class="acao-btn excluir" onclick="excluirVenda(${v.id})">🗑️</button>\\
+                    <td><span class="vendedor-badge">${v.vendedor}</span></td>
+                    <td>${v.cliente}</td>
+                    <td>${v.produto} (${v.qtd}x)</td>
+                    <td class="valor-verde">R$ ${v.valorTotal.toFixed(2)}</td>
+                    <td class="${lucroVenda >= 0 ? 'lucro-positivo' : 'lucro-negativo'}">R$ ${lucroVenda.toFixed(2)}</td>
+                    <td class="${v.status === 'pago' ? 'status-pago' : 'status-pendente'}" onclick="alterarStatusVenda(${v.id})">${v.status === 'pago' ? 'PAGO' : 'PENDENTE'}</td>
+                    <td><button class="acao-btn" onclick="excluirVenda(${v.id})">🗑️</button></td>
                 `;
                 tbody.appendChild(row);
             });
@@ -1808,19 +1736,19 @@
             tbody.innerHTML = '';
             const comprasSemana = compras.filter(c => c.semana === semanaAtual);
             if (!comprasSemana.length) {
-                tbody.innerHTML = '}<td colspan="7">Nenhuma compra nesta semana}';
+                tbody.innerHTML = '<tr><td colspan="7">Nenhuma compra nesta semana</td></tr>';
                 return;
             }
             comprasSemana.slice().reverse().forEach(c => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    }<${c.produto}\\
-                    <td>${c.qtd}\\
-                    <td class="valor-verde">R$ ${c.valorUnitario.toFixed(2)}\\
-                    <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}\\
-                    <td>${c.fornecedor}\\
-                    <td class="${c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente'}" onclick="alterarStatusCompra(${c.id})">${c.status === 'pago' ? 'PAGO' : 'PENDENTE'}\\
-                    <td><button class="acao-btn excluir" onclick="excluirCompra(${c.id})">🗑️</button>\\
+                    <td>${c.produto}</td>
+                    <td>${c.qtd}</td>
+                    <td class="valor-verde">R$ ${c.valorUnitario.toFixed(2)}</td>
+                    <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
+                    <td>${c.fornecedor}</td>
+                    <td class="${c.status === 'pago' ? 'status-compra-pago' : 'status-compra-pendente'}" onclick="alterarStatusCompra(${c.id})">${c.status === 'pago' ? 'PAGO' : 'PENDENTE'}</td>
+                    <td><button class="acao-btn" onclick="excluirCompra(${c.id})">🗑️</button></td>
                 `;
                 tbody.appendChild(row);
             });
@@ -1861,28 +1789,28 @@
                 totalGeral += d.total;
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    }<strong>${c}</strong>\\
-                    <td class="status-pendente">R$ ${d.total.toFixed(2)}\\
-                    <td><span class="vendedor-badge">${d.vendedor}</span>\\
-                    <td>${d.itens.join('<br>')}\\
-                    <td>${d.datas.join('<br>')}\\
-                    <td><input type="checkbox" class="checkbox-contato" ${clientesContatados.includes(c) ? 'checked' : ''} onchange="toggleClienteContatado('${c}')">\\
+                    <td><strong>${c}</strong></td>
+                    <td class="status-pendente">R$ ${d.total.toFixed(2)}</td>
+                    <td><span class="vendedor-badge">${d.vendedor}</span></td>
+                    <td>${d.itens.join('<br>')}</td>
+                    <td>${d.datas.join('<br>')}</td>
+                    <td><input type="checkbox" class="checkbox-contato" ${clientesContatados.includes(c) ? 'checked' : ''} onchange="toggleClienteContatado('${c}')"></td>
                     <td>
-                        <button class="acao-btn editar" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
-                        <button class="acao-btn editar" style="background:#2e8b57;color:white;" onclick="abrirModalQuitacao('${c}')">✅</button>
-                    \\
+                        <button class="acao-btn" onclick="enviarWhatsAppCobranca('${c}', ${d.total}, '${d.vendedor}', '${d.itens.join(', ')}')">📱</button>
+                        <button class="acao-btn" style="background:#2e8b57;color:white;" onclick="abrirModalQuitacao('${c}')">✅</button>
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
             if (!pendentes.length || clientesFiltrados.length === 0) {
-                tbody.innerHTML = '}<td colspan="7">🎉 Ninguém deve! 🎉}';
+                tbody.innerHTML = '<tr><td colspan="7">🎉 Ninguém deve! 🎉</td></tr>';
             }
             const totalCobranca = document.getElementById('totalCobranca');
             if(totalCobranca) totalCobranca.innerText = 'R$ ' + totalGeral.toFixed(2);
         }
 
         window.enviarWhatsAppCobranca = function(cliente, debito, vendedor, produtos) {
-            const msg = `Bom dia ${cliente}! Tudo bem?\n\nPassando para lembrar do acerto no valor de R$ ${debito.toFixed(2)} referente aos produtos comprados: ${produtos}.\n\nPor favor, realizar o pagamento e enviar o comprovante para dar baixa!\n\nAgradeço muito pela confiança e já me coloco à disposição para o próximo pedido!\n\nPIX\n24992267859\nJosé Claudio do Vale`;
+            const msg = `Bom dia ${cliente}! Tudo bem?\n\nPassando para lembrar do acerto no valor de R$ ${debito.toFixed(2)} referente aos produtos comprados: ${produtos}.\n\nPor favor, realizar o pagamento e enviar o comprovante para dar baixa!\n\nAgradeço muito pela confiança!\n\nPIX\n24992267859\nJosé Claudio do Vale`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
@@ -1913,7 +1841,7 @@
                 atualizarVendasPorVendedor();
                 atualizarPendenteVendedores();
                 fecharModalConfirmacao();
-                alert(`✅ Débitos de ${clienteQuitacaoPendente} quitados com sucesso!`);
+                alert(`✅ Débitos de ${clienteQuitacaoPendente} quitados!`);
             }
         };
 
@@ -1945,11 +1873,13 @@
             for (let i = 0; i < produtos.length; i++) {
                 const p = produtos[i];
                 const row = document.createElement('tr');
+                const statusClass = p.estoque <= 2 ? 'status-pendente' : 'status-pago';
+                const statusText = p.estoque <= 2 ? '⚠️ ACABANDO' : '✅ OK';
                 row.innerHTML = `
-                    }<strong>${p.nome}</strong>\\
-                    <td class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}\\
-                    <td>R$ ${(p.custoMedio || 0).toFixed(2)}\\
-                    <td class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque <= 2 ? '⚠️ ACABANDO' : '✅ OK'}\\
+                    <td><strong>${p.nome}</strong></td>
+                    <td class="${statusClass}">${p.estoque}</td>
+                    <td>R$ ${(p.custoMedio || 0).toFixed(2)}</td>
+                    <td class="${statusClass}">${statusText}</td>
                 `;
                 tbody.appendChild(row);
             }
@@ -1978,7 +1908,7 @@
                 Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        }<td>Semana ${s} </td>
+                        <td>Semana ${s}</td>
                         <td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td>
                         <td>${porSemana[s].qtd}</td>
                     `;
@@ -2032,7 +1962,7 @@
             
             let lucroReal = 0;
             vendasFilt.filter(v => v.status === 'pago').forEach(v => {
-                const lucroVenda = v.lucro || (v.custoMedio ? (v.valorUnitario - v.custoMedio) * v.qtd : 0);
+                const lucroVenda = v.lucro || calcularLucroVenda(v);
                 lucroReal += lucroVenda;
             });
             
@@ -2070,14 +2000,16 @@
                     }
                 }
                 const saldo = comprasSemana - vendasSemana;
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${p.nome}</strong></td>
-                    <td class="valor-verde">${comprasSemana}</td>
-                    <td class="valor-vermelho">${vendasSemana}</td>
-                    <td>${saldo}</td>
-                `;
-                tbody.appendChild(row);
+                if (comprasSemana > 0 || vendasSemana > 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${p.nome}</strong></td>
+                        <td class="valor-verde">${comprasSemana}</td>
+                        <td class="valor-vermelho">${vendasSemana}</td>
+                        <td>${saldo}</td>
+                    `;
+                    tbody.appendChild(row);
+                }
             }
             const totalComprasSemana = document.getElementById('totalComprasSemana');
             const totalVendasSemana = document.getElementById('totalVendasSemana');
@@ -2097,12 +2029,12 @@
                     <td class="preco-valor">
                         <div class="preco-editavel">
                             <span>R$ ${p.preco.toFixed(2)}</span>
-                            <button class="acao-btn editar" onclick="editarPrecoProduto(${p.id}, ${p.preco})">✏️</button>
+                            <button class="acao-btn" onclick="editarPrecoProduto(${p.id}, ${p.preco})">✏️</button>
                         </div>
                     </td>
                     <td>R$ ${(p.custoMedio || 0).toFixed(2)}</td>
-                    <td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span></td>
-                    <td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">🗑️</button></td>
+                    <td class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</td>
+                    <td><button class="acao-btn" onclick="excluirProduto(${p.id})">🗑️</button></td>
                 `;
                 tbody.appendChild(row);
             }
@@ -2119,7 +2051,7 @@
                 div.innerHTML = `
                     <div class="config-usuario-info">
                         <div class="config-usuario-nome">${u.usuario}</div>
-                        <div class="config-usuario-nivel">${u.nivel === 'ADM' ? '👑 ADMINISTRADOR' : '👤 VENDEDOR'}</div>
+                        <div class="config-usuario-nivel">${u.nivel === 'ADM' ? '👑 ADMIN' : '👤 VENDEDOR'}</div>
                     </div>
                     <div class="config-usuario-acoes">
                         <input type="password" class="config-senha-input" placeholder="Nova senha" id="nova_senha_${u.usuario}">
@@ -2153,8 +2085,33 @@
             const btnSalvar = document.getElementById('btnSalvarEstoque');
             const btnCancelar = document.getElementById('btnCancelarEdicao');
             if(btnEdicao) btnEdicao.style.display = 'none';
-            if(btnSalvar) btnSalvar.style.display = 'inline-block';
-            if(btnCancelar) btnCancelar.style.display = 'inline-block';
+            
+            // Criar botões se não existirem
+            const cardTitle = document.querySelector('#tabelaEstoque').closest('.card').querySelector('.card-title');
+            if (!document.getElementById('btnSalvarEstoque')) {
+                const btnSalvarNew = document.createElement('button');
+                btnSalvarNew.className = 'btn-small btn-success';
+                btnSalvarNew.id = 'btnSalvarEstoque';
+                btnSalvarNew.innerText = '💾 SALVAR';
+                btnSalvarNew.onclick = salvarAjustesEstoque;
+                btnSalvarNew.style.display = 'inline-block';
+                btnSalvarNew.style.marginLeft = '5px';
+                
+                const btnCancelarNew = document.createElement('button');
+                btnCancelarNew.className = 'btn-small btn-danger';
+                btnCancelarNew.id = 'btnCancelarEdicao';
+                btnCancelarNew.innerText = '❌ CANCELAR';
+                btnCancelarNew.onclick = cancelarEdicaoEstoque;
+                btnCancelarNew.style.display = 'inline-block';
+                btnCancelarNew.style.marginLeft = '5px';
+                
+                cardTitle.appendChild(btnSalvarNew);
+                cardTitle.appendChild(btnCancelarNew);
+            } else {
+                document.getElementById('btnSalvarEstoque').style.display = 'inline-block';
+                document.getElementById('btnCancelarEdicao').style.display = 'inline-block';
+            }
+            
             const tbody = document.querySelector('#tabelaEstoque tbody');
             if(!tbody) return;
             const linhas = tbody.querySelectorAll('tr');
@@ -2162,9 +2119,7 @@
                 const produto = produtos[index];
                 if (produto) {
                     const qtdCell = linha.cells[1];
-                    qtdCell.innerHTML = `<div class="estoque-editavel">
-                        <input type="number" id="edit_${produto.id}" value="${produto.estoque}" min="0" style="width: 80px; padding: 5px; border: 2px solid #8b4513; border-radius: 5px; text-align: center;">
-                    </div>`;
+                    qtdCell.innerHTML = `<input type="number" id="edit_${produto.id}" value="${produto.estoque}" min="0" style="width:70px; padding:4px; border:2px solid #8b4513; border-radius:5px;">`;
                 }
             });
         }
@@ -2209,12 +2164,10 @@
             if (!nome || !preco) return alert('Preencha nome e preço!');
             produtos.push({ id: contadorId++, nome, preco, estoque: 0, custoMedio: 0 });
             salvarDadosNaNuvem();
-            const nomeInput = document.getElementById('novoProdutoNome');
-            const precoInput = document.getElementById('novoProdutoPreco');
-            if(nomeInput) nomeInput.value = '';
-            if(precoInput) precoInput.value = '';
+            document.getElementById('novoProdutoNome').value = '';
+            document.getElementById('novoProdutoPreco').value = '';
             atualizarTudo();
-            alert('✅ Produto cadastrado com sucesso!');
+            alert('✅ Produto cadastrado!');
         };
 
         window.imprimirCobranca = function() {
@@ -2237,13 +2190,13 @@
             const win = window.open('', '_blank');
             win.document.write(`
                 <html>
-                <head><title>Cobranca - Queijaria do Mineiro</title>
+                <head><title>Cobrança - Queijaria</title>
                 <style>
                     body{font-family:'Courier New', monospace;padding:20px;background:#d2b48c;}
                     h1{color:#8b4513;border-bottom:3px solid #8b4513;}
                     table{border-collapse:collapse;width:100%;margin-top:20px;}
-                    th{background:#8b4513;color:white;padding:10px;text-align:left;}
-                    td{padding:8px;border:1px solid #8b4513;}
+                    th{background:#8b4513;color:white;padding:8px;text-align:left;}
+                    td{padding:6px;border:1px solid #8b4513;}
                     .total{font-size:1.2rem;font-weight:bold;margin-top:20px;text-align:right;}
                 </style>
                 </head>
@@ -2252,7 +2205,8 @@
                     <h2>📋 Lista de Cobrança - ${new Date().toLocaleDateString()}</h2>
                     <table>
                         <thead>
-                            <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th> </thead>
+                            <tr><th>Cliente</th><th>Vendedor</th><th>Débito</th><th>Produtos</th></tr>
+                        </thead>
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
@@ -2262,7 +2216,6 @@
                         </tbody>
                     </table>
                     <div class="total">💰 TOTAL GERAL: R$ ${Object.values(clientes).reduce((a, c) => a + c.total, 0).toFixed(2)}</div>
-                    <p style="margin-top:30px;font-size:0.8rem;">Documento gerado em ${new Date().toLocaleString()}</p>
                 </body>
                 </html>
             `);
@@ -2273,35 +2226,19 @@
             try {
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(produtos.map(p => ({ 
-                    Código: p.id, 
-                    Produto: p.nome, 
-                    Preço: p.preco, 
-                    'Custo Médio': p.custoMedio || 0, 
-                    Estoque: p.estoque 
+                    Código: p.id, Produto: p.nome, Preço: p.preco, 'Custo Médio': p.custoMedio || 0, Estoque: p.estoque 
                 }))), 'Produtos');
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(vendas.map(v => ({ 
-                    Data: v.data, 
-                    Vendedor: v.vendedor, 
-                    Cliente: v.cliente, 
-                    Produto: v.produto, 
-                    Qtd: v.qtd, 
-                    Total: v.valorTotal, 
-                    Lucro: v.lucro || 0,
-                    Status: v.status === 'pago' ? 'Pago' : 'Pendente' 
+                    Data: v.data, Vendedor: v.vendedor, Cliente: v.cliente, Produto: v.produto, Qtd: v.qtd, 
+                    Total: v.valorTotal, Lucro: v.lucro || 0, Status: v.status === 'pago' ? 'Pago' : 'Pendente' 
                 }))), 'Vendas');
                 XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(compras.map(c => ({ 
-                    Data: c.data, 
-                    Produto: c.produto, 
-                    Qtd: c.qtd, 
-                    Unitário: c.valorUnitario, 
-                    Total: c.valorTotal, 
-                    Fornecedor: c.fornecedor, 
-                    Status: c.status === 'pago' ? 'Pago' : 'Pendente' 
+                    Data: c.data, Produto: c.produto, Qtd: c.qtd, Unitário: c.valorUnitario, 
+                    Total: c.valorTotal, Fornecedor: c.fornecedor, Status: c.status === 'pago' ? 'Pago' : 'Pendente' 
                 }))), 'Compras');
                 XLSX.writeFile(wb, `queijaria_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`);
-                alert('✅ Excel gerado com sucesso!');
+                alert('✅ Excel gerado!');
             } catch (erro) {
-                console.error('Erro ao gerar Excel:', erro);
                 alert('❌ Erro ao gerar Excel');
             }
         };
@@ -2309,13 +2246,11 @@
         window.forcarSincronizacao = async function() {
             const sincronizando = document.getElementById('sincronizando');
             if (sincronizando) sincronizando.style.display = 'block';
-            
             try {
                 await salvarDadosNaNuvem();
-                alert('✅ Dados sincronizados com sucesso!');
+                alert('✅ Dados sincronizados!');
             } catch (erro) {
-                console.error('Erro na sincronização:', erro);
-                alert('❌ Erro ao sincronizar. Verifique sua conexão.');
+                alert('❌ Erro ao sincronizar');
             } finally {
                 if (sincronizando) sincronizando.style.display = 'none';
             }
@@ -2424,7 +2359,7 @@
             const statusEl = document.getElementById('statusConexao');
             if(statusEl) {
                 if(navigator.onLine) {
-                    statusEl.innerText = '✅ CONECTADO';
+                    statusEl.innerText = '✅ ONLINE';
                     statusEl.style.backgroundColor = '#2e8b57';
                 } else {
                     statusEl.innerText = '📱 OFFLINE';
@@ -2436,7 +2371,7 @@
         window.addEventListener('online', atualizarStatusConexao);
         window.addEventListener('offline', atualizarStatusConexao);
 
-        window.onload = async function() {
+        window.onload = function() {
             atualizarStatusConexao();
             if (verificarSessao()) {
                 document.getElementById('loginScreen').classList.add('hidden');
