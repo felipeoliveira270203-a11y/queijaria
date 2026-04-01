@@ -844,10 +844,9 @@
                         </div>
                         <div class="tabela-container">
                             <table id="tabelaLucroProduto">
-                                <thead> <tr><th>Produto</th><th>Comprado</th><th>Vendido</th><th>Faturamento</th><th>Custo</th><th>Lucro</th><th>Margem</th></tr> </thead>
+                                <thead> 的人<th>Produto</th><th>Comprado</th><th>Vendido</th><th>Faturamento</th><th>Custo</th><th>Lucro</th><th>Margem</th> </thead>
                                 <tbody id="corpoLucroProduto"></tbody>
-                             </table>
-                        </div>
+                              </div>
                     </div>
                 `;
                 case 'vendas': return `
@@ -973,9 +972,9 @@
                             <div class="resumo-card"><div class="label">Igor</div><div class="valor" id="vendasIgor">R$ 0</div></div>
                         </div>
                         <div class="resumo-grid">
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">Lucro Cláudio</div><div class="valor" id="lucroClaudio">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">Lucro Antônio</div><div class="valor" id="lucroAntonio">R$ 0</div></div>
-                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">Lucro Igor</div><div class="valor" id="lucroIgor">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">LUCRO Cláudio</div><div class="valor" id="lucroClaudio">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">LUCRO Antônio</div><div class="valor" id="lucroAntonio">R$ 0</div></div>
+                            <div class="resumo-card" style="background: #2e8b57;"><div class="label">LUCRO Igor</div><div class="valor" id="lucroIgor">R$ 0</div></div>
                         </div>
                         <div class="card-title">FILTRAR POR MES</div>
                         <div class="form-group"><select id="filtroMesVendedor">${opcoesMeses}</select></div>
@@ -1309,12 +1308,15 @@
             }
             
             vendasFiltradas.forEach(v => {
+                const custo = v.custoTotal || (v.qtd * (produtos.find(p => p.id === v.produtoId)?.custoMedio || 0));
+                const lucroVenda = v.valorTotal - custo;
+                
                 if (v.vendedor === 'Cláudio') {
                     vends.Cláudio += v.valorTotal;
                     qtd.Cláudio++;
                     if (v.status === 'pago') {
                         receb.Cláudio += v.valorTotal;
-                        lucro.Cláudio += v.lucro || 0;
+                        lucro.Cláudio += lucroVenda;
                     } else {
                         dev.Cláudio += v.valorTotal;
                     }
@@ -1323,7 +1325,7 @@
                     qtd.Antônio++;
                     if (v.status === 'pago') {
                         receb.Antônio += v.valorTotal;
-                        lucro.Antônio += v.lucro || 0;
+                        lucro.Antônio += lucroVenda;
                     } else {
                         dev.Antônio += v.valorTotal;
                     }
@@ -1332,7 +1334,7 @@
                     qtd.Igor++;
                     if (v.status === 'pago') {
                         receb.Igor += v.valorTotal;
-                        lucro.Igor += v.lucro || 0;
+                        lucro.Igor += lucroVenda;
                     } else {
                         dev.Igor += v.valorTotal;
                     }
@@ -1611,9 +1613,9 @@
                 const p = produtos[i];
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${p.nome}\\
-                    <td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>\\
-                    <td>${p.estoque <= 2 ? 'ACABANDO' : 'TEM'}\\
+                    }<td>${p.nome}</td>
+                    <td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span></td>
+                    <td>${p.estoque <= 2 ? 'ACABANDO' : 'TEM'}</td>
                 `;
                 tbody.appendChild(row);
             }
@@ -1638,9 +1640,9 @@
                 Object.keys(porSemana).sort((a, b) => b - a).forEach(s => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>Semana ${s}\\
-                        <td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}\\
-                        <td>${porSemana[s].qtd}\\
+                        }<td>Semana ${s}</td>
+                        <td class="valor-vermelho">R$ ${porSemana[s].total.toFixed(2)}</td>
+                        <td>${porSemana[s].qtd}</td>
                     `;
                     tbodySem.appendChild(row);
                 });
@@ -1654,17 +1656,17 @@
                     gastosFiltrados.slice().reverse().forEach(c => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${c.data}\\
-                            <td>${c.produto}\\
-                            <td>${c.qtd}\\
-                            <td class="valor-verde">R$ ${c.valorUnitario.toFixed(2)}\\
-                            <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}\\
-                            <td>${c.fornecedor}\\
+                            }<td>${c.data}</td>
+                            <td>${c.produto}</td>
+                            <td>${c.qtd}</td>
+                            <td class="valor-verde">R$ ${c.valorUnitario.toFixed(2)}</td>
+                            <td class="valor-vermelho">R$ ${c.valorTotal.toFixed(2)}</td>
+                            <td>${c.fornecedor}</td>
                         `;
                         tbodyDet.appendChild(row);
                     });
                 } else {
-                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana}';
+                    tbodyDet.innerHTML = '}<td colspan="6">Nenhuma compra nesta semana</td>';
                 }
             }
         }
@@ -1720,10 +1722,10 @@
                 const saldo = comprasSemana - vendasSemana;
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${p.nome}</strong>\\
-                    <td class="valor-verde">${comprasSemana}\\
-                    <td class="valor-vermelho">${vendasSemana}\\
-                    <td>${saldo}\\
+                    }<td><strong>${p.nome}</strong></td>
+                    <td class="valor-verde">${comprasSemana}</td>
+                    <td class="valor-vermelho">${vendasSemana}</td>
+                    <td>${saldo}</td>
                 `;
                 tbody.appendChild(row);
             }
@@ -1739,15 +1741,15 @@
                 const p = produtos[i];
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${p.nome}\\
+                    }<td>${p.nome}</td>
                     <td class="preco-valor">
                         <div class="preco-editavel">
                             <span>R$ ${p.preco.toFixed(2)}</span>
                             <button class="acao-btn editar" onclick="editarPrecoProduto(${p.id}, ${p.preco})">E</button>
                         </div>
-                    \\
-                    <td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span>\\
-                    <td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">X</button>\\
+                    </td>
+                    <td><span class="${p.estoque <= 2 ? 'status-pendente' : 'status-pago'}">${p.estoque}</span></td>
+                    <td><button class="acao-btn excluir" onclick="excluirProduto(${p.id})">X</button></td>
                 `;
                 tbody.appendChild(row);
             }
@@ -1876,7 +1878,7 @@
                     <h1>QUEIJARIA DO MINEIRO</h1>
                     <h2>Cobranca - ${new Date().toLocaleDateString()}</h2>
                     <table border="1">
-                        <thead> 的人<th>Cliente</th><th>Vendedor</th><th>Debito</th><th>Produtos</th> </thead>
+                        <thead> <tr><th>Cliente</th><th>Vendedor</th><th>Debito</th><th>Produtos</th></tr> </thead>
                         <tbody>
             `);
             Object.entries(clientes).forEach(([c, d]) => {
