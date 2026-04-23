@@ -670,6 +670,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // USUARIOS CADASTRADOS
         let USUARIOS = [
@@ -678,18 +679,10 @@
             { usuario: 'IgorNogueira', senha: 'Igor@', nivel: 'VENDEDOR' }
         ];
 
-        // CONFIGURACAO JSONBIN - ATUALIZE COM SEUS DADOS
-        const JSONBIN_CONFIG = {
-            BIN_ID: "69ea87de856a68218966d9aa",
-            MASTER_KEY: "$2a$10$VigW8ZFBkyO/cbGX7Atrnu5prPJK/haiOrAcOeddqVbXWC1mXCCH6"
-        };
-
-        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.BIN_ID}`;
-        const JSONBIN_HEADERS = {
-            'Content-Type': 'application/json',
-            'X-Master-Key': JSONBIN_CONFIG.MASTER_KEY,
-            'X-Bin-Versioning': 'false'
-        };
+        // CONFIGURACAO SUPABASE
+        const SUPABASE_URL = "https://jwoqksrjuomsgjbnqvav.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3b3Frc3JqdW9tc2dqYm5xdmF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjczMjgsImV4cCI6MjA5MjU0MzMyOH0.IADkS2y-h3aTTWZBYrBdj4fcIY5jSNqdF4MxRQW5QFE";
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // VARIAVEIS GLOBAIS
         let nivelAcesso = null;
@@ -884,21 +877,8 @@
 
         // FUNCOES DE SINCRONIZACAO
         async function salvarDadosNaNuvem() {
-            const dados = { produtos, compras, vendas, historicoEstoque, contadorId, usuarios: USUARIOS, clientesContatados };
-            try {
-                await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HEADERS, body: JSON.stringify(dados) });
-                const statusEl = document.getElementById('statusConexao');
-                if(statusEl) {
-                    statusEl.innerText = '💾 SALVO';
-                    setTimeout(() => {
-                        if(document.getElementById('statusConexao')) {
-                            document.getElementById('statusConexao').innerText = '✅ ONLINE';
-                        }
-                    }, 1500);
-                }
-            } catch (erro) {
-                console.error('Erro ao salvar:', erro);
-            }
+            // Função legada mantida vazia para evitar quebra de funções que ainda a chamam.
+            // No Supabase, as atualizações são atômicas em cada função de ação.
         }
 
         async function carregarDadosDaNuvem() {
@@ -906,40 +886,33 @@
                 const statusEl = document.getElementById('statusConexao');
                 if(statusEl) statusEl.innerText = '🔄 CARREGANDO...';
                 
-                const resposta = await fetch(`${JSONBIN_URL}/latest`, { headers: JSONBIN_HEADERS });
+                const [resProdutos, resCompras, resVendas, resContatados, resUsuarios] = await Promise.all([
+                    db.from('produtos').select('*').order('nome'),
+                    db.from('compras').select('*'),
+                    db.from('vendas').select('*'),
+                    db.from('clientes_contatados').select('*'),
+                    db.from('usuarios').select('*')
+                ]);
+
+                if (resProdutos.error) throw resProdutos.error;
                 
-                if (!resposta.ok) {
-                    throw new Error(`HTTP ${resposta.status}`);
+                produtos = resProdutos.data || [];
+                // Converter nomes das colunas (snake_case do DB para camelCase do JS local)
+                compras = (resCompras.data || []).map(c => ({...c, produtoId: c.produto_id, valorUnitario: c.valor_unitario, valorTotal: c.valor_total}));
+                vendas = (resVendas.data || []).map(v => ({...v, produtoId: v.produto_id, valorUnitario: v.valor_unitario, valorTotal: v.valor_total, custoMedio: v.custo_medio}));
+                clientesContatados = (resContatados.data || []).map(c => c.cliente);
+                if (resUsuarios.data && resUsuarios.data.length > 0) {
+                    USUARIOS = resUsuarios.data;
                 }
                 
-                const dados = (await resposta.json()).record;
-                
-                if (!dados || Object.keys(dados).length === 0 || (!dados.produtos && !dados.vendas)) {
-                    console.log('Nenhum dado na nuvem, usando dados iniciais dos prints');
+                if (produtos.length === 0) {
+                    console.log('Nenhum produto na nuvem, usando dados iniciais dos prints');
                     carregarDadosIniciaisDosPrints();
                     if(statusEl) statusEl.innerText = '🆕 DADOS LOCAIS';
                     return;
                 }
                 
-                produtos = dados.produtos || [];
-                compras = dados.compras || [];
-                vendas = dados.vendas || [];
-                historicoEstoque = dados.historicoEstoque || [];
-                contadorId = dados.contadorId || 21;
-                if (dados.usuarios) USUARIOS = dados.usuarios;
-                if (dados.clientesContatados) clientesContatados = dados.clientesContatados;
-                
-                compras = compras.map(c => ({ ...c, status: c.status || 'pendente' }));
-                vendas = vendas.map(v => ({ ...v, status: v.status || 'pendente' }));
-                
                 atualizarCustoMedioProdutos();
-                
-                const backupAutomatico = {
-                    produtos, compras, vendas, historicoEstoque, contadorId,
-                    usuarios: USUARIOS, clientesContatados,
-                    dataBackup: new Date().toISOString()
-                };
-                localStorage.setItem('backupQueijaria', JSON.stringify(backupAutomatico));
                 
                 if(statusEl) {
                     statusEl.innerText = '✅ ONLINE';
@@ -948,38 +921,13 @@
                 atualizarTudo();
                 
             } catch (erro) {
-                console.error('Erro ao carregar:', erro);
+                console.error('Erro ao carregar do Supabase:', erro);
                 const statusEl = document.getElementById('statusConexao');
                 if(statusEl) {
                     statusEl.innerText = '📱 OFFLINE';
                     statusEl.style.backgroundColor = '#b22222';
                 }
-                
-                const backupLocal = localStorage.getItem('backupQueijaria');
-                if (backupLocal) {
-                    try {
-                        const dadosBackup = JSON.parse(backupLocal);
-                        produtos = dadosBackup.produtos || [];
-                        compras = dadosBackup.compras || [];
-                        vendas = dadosBackup.vendas || [];
-                        historicoEstoque = dadosBackup.historicoEstoque || [];
-                        contadorId = dadosBackup.contadorId || 21;
-                        if (dadosBackup.usuarios) USUARIOS = dadosBackup.usuarios;
-                        if (dadosBackup.clientesContatados) clientesContatados = dadosBackup.clientesContatados;
-                        
-                        compras = compras.map(c => ({ ...c, status: c.status || 'pendente' }));
-                        vendas = vendas.map(v => ({ ...v, status: v.status || 'pendente' }));
-                        
-                        atualizarCustoMedioProdutos();
-                        atualizarTudo();
-                        
-                        alert('📱 Usando backup local!');
-                    } catch (e) {
-                        carregarDadosIniciaisDosPrints();
-                    }
-                } else {
-                    carregarDadosIniciaisDosPrints();
-                }
+                carregarDadosIniciaisDosPrints();
             }
         }
 
@@ -1369,7 +1317,7 @@
             const lucroVenda = prod.custoMedio ? (prod.preco - prod.custoMedio) * qtd : 0;
             prod.estoque -= qtd;
             
-            vendas.push({
+            const novaVenda = {
                 id: Date.now(),
                 semana: semanaAtual,
                 vendedor: vendedor,
@@ -1383,8 +1331,18 @@
                 custoMedio: prod.custoMedio || 0,
                 status: 'pendente',
                 data: new Date().toLocaleDateString()
-            });
-            salvarSnapshotEstoque(semanaAtual);
+            };
+            vendas.push(novaVenda);
+            
+            // Supabase background sync
+            db.from('vendas').insert([{
+                id: novaVenda.id, semana: novaVenda.semana, vendedor: novaVenda.vendedor,
+                cliente: novaVenda.cliente, produto_id: novaVenda.produtoId, produto: novaVenda.produto,
+                qtd: novaVenda.qtd, valor_unitario: novaVenda.valorUnitario, valor_total: novaVenda.valorTotal,
+                lucro: novaVenda.lucro, custo_medio: novaVenda.custoMedio, status: novaVenda.status, data: novaVenda.data
+            }]).then();
+            db.from('produtos').update({ estoque: prod.estoque }).eq('id', prodId).then();
+            
             document.getElementById('clienteVenda').value = '';
             document.getElementById('qtdVenda').value = '1';
             atualizarTudo();
@@ -1400,7 +1358,8 @@
             const prod = produtos.find(p => p.id === prodId);
             const total = qtd * unit;
             prod.estoque += qtd;
-            compras.push({
+            
+            const novaCompra = {
                 id: Date.now(),
                 semana: semanaAtual,
                 produtoId: prodId,
@@ -1411,10 +1370,19 @@
                 fornecedor: forn,
                 status: 'pendente',
                 data: new Date().toLocaleDateString()
-            });
+            };
+            compras.push(novaCompra);
+            
+            // Supabase background sync
+            db.from('compras').insert([{
+                id: novaCompra.id, semana: novaCompra.semana, produto_id: novaCompra.produtoId,
+                produto: novaCompra.produto, qtd: novaCompra.qtd, valor_unitario: novaCompra.valorUnitario,
+                valor_total: novaCompra.valorTotal, fornecedor: novaCompra.fornecedor,
+                status: novaCompra.status, data: novaCompra.data
+            }]).then();
+            db.from('produtos').update({ estoque: prod.estoque }).eq('id', prodId).then();
             
             atualizarCustoMedioProdutos();
-            salvarSnapshotEstoque(semanaAtual);
             document.getElementById('compraQtd').value = '1';
             document.getElementById('compraValorUnitario').value = '';
             document.getElementById('compraFornecedor').value = '';
@@ -1428,9 +1396,12 @@
                 const venda = vendas.find(v => v.id === id);
                 if (venda) {
                     const prod = produtos.find(p => p.id === venda.produtoId);
-                    if (prod) prod.estoque += venda.qtd;
+                    if (prod) {
+                        prod.estoque += venda.qtd;
+                        db.from('produtos').update({ estoque: prod.estoque }).eq('id', prod.id).then();
+                    }
                     vendas = vendas.filter(v => v.id !== id);
-                    salvarSnapshotEstoque(semanaAtual);
+                    db.from('vendas').delete().eq('id', id).then();
                     atualizarTudo();
                 }
             }
@@ -1444,10 +1415,11 @@
                     if (prod) {
                         prod.estoque -= compra.qtd;
                         if (prod.estoque < 0) prod.estoque = 0;
+                        db.from('produtos').update({ estoque: prod.estoque }).eq('id', prod.id).then();
                     }
                     compras = compras.filter(c => c.id !== id);
+                    db.from('compras').delete().eq('id', id).then();
                     atualizarCustoMedioProdutos();
-                    salvarSnapshotEstoque(semanaAtual);
                     atualizarTudo();
                 }
             }
@@ -1456,7 +1428,7 @@
         window.excluirProduto = function(id) {
             if (confirm('Tem certeza?')) {
                 produtos = produtos.filter(p => p.id !== id);
-                salvarDadosNaNuvem();
+                db.from('produtos').delete().eq('id', id).then();
                 atualizarTudo();
             }
         };
@@ -1465,7 +1437,7 @@
             const venda = vendas.find(v => v.id === id);
             if (venda) {
                 venda.status = venda.status === 'pago' ? 'pendente' : 'pago';
-                salvarDadosNaNuvem();
+                db.from('vendas').update({ status: venda.status }).eq('id', id).then();
                 atualizarVendas();
                 atualizarClientes();
                 atualizarVendasPorVendedor();
@@ -1477,7 +1449,7 @@
             const compra = compras.find(c => c.id === id);
             if (compra) {
                 compra.status = compra.status === 'pago' ? 'pendente' : 'pago';
-                salvarDadosNaNuvem();
+                db.from('compras').update({ status: compra.status }).eq('id', id).then();
                 atualizarCompras();
                 atualizarGastos();
                 atualizarCustoMedioProdutos();
@@ -1507,19 +1479,28 @@
 
         window.toggleClienteContatado = function(cliente) {
             const index = clientesContatados.indexOf(cliente);
-            if (index === -1) clientesContatados.push(cliente);
-            else clientesContatados.splice(index, 1);
-            salvarDadosNaNuvem();
+            if (index === -1) {
+                clientesContatados.push(cliente);
+                db.from('clientes_contatados').insert([{ cliente }]).then();
+            } else {
+                clientesContatados.splice(index, 1);
+                db.from('clientes_contatados').delete().eq('cliente', cliente).then();
+            }
             atualizarClientes();
         };
 
-        window.editarPrecoProduto = function(id, valorAtual) {
+        window.editarPrecoProduto = async function(id, valorAtual) {
             const novoPreco = prompt(`Novo preço para o produto:`, valorAtual);
             if (novoPreco && !isNaN(parseFloat(novoPreco)) && parseFloat(novoPreco) > 0) {
                 const produto = produtos.find(p => p.id === id);
                 if (produto) {
-                    produto.preco = parseFloat(novoPreco);
-                    salvarDadosNaNuvem();
+                    const precoNumerico = parseFloat(novoPreco);
+                    const { error } = await db.from('produtos').update({ preco: precoNumerico }).eq('id', id);
+                    if (error) {
+                        alert('Erro do Supabase ao editar preço: ' + JSON.stringify(error));
+                        return;
+                    }
+                    produto.preco = precoNumerico;
                     atualizarTabelaProdutos();
                     atualizarSelects();
                     alert(`✅ Preço alterado para R$ ${produto.preco.toFixed(2)}`);
@@ -2142,10 +2123,10 @@
                     const novoEstoque = parseInt(input.value);
                     if (!isNaN(novoEstoque) && novoEstoque >= 0) {
                         p.estoque = novoEstoque;
+                        db.from('produtos').update({ estoque: p.estoque }).eq('id', p.id).then();
                     }
                 }
             });
-            salvarSnapshotEstoque(semanaAtual);
             modoEdicaoAtivo = false;
             const btnEdicao = document.getElementById('btnModoEdicaoEstoque');
             const btnSalvar = document.getElementById('btnSalvarEstoque');
@@ -2154,16 +2135,23 @@
             if(btnSalvar) btnSalvar.style.display = 'none';
             if(btnCancelar) btnCancelar.style.display = 'none';
             atualizarEstoque();
-            salvarDadosNaNuvem();
             alert('✅ Estoque ajustado!');
         }
 
-        window.cadastrarProduto = function() {
+        window.cadastrarProduto = async function() {
             const nome = document.getElementById('novoProdutoNome')?.value;
             const preco = parseFloat(document.getElementById('novoProdutoPreco')?.value);
             if (!nome || !preco) return alert('Preencha nome e preço!');
-            produtos.push({ id: contadorId++, nome, preco, estoque: 0, custoMedio: 0 });
-            salvarDadosNaNuvem();
+            const { data, error } = await db.from('produtos').insert([{ nome, preco, estoque: 0, custo_medio: 0 }]).select();
+            
+            if (error) {
+                alert('Erro do Supabase ao cadastrar: ' + JSON.stringify(error));
+                return;
+            }
+            
+            if(data && data.length > 0) {
+                produtos.push({ ...data[0], custoMedio: 0 });
+            }
             document.getElementById('novoProdutoNome').value = '';
             document.getElementById('novoProdutoPreco').value = '';
             atualizarTudo();
@@ -2312,16 +2300,19 @@
             if (document.getElementById('periodoRelatorio')) atualizarRelatorio();
         }
 
-        window.fazerLogin = function() {
+        window.fazerLogin = async function() {
             const usuario = document.getElementById('loginUsuario').value.trim();
             const senha = document.getElementById('loginSenha').value.trim();
-            const encontrado = USUARIOS.find(u => u.usuario === usuario && u.senha === senha);
-            if (!encontrado) {
+            
+            const { data, error } = await db.from('usuarios').select('*').eq('usuario', usuario).eq('senha', senha).maybeSingle();
+            
+            if (error || !data) {
                 document.getElementById('erroLogin').style.display = 'block';
                 return;
             }
+            
             document.getElementById('erroLogin').style.display = 'none';
-            nivelAcesso = encontrado.nivel;
+            nivelAcesso = data.nivel;
             primeiroNome = usuario.replace(/[A-ZÀ-Ÿ].*$/, '');
             localStorage.setItem('sessaoQueijaria', JSON.stringify({ usuario, nivel: nivelAcesso, timestamp: Date.now() }));
             document.getElementById('loginScreen').classList.add('hidden');
@@ -2385,3 +2376,4 @@
     </script>
 </body>
 </html>
+
